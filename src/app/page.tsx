@@ -1,8 +1,9 @@
 import Image from "next/image";
+import Footer from "@/components/Footer";
 export default function Main() {
   return (
     <div className="h-[100vh] w-[100vw] flex flex-col justify-between">
-      <div className="flex flex-col w-[100%] h-[100%] justify-center items-center">
+      <div className="flex flex-col w-[100%] h-[90%] justify-center items-center gap-y-[10px]">
         <div className="flex gap-x-[20px]">
           <Image className="border-4 rounded-2xl cursor-pointer" src="/logo.png" width={600} height={600} alt="RiceBit Logo"></Image>
           <div className="flex flex-col justify-evenly">
@@ -10,11 +11,9 @@ export default function Main() {
             <div className="flex justify-center items-center text-[40px] w-[200px] h-[70px] font-bold bg-black text-white rounded-2xl text-center cursor-pointer">Register</div>
           </div>
         </div>
-        <h2></h2>
+        <h2 className="text-[50px] font-bold">Small connections create big changes!</h2>
       </div>
-      <div>
-        FOOTER
-      </div>
+      <Footer/>
     </div>
   );
 }
