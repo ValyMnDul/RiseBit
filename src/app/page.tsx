@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import Link from "next/link";
 export default function Main() {
   return (
     <div className="h-[100vh] w-[100vw] flex flex-col justify-between">
@@ -7,8 +8,8 @@ export default function Main() {
         <div className="flex gap-x-[20px]">
           <Image className="border-4 rounded-2xl cursor-pointer" src="/logo.png" width={600} height={600} alt="RiceBit Logo"></Image>
           <div className="flex flex-col justify-evenly">
-            <div className="flex justify-center items-center text-[40px] w-[200px] h-[70px] font-bold bg-white rounded-2xl text-center cursor-pointer">Login</div>
-            <div className="flex justify-center items-center text-[40px] w-[200px] h-[70px] font-bold bg-black text-white rounded-2xl text-center cursor-pointer">Register</div>
+            <Link href="/login" className="flex justify-center items-center text-[40px] w-[200px] h-[70px] font-bold bg-white rounded-2xl text-center cursor-pointer">Login</Link>
+            <Link href="/register" className="flex justify-center items-center text-[40px] w-[200px] h-[70px] font-bold bg-black text-white rounded-2xl text-center cursor-pointer">Register</Link>
           </div>
         </div>
         <h2 className="text-[50px] font-bold">Small connections create big changes!</h2>
