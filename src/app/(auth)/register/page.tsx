@@ -1,4 +1,5 @@
 import Link from "next/link"
+import prisma from "@/lib/prisma";
 
 export default function register(){
     return (
@@ -38,7 +39,6 @@ export default function register(){
             <div>
                 <Link href="/login" className="text-blue-900 text-lg">Already have an account? Login</Link>
             </div>
-            
 
         </form>
     )
