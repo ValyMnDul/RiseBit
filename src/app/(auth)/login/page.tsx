@@ -2,8 +2,8 @@ import Link from "next/link"
 
 export default function login(){
     return(
-        <form className="flex flex-col gap-4 w-1/3 mx-auto mt-[100px]">
-            <p className="text-[80px] font-bold text-center">Login</p>
+        <form className="flex flex-col gap-y-4 w-1/3 mx-auto mt-[100px]">
+            <p className="text-[80px] font-bold text-center select-none">Login</p>
             <div className="flex flex-col gap-y-2">
                 <label className="text-[1.4rem]" htmlFor="email">Email</label>
                 <input type="email" id="email" name="email" className="border-1 rounded h-[40px] text-2xl pl-[10px] pr-[10px]"></input>
