@@ -1,35 +1,74 @@
 'use client'
 import Link from "next/link"
+import { useRef } from "react";
 
-async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-  e.preventDefault();
 
-  const form = e.currentTarget;
-  const formData = new FormData(form);
+export default function Register(){
 
-  const data = {
-    firstName: formData.get("firstName"),
-    lastName: formData.get("lastName"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-    birth: formData.get("birth"),
-  };
+    const message = useRef<HTMLParagraphElement>(null);
 
-  const res = await fetch("/api/users", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
 
-  const user = await res.json();
-  console.log(user);
+        const form = e.currentTarget;
+        const formData = new FormData(form);
 
-  form.reset();
-}
+        const data = {
+            firstName: formData.get("firstName"),
+            lastName: formData.get("lastName"),
+            email: formData.get("email"),
+            password: formData.get("password"),
+            cPassword:formData.get("cPassword"),
+            birth: formData.get("birth"),
+        };
 
-export default function register(){
+        const res = await fetch("/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+
+        if(res.status===400){
+            message.current!.textContent="Passwords do not match.";
+            message.current!.style.color="red";
+        }
+
+        if(res.status===401){
+            message.current!.textContent="One or more fields exceed the maximum length.";
+            message.current!.style.color="red";
+        }
+
+        if(res.status===402){
+            message.current!.textContent="An account with this email already exists.";
+            message.current!.style.color="red";
+        }
+
+        if(res.status===403){
+            message.current!.textContent="Invalid date of birth.";
+            message.current!.style.color="red";
+        }
+
+        if(res.status===405){
+            message.current!.textContent="Invalid email format.";
+            message.current!.style.color="red";
+        }
+
+        if(res.status===406){
+            message.current!.textContent="One or more required fields are empty.";
+            message.current!.style.color="red";
+        }
+
+        if(res.status===201){
+            message.current!.textContent="Account created successfully. You can now log in.";
+            message.current!.style.color="green";
+            global.setTimeout(()=>{
+                window.location.href="/login";
+            },1500);
+        }
+    }
+
     return (
-        <form className="flex flex-col gap-4 w-1/3 mx-auto mt-[60px]" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-4 w-1/3 mx-auto mt-[40px]" onSubmit={handleSubmit}>
             <p className="text-[80px] font-bold text-center select-none">Register</p>
             <div className="flex gap-x-4">
                 <div className="flex flex-col gap-y-2">
@@ -65,6 +104,7 @@ export default function register(){
             <div>
                 <Link href="/login" className="text-blue-900 text-lg">Already have an account? Login</Link>
             </div>
+            <p ref={message}>Accounts are for demo purposes only. Do not use real information.</p>
 
         </form>
     )
