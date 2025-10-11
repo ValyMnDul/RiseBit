@@ -1,9 +1,35 @@
+'use client'
 import Link from "next/link"
-import prisma from "@/lib/prisma";
+
+async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+
+  const form = e.currentTarget;
+  const formData = new FormData(form);
+
+  const data = {
+    firstName: formData.get("firstName"),
+    lastName: formData.get("lastName"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    birth: formData.get("birth"),
+  };
+
+  const res = await fetch("/api/users", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  const user = await res.json();
+  console.log(user);
+
+  form.reset();
+}
 
 export default function register(){
     return (
-        <form className="flex flex-col gap-4 w-1/3 mx-auto mt-[60px]">
+        <form className="flex flex-col gap-4 w-1/3 mx-auto mt-[60px]" onSubmit={handleSubmit}>
             <p className="text-[80px] font-bold text-center select-none">Register</p>
             <div className="flex gap-x-4">
                 <div className="flex flex-col gap-y-2">
