@@ -73,11 +73,11 @@ export default function Register(){
             <div className="flex gap-x-4">
                 <div className="flex flex-col gap-y-2">
                     <label className="text-[1.4rem]" htmlFor="firstName" >First Name</label>
-                    <input name="firstName" id="firstName" type="text" maxLength={50} required className="border-1 rounded h-[40px] text-2xl pl-[10px] pr-[10px] w-[100%]" ></input>
+                    <input  name="firstName" id="firstName" type="text" maxLength={50} required className="border-1 rounded h-[40px] text-2xl pl-[10px] pr-[10px] w-[100%]" ></input>
                 </div>
                 <div className="flex flex-col gap-y-2">
                     <label className="text-[1.4rem]" htmlFor="lastName">Last Name</label>
-                    <input required maxLength={50} className="border-1 rounded h-[40px] text-2xl pl-[10px] pr-[10px] w-[100%]" name="lastName" id="lastName" type="text"></input>
+                    <input  required maxLength={50} className="border-1 rounded h-[40px] text-2xl pl-[10px] pr-[10px] w-[100%]" name="lastName" id="lastName" type="text"></input>
                 </div>
             </div>
             <div className="flex flex-col gap-y-2">
