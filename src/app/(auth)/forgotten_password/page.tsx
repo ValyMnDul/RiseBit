@@ -1,8 +1,36 @@
+'use client'
 import Link from "next/link";
+import { useRef } from "react";
 
-export default function forgottenPassword(){
+export default function ForgottenPassword(){
+
+    const message=useRef<HTMLParagraphElement>(null);
+
+    const handleSubmit=async (e:React.FormEvent<HTMLFormElement>)=>{
+        e.preventDefault();
+
+        const email=e.currentTarget.email.value;
+        
+        const res=await fetch('/api/forgotten_password',{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({email})
+        })
+
+        if (res.status === 200) {
+            message.current!.textContent = 'Codul a fost trimis pe email!';
+            message.current!.style.color = 'green';
+        }
+        else {
+            message.current!.textContent = 'Eroare. Încearcă din nou.';
+            message.current!.style.color = 'red';
+        }
+    }
+
     return (
-        <form className="flex flex-col gap-y-4 w-1/3 mx-auto mt-[150px]">
+        <form className="flex flex-col gap-y-4 w-1/3 mx-auto mt-[150px]" onSubmit={handleSubmit}>
             <p className="text-[50px] font-bold text-center select-none">Password Reset</p>
             <p className="text-[21px] text-center select-none">Provide your email to reset your password</p>
             <div className="flex flex-col gap-y-2">
@@ -14,6 +42,7 @@ export default function forgottenPassword(){
                 <Link href="/register" className="text-blue-900 text-lg">Don&apos;t have an account? Register</Link>
                 <Link href="/login" className="text-blue-900 text-lg float-right">Back to Login</Link>
             </div>
+            <p ref={message} className="text-xl text-center"></p>
         </form>
     )
 }

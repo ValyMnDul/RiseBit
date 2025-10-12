@@ -23,3 +23,10 @@ model User {
   birthDate DateTime
   createdAt DateTime @default(now())
 }
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  createdAt DateTime @default(now())
+}
