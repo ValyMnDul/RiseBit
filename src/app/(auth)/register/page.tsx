@@ -58,6 +58,16 @@ export default function Register(){
             message.current!.style.color="red";
         }
 
+        if(res.status===407){
+            message.current!.textContent="You must be at least 13 years old to register.";
+            message.current!.style.color="red";
+        }
+
+        if(res.status===408){
+            message.current!.textContent="I don't think you're that old. Please enter a valid date of birth.";
+            message.current!.style.color="red";
+        }
+
         if(res.status===201){
             message.current!.textContent="Account created successfully. You can now log in.";
             message.current!.style.color="green";
