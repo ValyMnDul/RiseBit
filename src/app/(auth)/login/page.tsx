@@ -1,6 +1,8 @@
 'use client'
 import Link from "next/link"
 import { useRef } from "react";
+import { signIn } from "next-auth/react";
+
 
 export default function Login(){
 
@@ -12,50 +14,28 @@ export default function Login(){
         const form = e.currentTarget;
         const formData = new FormData(form);
 
-        const data = {
-            email:formData.get("email"),
-            password:formData.get("password")
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+
+        const res = await signIn("credentials", {
+            redirect: false,
+            email,
+            password,
+        });
+
+        if (res?.error) {
+            message.current!.textContent = "Email or password incorrect!";
+            message.current!.style.color = "red";
+        } 
+        else {
+            message.current!.textContent = "Login successful!";
+            message.current!.style.color = "green";
+
+            setTimeout(() => {
+                window.location.href = "/profile";
+            }, 1000);
         }
 
-        const res = await fetch ("/api/login",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify(data)
-        })
-
-        if(res.status===400){
-            message.current!.textContent="No account found with this email.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===401){
-            message.current!.textContent="Incorrect password.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===405){
-            message.current!.textContent="Invalid email format.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===406){
-            message.current!.textContent="One or more fields exceed the maximum length.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===407){
-            message.current!.textContent="Password field is empty.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===201){
-            message.current!.textContent="Login successful!";
-            message.current!.style.color="green";
-            setTimeout(()=>{
-                window.location.href="/";
-            },1000);
-        }
-        
     }
 
     return(

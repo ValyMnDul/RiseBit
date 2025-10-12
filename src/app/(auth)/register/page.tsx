@@ -58,7 +58,7 @@ export default function Register(){
             message.current!.style.color="red";
         }
 
-        if(res.status===407){
+        if(res.status===422){
             message.current!.textContent="You must be at least 13 years old to register.";
             message.current!.style.color="red";
         }

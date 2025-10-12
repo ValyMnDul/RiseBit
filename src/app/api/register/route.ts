@@ -29,8 +29,8 @@ export async function POST(req: Request) {
 
   const actualAge = hasHadBirthdayThisYear ? age : age - 1; 
 
-  if(actualAge<13){
-    return NextResponse.json({},{status:407});
+  if(actualAge < 13){
+    return NextResponse.json({},{ status:422 });
   }
   if (actualAge > 150) {
     return NextResponse.json({}, { status: 408 });
