@@ -5,7 +5,9 @@ export default function TermsPage() {
     <main className="max-w-3xl mx-auto py-12 px-6">
       <h1 className="text-[40px] font-bold mb-8 text-center">Terms and Conditions</h1>
 
-      <p className="mb-6 text-2xl">
+      <Link href="/feed" className="text-2xl cursor-pointer text-blue-600 hover:text-blue-400">&larr;Back</Link>
+
+      <p className="mb-6 mt-[9px] text-2xl">
         Welcome to <strong>RiseBit</strong>. These Terms and Conditions outline the rules and regulations for using our website and services. 
         By accessing or registering on our platform, you agree to comply with these terms.
       </p>

@@ -1,4 +1,7 @@
 'use client'
+
+import Link from "next/link"
+
 export default function about(){
     return(
         <main className="max-w-4xl mx-auto px-6 py-16 text-gray-800">
@@ -7,7 +10,9 @@ export default function about(){
                 About <span className="text-blue-600">RiseBit</span>
             </h1>
 
-            <section className="mb-12 space-y-4 text-lg leading-relaxed">
+            <Link href='/feed' className="text-2xl cursor-pointer text-blue-600 hover:text-blue-400">&larr;Back</Link>
+
+            <section className="mb-12 mt-[9px] space-y-4 text-lg leading-relaxed">
                 <p className="text-2xl"><strong>RiseBit</strong> is a next-generation <strong>social media platform</strong> built for creators, innovators, and communities who want more control over their digital presence.</p>
                 <p className="text-2xl">Our mission is to provide a fast, clean, and privacy-focused space where users can connect, share ideas, and grow — without distractions or invasive tracking.</p>
                 <p className="text-2xl">Every feature in RiseBit is crafted with simplicity, performance, and user empowerment in mind.</p>
@@ -60,6 +65,7 @@ export default function about(){
             <p className="mt-14 text-xl text-gray-500 text-center italic">
                 🕒 Last updated: October 2025 
             </p>
+
 
         </main>
     )

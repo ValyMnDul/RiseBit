@@ -1,9 +1,13 @@
+import Link from "next/link"
+
 export default function privacy_policy(){
     return(
         <main className="max-w-3xl mx-auto py-12 px-6">
             <h1 className="text-[40px] font-bold mb-8 text-center">Privacy Policy</h1>
 
-            <p className="mb-6 text-2xl">Your privacy is important to us. This Privacy Policy explains how <strong>RiseBit</strong> collects, uses, and protects your personal data when you use our website and services.</p>
+            <Link href='/feed' className="text-2xl cursor-pointer text-blue-600 hover:text-blue-400">&larr;Back</Link>
+
+            <p className="mb-6 mt-[9px] text-2xl">Your privacy is important to us. This Privacy Policy explains how <strong>RiseBit</strong> collects, uses, and protects your personal data when you use our website and services.</p>
 
             <h2 className="text-[30px] font-semibold mt-10 mb-4">1. Information We Collect</h2>
             <ul className="list-disc ml-6 mb-6">
