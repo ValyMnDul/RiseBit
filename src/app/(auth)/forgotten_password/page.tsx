@@ -25,12 +25,14 @@ export default function ForgottenPassword(){
             body:JSON.stringify({email})
         })
 
+        const data=await res.json();
+
         if (res.status === 200) {
-            message.current!.textContent = 'Codul a fost trimis pe email!';
+            message.current!.textContent = data.message;
             message.current!.style.color = 'green';
         }
         else {
-            message.current!.textContent = 'Eroare. Încearcă din nou.';
+            message.current!.textContent = 'Error. Try again.';
             message.current!.style.color = 'red';
         }
 
@@ -46,7 +48,7 @@ export default function ForgottenPassword(){
             <p className="text-[21px] text-center select-none">Provide your email to reset your password</p>
             <div className="flex flex-col gap-y-2">
                 <label className="text-[1.4rem]" htmlFor="email">Email</label>
-                <input placeholder="name@example.com" required type="email" id="email" name="email" minLength={6} maxLength={200} className="border-1 rounded h-[40px] pl-[10px] pr-[10px]"></input>
+                <input required type="email" id="email" name="email" minLength={6} maxLength={200} className="text-[21px] border-1 rounded h-[40px] pl-[10px] pr-[10px]"></input>
             </div>
             <button ref={submitButton} type="submit" className="bg-blue-500 text-white text-xl rounded px-4 py-2 mt-4 select-none">Submit</button>
             <div>

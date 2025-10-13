@@ -7,6 +7,7 @@ export default function CodeVerify(){
 
     const [email,setEmail]=useState<string|null>(null);
     const message=useRef<HTMLParagraphElement>(null);
+    const submitButton=useRef<HTMLButtonElement>(null);
 
     useEffect(()=>{
         setEmail(localStorage.getItem("email"));
@@ -14,6 +15,8 @@ export default function CodeVerify(){
 
     const handleSubmit=async (e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
+
+        submitButton.current!.disabled = true; 
 
         const form=e.currentTarget;
         const inputCode=form.code.value;
@@ -70,9 +73,9 @@ export default function CodeVerify(){
             <p className="text-[21px] text-center select-none">Provide the code sent to your email</p>
             <div className="flex flex-col gap-y-2">
                 <label className="text-[1.4rem]" htmlFor="code">Code</label>
-                <input placeholder="00000" required type="text" id="code" name="code" minLength={5} maxLength={5} className="text-[25px] text-center border-1 rounded h-[40px] pl-[10px] pr-[10px]"></input>
+                <input placeholder="00000" required type="text" id="code" name="code" minLength={5} maxLength={5} className="text-[21px] text-center border-1 rounded h-[40px] pl-[10px] pr-[10px]"></input>
             </div>
-            <button type="submit" className="bg-blue-500 text-white text-xl rounded px-4 py-2 mt-4 select-none">Submit</button>
+            <button ref={submitButton} type="submit" className="bg-blue-500 text-white text-xl rounded px-4 py-2 mt-4 select-none">Submit</button>
             <div>
                 <a onClick={resendEmail} className="select-none text-blue-900 text-lg cursor-pointer">Resend code</a>
                 <Link href="/login" className="text-blue-900 text-lg float-right">Remembered your password? Login</Link>

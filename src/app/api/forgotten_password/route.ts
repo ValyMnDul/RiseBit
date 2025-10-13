@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-      return NextResponse.json({}, { status: 200 });
+      return NextResponse.json({message:"The code has been sent to your email!"}, { status: 200 });
     }
 
     const code = Math.floor(10000 + Math.random() * 90000).toString();
@@ -22,5 +22,5 @@ export async function POST(req: Request) {
 
     await sendResetEmail(email, code);
 
-    return NextResponse.json({}, { status: 200 });
+    return NextResponse.json({message:"The code has been sent to your email!"}, { status: 200 });
 }
