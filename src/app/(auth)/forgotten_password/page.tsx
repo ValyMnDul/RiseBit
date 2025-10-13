@@ -9,7 +9,8 @@ export default function ForgottenPassword(){
     const handleSubmit=async (e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
 
-        const email=e.currentTarget.email.value;
+        const form=e.currentTarget;
+        const email=form.email.value;
         
         const res=await fetch('/api/forgotten_password',{
             method:"POST",
@@ -27,6 +28,11 @@ export default function ForgottenPassword(){
             message.current!.textContent = 'Eroare. Încearcă din nou.';
             message.current!.style.color = 'red';
         }
+
+        form.reset();
+        setTimeout(() => {
+            global.location.href = '/forgotten_password/code_verify';
+        }, 2000);
     }
 
     return (
