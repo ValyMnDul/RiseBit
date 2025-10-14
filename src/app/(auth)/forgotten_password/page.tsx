@@ -1,8 +1,9 @@
 'use client'
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef} from "react";
 
 export default function ForgottenPassword(){
+
 
     const message=useRef<HTMLParagraphElement>(null);
     const submitButton=useRef<HTMLButtonElement>(null);
@@ -16,6 +17,7 @@ export default function ForgottenPassword(){
         const email=form.email.value;
 
         localStorage.setItem('email',email);
+        localStorage.setItem('FPPass','false');
         
         const res=await fetch('/api/forgotten_password',{
             method:"POST",

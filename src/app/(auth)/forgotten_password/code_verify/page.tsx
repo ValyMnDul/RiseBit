@@ -1,13 +1,24 @@
 'use client'
 
+import { time } from "console";
 import Link from "next/link"
 import { useEffect,useState,useRef } from "react";
 
 export default function CodeVerify(){
 
+    useEffect(() => {
+        if (!localStorage.getItem('email')) {
+            global.location.href = '/forgotten_password';
+        }
+    }, []);
+
     const [email,setEmail]=useState<string|null>(null);
     const message=useRef<HTMLParagraphElement>(null);
     const submitButton=useRef<HTMLButtonElement>(null);
+    const resendButton=useRef<HTMLAnchorElement>(null);
+
+    const [timeLeft,setTimeLeft]=useState<number>(120);
+    if(timeLeft){}
 
     useEffect(()=>{
         setEmail(localStorage.getItem("email"));
@@ -36,6 +47,8 @@ export default function CodeVerify(){
             message.current!.textContent = 'Code verified!';
             message.current!.style.color = 'green';
 
+            localStorage.setItem('FPPass','true');
+
             setTimeout(() => {
                 global.location.href = '/forgotten_password/code_verify/new_password';
             }, 2000);
@@ -49,6 +62,32 @@ export default function CodeVerify(){
     }
 
     const resendEmail = async ()=>{
+
+
+        resendButton.current!.style.pointerEvents = 'none';
+        resendButton.current!.style.opacity = '0.5';
+
+        const interval = globalThis.setInterval(() => {
+        setTimeLeft((prev) => {
+            const newTime = prev - 1;
+            resendButton.current!.textContent = `${newTime}s`;
+
+            if (newTime <= 0) {
+                clearInterval(interval);
+                resendButton.current!.textContent = "Resend code";
+                resendButton.current!.style.pointerEvents = "auto";
+                resendButton.current!.style.opacity = "1";
+                message.current!.textContent = '';
+                return 120;
+            }
+
+            return newTime;
+        });
+        }, 1000);
+
+
+        
+
         const res=await fetch('/api/forgotten_password',{
             method:"POST",
             headers:{
@@ -77,7 +116,7 @@ export default function CodeVerify(){
             </div>
             <button ref={submitButton} type="submit" className="bg-blue-500 text-white text-xl rounded px-4 py-2 mt-4 select-none">Submit</button>
             <div>
-                <a onClick={resendEmail} className="select-none text-blue-900 text-lg cursor-pointer">Resend code</a>
+                <a ref={resendButton} onClick={resendEmail} className="select-none text-blue-900 text-lg cursor-pointer">Resend code</a>
                 <Link href="/login" className="text-blue-900 text-lg float-right">Remembered your password? Login</Link>
             </div>
             <p ref={message} className="text-xl text-center"></p>

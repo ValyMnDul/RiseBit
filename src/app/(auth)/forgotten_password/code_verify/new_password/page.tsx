@@ -5,6 +5,12 @@ import { useRef,useEffect,useState } from "react";
 
 export default function NewPassword(){
 
+    useEffect(()=>{
+        if(localStorage.getItem('FPPass')!=='true'){
+            global.location.href = '/forgotten_password/code_verify';
+        }
+    },[])
+
     const message=useRef<HTMLParagraphElement>(null);
 
     const [email,setEmail]=useState<string|null>(null);
@@ -12,7 +18,6 @@ export default function NewPassword(){
 
     useEffect(()=>{
         setEmail(localStorage.getItem("email"));
-        localStorage.removeItem("email");
     },[])
 
 
@@ -40,6 +45,8 @@ export default function NewPassword(){
             message.current!.style.color = 'green';
             setTimeout(() => {
                 global.location.href = '/login';
+                localStorage.removeItem('FPPass');
+                localStorage.removeItem('email');
             }, 2000);
         }
         else{
