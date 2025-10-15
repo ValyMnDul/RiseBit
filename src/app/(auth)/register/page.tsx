@@ -1,17 +1,38 @@
 'use client'
 import Link from "next/link"
-import { useRef } from "react";
+import { useRef,useState } from "react";
+import Image from "next/image";
 
 
 export default function Register(){
 
     const message = useRef<HTMLParagraphElement>(null);
+    const [url, setUrl] = useState<string | null>(null);
+    const [file, setFile] = useState<File | null>(null);
+    if(file){}
+    const [preview, setPreview] = useState<string | null>(null);
+
+    const sendImage = async (file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await fetch("/api/uploadProfilePhoto", {
+            method: "POST",
+            body: formData,
+        });
+
+        if (res.ok) {
+            const data = await res.json() as { url: string };
+            return data.url;
+        }
+    };
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         const form = e.currentTarget;
         const formData = new FormData(form);
+        
 
         const data = {
             firstName: formData.get("firstName"),
@@ -20,6 +41,7 @@ export default function Register(){
             password: formData.get("password"),
             cPassword:formData.get("cPassword"),
             birth: formData.get("birth"),
+            profilePhoto: url
         };
 
         const res = await fetch("/api/register", {
@@ -110,12 +132,32 @@ export default function Register(){
                 <input required type="checkbox" id="terms" name="terms" className="ml-2 scale-150"></input>
                 <label className="text-[1.2rem] ml-4" htmlFor="terms">I agree to the Terms and Conditions</label>
             </div>
+
+            <div>
+                <input type="file" name="file" accept="image/*" onChange={async (e)=>{
+                    const f = e.target.files?.[0];
+                    if(f){
+                        setFile(f);
+                        setPreview(URL.createObjectURL(f));
+                        setUrl(await sendImage(f) || null);
+                        console.log( url);
+                    }
+                }}/>
+
+                {
+                    preview!==null ?  
+                    <Image width={100} height={100} src={preview} alt="Preview" className="rounded-full object-cover mt-2" ></Image>
+                    :null
+                }
+
+            </div>
+
+
             <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2 mt-4 select-none">Submit</button>
             <div>
                 <Link href="/login" className="text-blue-900 text-lg">Already have an account? Login</Link>
             </div>
             <p ref={message}>Accounts are for demo purposes only. Do not use real information.</p>
-
         </form>
     )
 }

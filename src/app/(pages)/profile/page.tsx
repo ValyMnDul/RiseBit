@@ -18,12 +18,14 @@ export default async function ProfilePage() {
     lastName: string;
     birthDate: string;
     createdAt: string;
+    profilePic?: string | null;
   };
+  
 
   return (
     <main className="flex flex-col items-center justify-evenly w-[100%] h-[100%]">
       <h1 className="cursor-default text-4xl text-center mt-[10px] font-bold">Welcome, {user.firstName} {user.lastName}</h1>
-      <Image className="select-none border-[4px] border-white rounded-[50%]" src="/defaultUser.png" width={350} height={350} alt="Profile Image"></Image>
+      <Image priority className="select-none border-[4px] border-white rounded-[50%]" src={user.profilePic || "/defaultUser.png"} width={350} height={350} alt="Profile Image"></Image>
       <div className="text-center">
         <p className="text-2xl font-bold">Account details:</p>
         <p className="text-xl">Email: {user.email}</p>

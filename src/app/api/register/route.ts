@@ -53,6 +53,7 @@ export async function POST(req: Request) {
       email: data.email,
       password: data.password,
       birthDate: new Date(data.birth),
+      profilePic: data.profilePhoto || null
     },
   }); 
 

@@ -9,6 +9,7 @@ interface MyUser {
   lastName: string;
   birthDate: string;
   createdAt: string;
+  profilePic?: string | null;
   password?: string;
 }
 
@@ -36,9 +37,10 @@ export const authOptions: AuthOptions = {
           lastName: user.lastName,
           birthDate: user.birthDate.toISOString(),
           createdAt: user.createdAt.toISOString(),
+          profilePic: user.profilePic || null, // <-- aici
           password: user.password,
         } as MyUser;
-      },
+      }
     }),
   ],
   session: { strategy: "jwt" },
