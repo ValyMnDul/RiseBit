@@ -6,12 +6,12 @@ import prisma from "@/lib/prisma";
 export async function POST(req: Request) {
   const data = await req.json();
 
-  if(data.password!==data.cPassword){
-    return NextResponse.json({},{ status: 400 });
-  }
-
   if(await prisma.user.findUnique({where: { email: data.email }})){
     return NextResponse.json({},{ status: 402 });
+  }
+
+  if(data.password!==data.cPassword){
+    return NextResponse.json({},{ status: 400 });
   }
 
   if(data.email.length>100 || data.firstName.length>50 || data.lastName.length>50 || data.password.length>200){

@@ -12,6 +12,8 @@ export default function Register(){
     if(file){}
     const [preview, setPreview] = useState<string | null>(null);
 
+    
+
     const sendImage = async (file: File) => {
         const formData = new FormData();
         formData.append("file", file);
@@ -101,7 +103,7 @@ export default function Register(){
 
     return (
         <form className="flex flex-col gap-4 w-1/3 mx-auto mt-[40px]" onSubmit={handleSubmit}>
-            <p className="text-[80px] font-bold text-center select-none">Register</p>
+            <p className="text-[70px] font-bold text-center select-none">Register</p>
             <div className="flex gap-x-4 justify-between">
                 <div className="flex flex-col gap-y-2">
                     <label className="text-[1.4rem]" htmlFor="firstName" >First Name</label>
@@ -116,40 +118,45 @@ export default function Register(){
                 <label className="text-[1.4rem]" htmlFor="email">Email</label>
                 <input required type="email" id="email" name="email" maxLength={100} className="border-1 text-[21px] rounded h-[40px] pl-[10px] pr-[10px]"></input>
             </div>
-            <div className="flex flex-col gap-y-2">
-                <label className="text-[1.4rem]" htmlFor="password">Password</label>
-                <input required type="password" id="password" name="password" minLength={6} maxLength={200} className="border-1 text-[21px] rounded h-[40px] pl-[10px] pr-[10px]"></input>
+            <div className="flex gap-x-4 justify-between">
+                <div className="flex flex-col gap-y-2">
+                    <label className="text-[1.4rem]" htmlFor="password">Password</label>
+                    <input required type="password" id="password" name="password" minLength={6} maxLength={200} className="border-1 text-[21px] rounded h-[40px] pl-[10px] pr-[10px]"></input>
+                </div>
+                <div className="flex flex-col gap-y-2">
+                    <label className="text-[1.4rem]" htmlFor="cPassword">Confirm Password</label>
+                    <input required type="password" id="cPassword" name="cPassword" minLength={6} maxLength={200} className="border-1 text-[21px] rounded h-[40px] pl-[10px] pr-[10px]"></input>
+                </div>
             </div>
-            <div className="flex flex-col gap-y-2">
-                <label className="text-[1.4rem]" htmlFor="cPassword">Confirm Password</label>
-                <input required type="password" id="cPassword" name="cPassword" minLength={6} maxLength={200} className="border-1 text-[21px] rounded h-[40px] pl-[10px] pr-[10px]"></input>
-            </div>
+
             <div className="flex flex-col gap-y-2">
                 <label className="text-[1.4rem]" htmlFor="birth">Date of birth</label>
                 <input required type="date" id="birth" name="birth" className="border-1 text-[21px] rounded h-[40px] pl-[10px] pr-[10px]"></input>
             </div>
-            <div>
-                <input required type="checkbox" id="terms" name="terms" className="ml-2 scale-150"></input>
-                <label className="text-[1.2rem] ml-4" htmlFor="terms">I agree to the Terms and Conditions</label>
-            </div>
 
             <div>
-                <input type="file" name="file" accept="image/*" onChange={async (e)=>{
+                <label className="text-[1.4rem]" htmlFor="file">Profile Photo (optional)</label>
+                <input type="file" name="file" accept="image/*" id="file" className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%] mt-[9px]"
+                onChange={async (e)=>{
                     const f = e.target.files?.[0];
                     if(f){
                         setFile(f);
                         setPreview(URL.createObjectURL(f));
                         setUrl(await sendImage(f) || null);
-                        console.log( url);
                     }
                 }}/>
 
                 {
                     preview!==null ?  
-                    <Image width={100} height={100} src={preview} alt="Preview" className="rounded-full object-cover mt-2" ></Image>
+                    <Image width={300} height={300} src={preview} alt="Preview" className="rounded-full object-cover mt-[20px] mb-[20px] border-[4px] border-white mx-auto" style={{aspectRatio:"1 / 1"}}></Image>
                     :null
                 }
 
+            </div>
+
+            <div>
+                <input required type="checkbox" id="terms" name="terms" className="ml-2 scale-150"></input>
+                <label className="text-[1.2rem] ml-4" htmlFor="terms">I agree to the Terms and Conditions</label>
             </div>
 
 
@@ -157,7 +164,7 @@ export default function Register(){
             <div>
                 <Link href="/login" className="text-blue-900 text-lg">Already have an account? Login</Link>
             </div>
-            <p ref={message}>Accounts are for demo purposes only. Do not use real information.</p>
+            <p className="mb-[50px]" ref={message}>Accounts are for demo purposes only. Do not use real information.</p>
         </form>
     )
 }
