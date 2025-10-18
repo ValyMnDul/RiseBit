@@ -1,25 +1,51 @@
 'use client';
 import {useSession} from "next-auth/react";
 import Image from "next/image";
+import { useState } from "react";
 
 
 export default function EditProfile(){
 
-    const changePictureHandler = async () => {
-        console.log("Change Picture clicked");
-    }
-
-    const {data: session} = useSession();
+    const {data: session,update } = useSession();
 
     const user = session?.user as {
-        id: string;
-        email: string;
-        firstName: string;
-        lastName: string;
-        birthDate: string;
-        createdAt: string;
-        profilePic: string;
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    birthDate: string;
+    createdAt: string;
+    profilePic: string;
     };
+
+    const [profilePic, setProfilePic] = useState<string | null>(user?.profilePic || null);
+
+
+
+    const changePictureHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if(file){
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("email",""+session?.user?.email);
+
+            const res= await fetch("/api/change_profile_picture",{
+                method:"POST",
+                body: formData,
+            });
+            const data=await res.json();
+            await update({
+                user: {
+                    ...session!.user,
+                    profilePic: data.url 
+                }
+            });
+            setProfilePic(data.url);
+
+        }
+
+    }
+
 
     return(
         <main
@@ -30,7 +56,7 @@ export default function EditProfile(){
             >
                 <Image
                 priority
-                src={user?.profilePic || '/default-profile.png'}
+                src={profilePic || '/defaultUser.png'}
                 alt="Profile Picture"
                 width={350}
                 height={350}
@@ -43,7 +69,7 @@ export default function EditProfile(){
                     Change Picture
                 </label>
                 <input
-                onChange={changePictureHandler}
+                onChange={(e) => changePictureHandler(e)}
                 id="profilePicture"
                 type="file"
                 accept="image/*"

@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import cloudinary from "@/lib/cloudinary";
 
-export const POST=async (req:Request)=>{
-    
+export const POST = async (req: Request) => {
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
+    const email = formData.get("email") as string | null;
 
-    if(file===null){
-        return NextResponse.json({message:"No file selected!"},{status:400});
+    if (file === null) {
+        return NextResponse.json({ message: "No file selected!" }, { status: 400 });
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -21,6 +21,15 @@ export const POST=async (req:Request)=>{
     })
 
     const imageURL = res.secure_url;
+
+    await prisma?.user.update({
+        where: {
+            email: email!
+        },
+        data: {
+            profilePic: imageURL
+        }
+    });
 
     return NextResponse.json({url:imageURL},{status:200})
 

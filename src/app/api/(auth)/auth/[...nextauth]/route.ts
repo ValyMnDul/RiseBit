@@ -10,7 +10,16 @@ interface MyUser {
   birthDate: string;
   createdAt: string;
   profilePic?: string | null;
-  password?: string;
+}
+
+declare module "next-auth" {
+  interface Session {
+    user: MyUser;
+  }
+
+  interface JWT {
+    user?: MyUser;
+  }
 }
 
 export const authOptions: AuthOptions = {
@@ -37,21 +46,28 @@ export const authOptions: AuthOptions = {
           lastName: user.lastName,
           birthDate: user.birthDate.toISOString(),
           createdAt: user.createdAt.toISOString(),
-          profilePic: user.profilePic || null, // <-- aici
-          password: user.password,
+          profilePic: user.profilePic || null,
         } as MyUser;
-      }
+      },
     }),
   ],
-  session: { strategy: "jwt" },
-  pages: { signIn: "/login" },
+
+  session: {
+    strategy: "jwt",
+  },
+
+  pages: {
+    signIn: "/login",
+  },
+
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.user = user;
+        token.user = { ...user };
       }
       return token;
     },
+
     async session({ session, token }) {
       if (token.user) {
         session.user = token.user as MyUser;
