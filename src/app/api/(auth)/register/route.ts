@@ -14,6 +14,10 @@ export async function POST(req: Request) {
     return NextResponse.json({},{ status: 400 });
   }
 
+  if(await prisma.user.findUnique({where: { username: data.userName }})){
+    return NextResponse.json({},{ status: 409 });
+  }
+
   if(data.email.length>100 || data.firstName.length>50 || data.lastName.length>50 || data.password.length>200){
     return NextResponse.json({},{ status: 401 });
   }
@@ -53,7 +57,8 @@ export async function POST(req: Request) {
       email: data.email,
       password: data.password,
       birthDate: new Date(data.birth),
-      profilePic: data.profilePhoto || null
+      profilePic: data.profilePhoto || null,
+      username: data.userName
     },
   }); 
 

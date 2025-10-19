@@ -2,9 +2,16 @@
 import Link from "next/link"
 import { useRef,useState } from "react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 
 export default function Register(){
+
+    const { data: session } = useSession();
+
+    if(session){
+        window.location.href="/profile";
+    }
 
     const message = useRef<HTMLParagraphElement>(null);
     const [url, setUrl] = useState<string | null>(null);
@@ -43,7 +50,8 @@ export default function Register(){
             password: formData.get("password"),
             cPassword:formData.get("cPassword"),
             birth: formData.get("birth"),
-            profilePhoto: url
+            profilePhoto: url,
+            userName: formData.get("userName"),
         };
 
         const res = await fetch("/api/register", {
@@ -64,6 +72,11 @@ export default function Register(){
 
         if(res.status===402){
             message.current!.textContent="An account with this email already exists.";
+            message.current!.style.color="red";
+        }
+
+        if(res.status===409){
+            message.current!.textContent="An account with this username already exists.";
             message.current!.style.color="red";
         }
 
@@ -102,41 +115,197 @@ export default function Register(){
     }
 
     return (
-        <form className="flex flex-col gap-4 w-1/3 mx-auto mt-[40px]" onSubmit={handleSubmit}>
-            <p className="text-[70px] font-bold text-center select-none">Register</p>
-            <div className="flex gap-x-4 justify-between">
-                <div className="flex flex-col gap-y-2">
-                    <label className="text-[1.4rem]" htmlFor="firstName" >First Name</label>
-                    <input  name="firstName" id="firstName" type="text" maxLength={50} required className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" ></input>
+        <form 
+        className="flex flex-col gap-4 w-1/3 mx-auto mt-[40px]" 
+        onSubmit={handleSubmit}
+        >
+            <p 
+            className="text-[70px] font-bold text-center select-none"
+            >
+                Register
+            </p>
+
+            <div 
+            className="flex gap-x-4 justify-between"
+            >
+                <div 
+                className="flex flex-col gap-y-2"
+                >
+                    <label 
+                    className="text-[1.4rem]" 
+                    htmlFor="firstName" 
+                    >
+                        First Name
+                    </label>
+
+                    <input  
+                    name="firstName" 
+                    id="firstName" 
+                    type="text" 
+                    maxLength={50} 
+                    required
+                    className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" 
+                    ></input>
+
                 </div>
-                <div className="flex flex-col gap-y-2">
-                    <label className="text-[1.4rem]" htmlFor="lastName">Last Name</label>
-                    <input  required maxLength={50} className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" name="lastName" id="lastName" type="text"></input>
+
+                <div 
+                className="flex flex-col gap-y-2"
+                >
+                    <label 
+                    className="text-[1.4rem]" 
+                    htmlFor="lastName"
+                    >
+                        Last Name
+                    </label>
+
+                    <input  
+                    required 
+                    maxLength={50} 
+                    className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" 
+                    name="lastName" 
+                    id="lastName" 
+                    type="text"
+                    ></input>
+
                 </div>
-            </div>
-            <div className="flex flex-col gap-y-2">
-                <label className="text-[1.4rem]" htmlFor="email">Email</label>
-                <input required type="email" id="email" name="email" maxLength={100} className="border-1 text-[21px] rounded h-[40px] pl-[10px] pr-[10px]"></input>
-            </div>
-            <div className="flex gap-x-4 justify-between">
-                <div className="flex flex-col gap-y-2">
-                    <label className="text-[1.4rem]" htmlFor="password">Password</label>
-                    <input required type="password" id="password" name="password" minLength={6} maxLength={200} className="border-1 text-[21px] rounded h-[40px] pl-[10px] pr-[10px]"></input>
-                </div>
-                <div className="flex flex-col gap-y-2">
-                    <label className="text-[1.4rem]" htmlFor="cPassword">Confirm Password</label>
-                    <input required type="password" id="cPassword" name="cPassword" minLength={6} maxLength={200} className="border-1 text-[21px] rounded h-[40px] pl-[10px] pr-[10px]"></input>
-                </div>
+
             </div>
 
-            <div className="flex flex-col gap-y-2">
-                <label className="text-[1.4rem]" htmlFor="birth">Date of birth</label>
-                <input required type="date" id="birth" name="birth" className="border-1 text-[21px] rounded h-[40px] pl-[10px] pr-[10px]"></input>
+            <div 
+            className="flex flex-col gap-y-2"
+            >
+                <label 
+                className="text-[1.4rem]" 
+                htmlFor="email"
+                >
+                    Email
+                </label>
+
+                <input 
+                required 
+                type="email" 
+                id="email" 
+                name="email" 
+                maxLength={100} 
+                className="border-1 text-[21px] rounded h-[40px] pl-[10px] pr-[10px]"
+                ></input>
+
             </div>
+
+            <div 
+            className="flex gap-x-4 justify-between"
+            >
+                <div 
+                className="flex flex-col gap-y-2"
+                >
+                    <label 
+                    className="text-[1.4rem]" 
+                    htmlFor="password"
+                    >
+                        Password
+                    </label>
+
+                    <input 
+                    required 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    minLength={6} 
+                    maxLength={200} 
+                    className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" 
+                    ></input>
+
+                </div>
+
+                <div 
+                className="flex flex-col gap-y-2"
+                >
+                    <label 
+                    className="text-[1.4rem]" 
+                    htmlFor="cPassword"
+                    >
+                        Confirm Password
+                    </label>
+
+                    <input 
+                    required 
+                    type="password" 
+                    id="cPassword" 
+                    name="cPassword" 
+                    minLength={6} 
+                    maxLength={200} 
+                    className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" 
+                    ></input>
+
+                </div>
+
+            </div>
+
+            <div 
+            className="flex gap-x-4 justify-between"
+            >
+
+                <div 
+                className="flex flex-col gap-y-2"
+                >
+                    <label 
+                    className="text-[1.4rem]" 
+                    htmlFor="userName"
+                    >
+                        User Name
+                    </label>
+
+                    <input 
+                    required 
+                    type="text" 
+                    id="userName" 
+                    name="userName" 
+                    minLength={6} 
+                    maxLength={20} 
+                    className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" 
+                    ></input>
+
+                </div>
+
+                <div 
+                className="flex flex-col gap-y-2"
+                >
+                    <label 
+                    className="text-[1.4rem]" 
+                    htmlFor="birth"
+                    >
+                        Date of birth
+                    </label>
+
+                    <input 
+                    required 
+                    type="date" 
+                    id="birth" 
+                    name="birth" 
+                    className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[175px]" 
+                    ></input>
+
+                </div>
+
+            </div>
+
 
             <div>
-                <label className="text-[1.4rem]" htmlFor="file">Profile Photo (optional)</label>
-                <input type="file" name="file" accept="image/*" id="file" className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%] mt-[9px]"
+
+                <label 
+                className="text-[1.4rem]" 
+                htmlFor="file"
+                >
+                    Profile Photo (optional)
+                </label>
+
+                <input 
+                type="file" 
+                name="file" 
+                accept="image/*" 
+                id="file" 
+                className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%] mt-[9px]"
                 onChange={async (e)=>{
                     const f = e.target.files?.[0];
                     if(f){
@@ -144,27 +313,70 @@ export default function Register(){
                         setPreview(URL.createObjectURL(f));
                         setUrl(await sendImage(f) || null);
                     }
-                }}/>
+                }}
+                ></input>
 
                 {
                     preview!==null ?  
-                    <Image width={300} height={300} src={preview} alt="Preview" className="rounded-full object-cover mt-[20px] mb-[20px] border-[4px] border-white mx-auto" style={{aspectRatio:"1 / 1"}}></Image>
+                    <Image 
+                    width={300} 
+                    height={300} 
+                    src={preview} 
+                    alt="Preview" 
+                    className="rounded-full object-cover mt-[20px] mb-[20px] border-[4px] border-white mx-auto" 
+                    style={{aspectRatio:"1 / 1"}}
+                    ></Image>
+                    
                     :null
                 }
 
             </div>
 
             <div>
-                <input required type="checkbox" id="terms" name="terms" className="ml-2 scale-150"></input>
-                <label className="text-[1.2rem] ml-4" htmlFor="terms">I agree to the Terms and Conditions</label>
+
+                <input 
+                required 
+                type="checkbox" 
+                id="terms" 
+                name="terms" 
+                className="ml-2 scale-150"
+                ></input>
+
+                <label 
+                className="text-[1.2rem] ml-4" 
+                htmlFor="terms"
+                >
+                    I agree to the Terms and Conditions
+                </label>
+
             </div>
 
 
-            <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2 mt-4 select-none">Submit</button>
-            <div>
-                <Link href="/login" className="text-blue-900 text-lg">Already have an account? Login</Link>
+            <button 
+            type="submit" 
+            className="bg-blue-500 text-white rounded px-4 py-2 mt-4 select-none"
+            >
+                Submit
+            </button>
+
+            <div>       
+
+                <Link 
+                href="/login" 
+                className="text-blue-900 text-lg"
+                >
+                    Already have an account? Login
+                </Link>
+
             </div>
-            <p className="mb-[50px]" ref={message}>Accounts are for demo purposes only. Do not use real information.</p>
+
+            <p 
+            className="mb-[50px]" 
+            ref={message}
+            >
+                Accounts are for demo purposes only. Do not use real information.
+            </p>
+
         </form>
     )
 }

@@ -21,6 +21,7 @@ export default async function ProfilePage() {
     birthDate: string;
     createdAt: string;
     profilePic: string;
+    username: string;
   };
   
 
@@ -48,22 +49,29 @@ export default async function ProfilePage() {
       <div 
       className="text-center"
       >
+
         <p 
         className="text-2xl font-bold"
         >
-        Account details:
+          Account details:
+        </p>
+
+        <p
+        className="text-xl"
+        >
+          Username: {user.username}
         </p>
 
         <p 
         className="text-xl"
         >
-        Email: {user.email}
+          Email: {user.email}
         </p>
 
         <p 
         className="text-xl"
         >
-        Birth Date: {new Date(user.birthDate).toLocaleDateString()}
+          Birth Date: {new Date(user.birthDate).toLocaleDateString()}
         </p>
 
         <p 

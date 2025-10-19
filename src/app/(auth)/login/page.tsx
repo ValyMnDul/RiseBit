@@ -2,9 +2,16 @@
 import Link from "next/link"
 import { useRef } from "react";
 import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 
 export default function Login(){
+
+    const {data:session}=useSession();
+
+    if(session){
+        window.location.href="/profile";
+    }
 
     const message=useRef<HTMLParagraphElement>(null);
 

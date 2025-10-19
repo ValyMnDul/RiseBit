@@ -10,6 +10,7 @@ interface MyUser {
   birthDate: string;
   createdAt: string;
   profilePic?: string | null;
+  username: string;
 }
 
 declare module "next-auth" {
@@ -47,6 +48,7 @@ export const authOptions: AuthOptions = {
           birthDate: user.birthDate.toISOString(),
           createdAt: user.createdAt.toISOString(),
           profilePic: user.profilePic || null,
+          username: user.username,
         } as MyUser;
       },
     }),
