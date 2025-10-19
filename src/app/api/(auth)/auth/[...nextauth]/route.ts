@@ -61,10 +61,16 @@ export const authOptions: AuthOptions = {
   },
 
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.user = { ...user };
       }
+
+      if (trigger === "update" && session?.user) {
+        const currentUser = (token.user ?? {}) as Partial<MyUser>;
+        token.user = { ...currentUser, ...session.user };
+      }
+
       return token;
     },
 
@@ -75,6 +81,7 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
+
 };
 
 const handler = NextAuth(authOptions);

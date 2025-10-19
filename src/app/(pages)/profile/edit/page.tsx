@@ -1,28 +1,21 @@
 'use client';
 import {useSession} from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
-
+import { useRef } from "react";
 
 export default function EditProfile(){
 
+    const changePictureButtonRef = useRef<HTMLLabelElement>(null);
+
     const {data: session,update } = useSession();
-
-    const user = session?.user as {
-    id: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    birthDate: string;
-    createdAt: string;
-    profilePic: string;
-    };
-
-    const [profilePic, setProfilePic] = useState<string | null>(user?.profilePic || null);
-
 
 
     const changePictureHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+
+        changePictureButtonRef.current?.classList.add("border-gray-500");
+        changePictureButtonRef.current!.textContent = "Uploading...";
+        changePictureButtonRef.current!.style.pointerEvents = "none";
+
         const file = e.target.files?.[0];
         if(file){
             const formData = new FormData();
@@ -34,18 +27,27 @@ export default function EditProfile(){
                 body: formData,
             });
             const data=await res.json();
-            await update({
+
+
+            const updateRes=await update({
+                ...session,
                 user: {
                     ...session!.user,
                     profilePic: data.url 
                 }
             });
-            setProfilePic(data.url);
+
+            if(updateRes){
+                setTimeout(()=>{
+                    changePictureButtonRef.current?.classList.remove("border-gray-500");
+                    changePictureButtonRef.current!.textContent = "Change Picture";
+                    changePictureButtonRef.current!.style.pointerEvents = "auto";
+                },500);
+            }
 
         }
 
     }
-
 
     return(
         <main
@@ -56,14 +58,15 @@ export default function EditProfile(){
             >
                 <Image
                 priority
-                src={profilePic || '/defaultUser.png'}
+                src={session?.user.profilePic || '/defaultUser.png'}
                 alt="Profile Picture"
                 width={350}
                 height={350}
                 className="rounded-full mx-auto mt-8 border-4 border-white"
-                ></Image>
+                />
 
                 <label
+                ref={changePictureButtonRef}
                 htmlFor="profilePicture"
                 className="cursor-pointer flex items-center mx-auto mt-[30px] justify-center h-[48px] w-[170px] border-2 hover:bg-gray-300 text-blue-600 border-blue-600 font-bold text-center px-4 rounded"                >
                     Change Picture
