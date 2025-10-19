@@ -5,9 +5,12 @@ import { useRef } from "react";
 
 export default function EditProfile(){
 
+    /// Change Profile Picture
+
     const changePictureButtonRef = useRef<HTMLLabelElement>(null);
 
     const {data: session,update } = useSession();
+    const message = useRef<HTMLParagraphElement>(null);
 
 
     const changePictureHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,6 +52,70 @@ export default function EditProfile(){
 
     }
 
+    /// Change Usernam
+
+    const changeUsernameButtonRef = useRef<HTMLButtonElement>(null);
+    const changeUsernameInputRef = useRef<HTMLInputElement>(null);
+
+    const changeUsernameHandler = async () => {
+        const res = await fetch("/api/change_username",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: session?.user.email,
+                newUsername: changeUsernameInputRef.current?.value,
+            })
+        })
+
+        const data = await res.json()
+
+        await update({
+            ...session,
+            user: {
+                ...session!.user,
+                username: data.newUsername
+            }
+        });
+
+        if(res.status === 200){
+
+            if(message.current){
+                message.current.textContent = "Username updated successfully!";
+                message.current.classList.remove("text-red-600");
+                message.current.classList.add("text-green-600");
+            }
+
+            setTimeout(()=>{
+                if(message.current){
+                    message.current.textContent = "";
+                }
+            },3000);
+        } 
+        else {
+            
+            if(message.current){
+
+                message.current.textContent = "Username already taken";
+                message.current.classList.remove("text-green-600");
+                message.current.classList.add("text-red-600");
+
+                if(changeUsernameInputRef.current && changeUsernameButtonRef.current){
+                    changeUsernameInputRef.current.disabled = false;
+                    changeUsernameInputRef.current.focus();
+                    changeUsernameButtonRef.current.textContent = "Save";
+                }
+
+                setTimeout(()=>{
+                    if(message.current){
+                        message.current.textContent = "";
+                    }
+                },3000);
+            }
+        } 
+    }
+
     return(
         <main
         className="flex w-[100%] h-[100%] mt-16"
@@ -79,13 +146,64 @@ export default function EditProfile(){
                 className="hidden"
                 />
 
+                <p
+                className="text-center mt-4 text-gray-600 italic"
+                >
+                    Recommended size: 800x800 pixels
+                </p>
+
+                <p
+                ref={message}
+                className="text-center mt-[100px] text-red-600"
+                ></p>
+
             </div>
 
             <div
-            className="w-[70%] h-[100%]"
+            className="w-[70%] h-[100%] flex flex-col items-center"
             >
+                <div
+                className="flex items-center mt-8"
+                >
+                    <label 
+                    htmlFor="username"
+                    className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
+                    >
+                        Username:
+                    </label>
+
+                    <input
+                    id="username"
+                    name="username"
+                    ref={changeUsernameInputRef}
+                    type="text"
+                    defaultValue={session?.user.username}
+                    disabled={true}
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[48px] ml-8 border-2 border-gray-300 rounded px-4 text-xl"
+                    />
+
+                    <button
+                    ref={changeUsernameButtonRef}
+                    className="cursor-pointer h-12 px-5 ml-8 w-[120px] border-2 border-blue-600 text-blue-600 font-bold rounded hover:bg-gray-300"
+                    onClick={()=>{
+                        if(changeUsernameInputRef.current?.disabled){
+                            changeUsernameInputRef.current.disabled = false;
+                            changeUsernameInputRef.current.focus();
+                            changeUsernameButtonRef.current!.textContent = "Save";
+                        } else {
+                            changeUsernameHandler();
+                            changeUsernameInputRef.current!.disabled = true;
+                            changeUsernameButtonRef.current!.textContent = "Edit";
+                        }
+                    }}
+                    >
+                        Edit
+                    </button>
+
+                </div>
 
             </div>
+
         </main>
     )
 }
