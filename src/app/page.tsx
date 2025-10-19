@@ -42,14 +42,14 @@ export default async function Main() {
             href="/login" 
             className="flex justify-center items-center text-[40px] w-[200px] h-[70px] font-bold bg-white rounded-2xl text-center cursor-pointer"
             >
-            Login
+              Login
             </Link>
 
             <Link 
             href="/register" 
             className="flex justify-center items-center text-[40px] w-[200px] h-[70px] font-bold bg-black text-white rounded-2xl text-center cursor-pointer"
             >
-            Register
+              Register
             </Link>
 
           </div>

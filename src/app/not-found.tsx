@@ -14,19 +14,19 @@ export default function notFound(){
                 <p 
                 className="text-[200px] font-bold font-mono"
                 >
-                Oops!
+                    Oops!
                 </p> 
 
                 <p 
                 className="text-[50px] font-semibold font-mono"
                 >
-                404 - Page Not Found
+                    404 - Page Not Found
                 </p>
 
                 <p 
                 className="text-[20px] mt-4 font-mono"
                 >
-                The page you are looking for does not exist.
+                    The page you are looking for does not exist.
                 </p>
 
                 <button 
@@ -35,7 +35,7 @@ export default function notFound(){
                     window.location.href = '/';
                 }}
                 >
-                Go to Home
+                    Go to Home
                 </button>
 
             </main>
