@@ -1,7 +1,8 @@
 'use client';
+import NewPassword from "@/app/(auth)/forgotten_password/code_verify/new_password/page";
 import {useSession} from "next-auth/react";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function EditProfile(){
 
@@ -58,7 +59,7 @@ export default function EditProfile(){
     const changeUsernameInputRef = useRef<HTMLInputElement>(null);
 
     const changeUsernameHandler = async () => {
-        const res = await fetch("/api/change_username",{
+        const resUsername = await fetch("/api/change_username",{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -69,7 +70,7 @@ export default function EditProfile(){
             })
         })
 
-        const {newUsername} = await res.json()
+        const {newUsername} = await resUsername.json()
 
         await update({
             ...session,
@@ -79,7 +80,7 @@ export default function EditProfile(){
             }
         });
 
-        if(res.status === 200){
+        if(resUsername.status === 200){
 
             if(message.current){
                 message.current.textContent = "Username updated successfully!";
@@ -121,7 +122,7 @@ export default function EditProfile(){
 
 
     const changeEmailHandler = async ()=>{
-        const res = await fetch('/api/change_email',{
+        const resEmail = await fetch('/api/change_email',{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
@@ -132,7 +133,7 @@ export default function EditProfile(){
             })
         });
 
-        const {newEmail} = await res.json();
+        const {newEmail} = await resEmail.json();
     
         await update({
             ...session,
@@ -142,7 +143,7 @@ export default function EditProfile(){
             }
         })
 
-        if(res.status===200){
+        if(resEmail.status===200){
             if(message.current){
                 message.current.textContent="Email updated successfully!";
                 message.current.classList.remove("text-red-600");
@@ -172,6 +173,26 @@ export default function EditProfile(){
                 },3000);
             }
         }
+    }
+
+    /// Change Password
+
+    const [open, setOpen] = useState<boolean>(false);
+
+    const changePasswordButtonRef = useRef<HTMLButtonElement>(null);
+    const changePasswordInputRef = useRef<HTMLInputElement>(null);
+
+    const changePasswordHandler = async () => {
+        const resPassword=await fetch('/api/change_password',{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                email:session?.user.email,
+                newPassword:changePasswordInputRef.current?.textContent
+            })
+        })
     }
 
     return(
@@ -245,7 +266,7 @@ export default function EditProfile(){
                     className="cursor-pointer h-12 px-5 ml-8 w-[120px] border-2 border-blue-600 text-blue-600 font-bold rounded hover:bg-gray-300"
                     onClick={()=>{
                         if(changeEmailInputRef.current?.disabled && changeEmailButtonRef.current){
-                            
+
                             changeEmailInputRef.current.disabled = false;
                             changeEmailInputRef.current.focus();
                             changeEmailButtonRef.current.textContent = "Save";
@@ -301,6 +322,105 @@ export default function EditProfile(){
                     >
                         Edit
                     </button>
+
+                </div>
+
+                <div
+                className="flex items-center mt-8"
+                >
+                    <label 
+                    htmlFor="username"
+                    className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
+                    >
+                        Password:
+                    </label>
+
+                    <input
+                    id="password"
+                    name="password"
+                    ref={changePasswordInputRef}
+                    type="password"
+                    defaultValue="password123"
+                    disabled={true}
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[48px] ml-8 border-2 border-gray-300 rounded px-4 text-xl"
+                    />
+
+                    <button
+                    ref={changePasswordButtonRef}
+                    className="cursor-pointer h-12 px-5 ml-8 w-[120px] border-2 border-blue-600 text-blue-600 font-bold rounded hover:bg-gray-300"
+                    onClick={()=>{
+                        if(open===false){
+                            setOpen(true);
+                        }
+                    }}
+                    >
+                        Edit
+                    </button>
+
+                    <div
+                        className={`${open ? "fixed":"hidden"} fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-center items-center flex-col z-50 p-4 w-[700px] h-[400px] bg-white border-1 border-black rounded-2xl`}
+                    >
+                        <form>
+                            <label
+                            className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
+                            >
+                                Current Password
+                            </label>
+                            
+                            <input 
+                            type="password" 
+                            className="border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
+                            ></input>
+
+                            <label
+                            className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
+                            >
+                                New Password
+                            </label>
+
+                            <input 
+                            type="password" 
+                            className="border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
+                            ></input>
+                            
+                            <label
+                            className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
+                            >
+                                Confirm New Password
+                            </label>
+
+                            <input 
+                            type="password" 
+                            className="border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
+                            ></input>
+
+                            <div 
+                            className="flex justify-evenly mt-8"
+                            >
+                                <button 
+                                    type="button"
+                                    onClick={()=>{
+                                        setOpen(false);
+                                    }}
+                                    className="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded"
+                                >
+                                    Cancel
+                                </button>
+                                
+                                <button 
+                                    type="button"
+                                    onClick={()=>{
+                                        changePasswordHandler();
+                                        setOpen(false);
+                                    }}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                >
+                                    Set password
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
 
                 </div>
 
