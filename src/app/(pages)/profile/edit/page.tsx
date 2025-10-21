@@ -69,13 +69,13 @@ export default function EditProfile(){
             })
         })
 
-        const data = await res.json()
+        const {newUsername} = await res.json()
 
         await update({
             ...session,
             user: {
                 ...session!.user,
-                username: data.newUsername
+                username: newUsername
             }
         });
 
@@ -95,17 +95,15 @@ export default function EditProfile(){
         } 
         else {
             
-            if(message.current){
+            if(message.current && changeUsernameInputRef.current && changeUsernameButtonRef.current){
 
                 message.current.textContent = "Username already taken";
                 message.current.classList.remove("text-green-600");
                 message.current.classList.add("text-red-600");
 
-                if(changeUsernameInputRef.current && changeUsernameButtonRef.current){
-                    changeUsernameInputRef.current.disabled = false;
-                    changeUsernameInputRef.current.focus();
-                    changeUsernameButtonRef.current.textContent = "Save";
-                }
+                changeUsernameInputRef.current.disabled = false;
+                changeUsernameInputRef.current.focus();
+                changeUsernameButtonRef.current.textContent = "Save";
 
                 setTimeout(()=>{
                     if(message.current){
@@ -114,6 +112,66 @@ export default function EditProfile(){
                 },3000);
             }
         } 
+    }
+
+    /// Change Email
+
+    const changeEmailButtonRef = useRef<HTMLButtonElement>(null);
+    const changeEmailInputRef = useRef<HTMLInputElement>(null);
+
+
+    const changeEmailHandler = async ()=>{
+        const res = await fetch('/api/change_email',{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                email:session?.user.email,
+                newEmail:changeEmailInputRef.current?.value
+            })
+        });
+
+        const {newEmail} = await res.json();
+    
+        await update({
+            ...session,
+            user:{
+                ...session?.user,
+                email:newEmail
+            }
+        })
+
+        if(res.status===200){
+            if(message.current){
+                message.current.textContent="Email updated successfully!";
+                message.current.classList.remove("text-red-600");
+                message.current.classList.add("text-green-600");
+            }
+            setTimeout(()=>{
+                if(message.current){
+                    message.current.textContent=""
+                }
+            },3000)
+        }
+        else{
+            if(message.current && changeEmailInputRef.current && changeEmailButtonRef.current){
+
+                message.current.textContent="Email already in use";
+                message.current.classList.remove("text-green-600");
+                message.current.classList.add("text-red-600");
+
+                changeEmailInputRef.current.disabled = false;
+                changeEmailInputRef.current.focus();
+                changeEmailButtonRef.current.textContent = "Save";
+
+                setTimeout(()=>{
+                    if(message.current){
+                        message.current.textContent="";
+                    }
+                },3000);
+            }
+        }
     }
 
     return(
@@ -162,6 +220,50 @@ export default function EditProfile(){
             <div
             className="w-[70%] h-[100%] flex flex-col items-center"
             >
+                <div
+                className="flex items-center mt-8"
+                >
+                    <label 
+                    htmlFor="email"
+                    className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
+                    >
+                        Email:
+                    </label>
+
+                    <input
+                    id="email"
+                    name="email"
+                    ref={changeEmailInputRef}
+                    type="text"
+                    defaultValue={session?.user.email}
+                    disabled={true}
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[48px] ml-8 border-2 border-gray-300 rounded px-4 text-xl"
+                    />
+
+                    <button
+                    ref={changeEmailButtonRef}
+                    className="cursor-pointer h-12 px-5 ml-8 w-[120px] border-2 border-blue-600 text-blue-600 font-bold rounded hover:bg-gray-300"
+                    onClick={()=>{
+                        if(changeEmailInputRef.current?.disabled && changeEmailButtonRef.current){
+                            
+                            changeEmailInputRef.current.disabled = false;
+                            changeEmailInputRef.current.focus();
+                            changeEmailButtonRef.current.textContent = "Save";
+                        } 
+                        else {
+                            changeEmailHandler();
+                            if( changeEmailInputRef.current && changeEmailButtonRef.current){
+
+                                changeEmailInputRef.current!.disabled = true;
+                                changeEmailButtonRef.current!.textContent = "Edit";
+                            }
+                        }}}
+                    >
+                        Edit
+                    </button>
+
+                </div>
+
                 <div
                 className="flex items-center mt-8"
                 >

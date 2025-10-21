@@ -261,7 +261,7 @@ export default function Register(){
                     type="text" 
                     id="userName" 
                     name="userName" 
-                    minLength={6} 
+                    minLength={2} 
                     maxLength={20} 
                     className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" 
                     ></input>
