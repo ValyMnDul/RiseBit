@@ -20,8 +20,9 @@ export default async function ProfilePage() {
     lastName: string;
     birthDate: string;
     createdAt: string;
-    profilePic: string;
+    profilePic?: string | null;
     username: string;
+    bio?: string | null;
   };
   
 
@@ -66,6 +67,13 @@ export default async function ProfilePage() {
         className="text-xl"
         >
           Email: {user.email}
+        </p>
+
+        <p
+        className="text-xl"
+        >
+          Bio: {user.bio || "No bio provided."}
+
         </p>
 
         <p 

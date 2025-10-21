@@ -1,5 +1,4 @@
 'use client';
-import NewPassword from "@/app/(auth)/forgotten_password/code_verify/new_password/page";
 import {useSession} from "next-auth/react";
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -250,6 +249,67 @@ export default function EditProfile(){
         }
     }
 
+
+    /// Change Bio
+
+    const changeBioButtonRef = useRef<HTMLButtonElement>(null);
+    const changeBioInputRef = useRef<HTMLTextAreaElement>(null);
+
+    const changeBioHandler = async ()=>{
+        const resBio = await fetch('/api/change_bio',{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                email:session?.user.email,
+                newBio:changeBioInputRef.current?.value
+            })
+        }) 
+        
+        const {newBio,message2} = await resBio.json();
+
+        await update({
+            ...session,
+            user:{
+                ...session?.user,
+                bio:newBio
+            }
+        });
+
+        if(resBio.status===200){
+            if(message.current){
+                message.current.textContent=message2;
+                message.current.classList.remove("text-red-600");
+                message.current.classList.add("text-green-600");
+            }
+            setTimeout(()=>{
+                if(message.current){
+                    message.current.textContent=""
+                }
+            },3000)
+        }
+        else{
+            if(message.current){
+                message.current.textContent=message2;
+                message.current.classList.remove("text-green-600");
+                message.current.classList.add("text-red-600");
+
+                if(changeBioInputRef.current && changeBioButtonRef.current){
+
+                    changeBioInputRef.current.disabled = false;
+                    changeBioInputRef.current.focus();
+                    changeBioButtonRef.current.textContent = "Save";
+                }
+            }
+            setTimeout(()=>{
+                if(message.current){
+                    message.current.textContent=""
+                }
+            },3000)
+        }
+    }
+
     return(
         <main
         className="flex w-[100%] h-[100%] mt-16"
@@ -300,6 +360,46 @@ export default function EditProfile(){
                 className="flex items-center mt-8"
                 >
                     <label 
+                    htmlFor="username"
+                    className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
+                    >
+                        Username:
+                    </label>
+
+                    <input
+                    id="username"
+                    name="username"
+                    ref={changeUsernameInputRef}
+                    type="text"
+                    defaultValue={session?.user.username}
+                    disabled={true}
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[48px] ml-8 border-2 border-gray-300 rounded px-4 text-xl"
+                    />
+
+                    <button
+                    ref={changeUsernameButtonRef}
+                    className="cursor-pointer h-12 px-5 ml-8 w-[120px] border-2 border-blue-600 text-blue-600 font-bold rounded hover:bg-gray-300"
+                    onClick={()=>{
+                        if(changeUsernameInputRef.current?.disabled){
+                            changeUsernameInputRef.current.disabled = false;
+                            changeUsernameInputRef.current.focus();
+                            changeUsernameButtonRef.current!.textContent = "Save";
+                        } else {
+                            changeUsernameHandler();
+                            changeUsernameInputRef.current!.disabled = true;
+                            changeUsernameButtonRef.current!.textContent = "Edit";
+                        }
+                    }}
+                    >
+                        Edit
+                    </button>
+
+                </div>
+
+                <div
+                className="flex items-center mt-8"
+                >
+                    <label 
                     htmlFor="email"
                     className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
                     >
@@ -334,46 +434,6 @@ export default function EditProfile(){
                                 changeEmailButtonRef.current!.textContent = "Edit";
                             }
                         }}}
-                    >
-                        Edit
-                    </button>
-
-                </div>
-
-                <div
-                className="flex items-center mt-8"
-                >
-                    <label 
-                    htmlFor="username"
-                    className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
-                    >
-                        Username:
-                    </label>
-
-                    <input
-                    id="username"
-                    name="username"
-                    ref={changeUsernameInputRef}
-                    type="text"
-                    defaultValue={session?.user.username}
-                    disabled={true}
-                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[48px] ml-8 border-2 border-gray-300 rounded px-4 text-xl"
-                    />
-
-                    <button
-                    ref={changeUsernameButtonRef}
-                    className="cursor-pointer h-12 px-5 ml-8 w-[120px] border-2 border-blue-600 text-blue-600 font-bold rounded hover:bg-gray-300"
-                    onClick={()=>{
-                        if(changeUsernameInputRef.current?.disabled){
-                            changeUsernameInputRef.current.disabled = false;
-                            changeUsernameInputRef.current.focus();
-                            changeUsernameButtonRef.current!.textContent = "Save";
-                        } else {
-                            changeUsernameHandler();
-                            changeUsernameInputRef.current!.disabled = true;
-                            changeUsernameButtonRef.current!.textContent = "Edit";
-                        }
-                    }}
                     >
                         Edit
                     </button>
@@ -499,6 +559,49 @@ export default function EditProfile(){
 
                         </form>
                     </div>
+
+                </div>
+
+                <div
+                className="flex mt-8"
+                >
+                    <label 
+                    htmlFor="bio"
+                    className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
+                    >
+                        Bio:
+                    </label>
+
+                    <textarea
+                    id="bio"
+                    name="bio"
+                    ref={changeBioInputRef}
+                    defaultValue={session?.user.bio || ""}
+                    disabled={true}
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[390px] ml-8 border-2 border-gray-300 rounded px-4 py-[12px] text-xl"
+                    ></textarea>
+
+                    <button
+                    ref={changeBioButtonRef}
+                    className="cursor-pointer h-12 px-5 ml-8 w-[120px] border-2 border-blue-600 text-blue-600 font-bold rounded hover:bg-gray-300"
+                    onClick={()=>{
+                        if(changeBioInputRef.current?.disabled && changeBioButtonRef.current){
+
+                            changeBioInputRef.current.disabled = false;
+                            changeBioInputRef.current.focus();
+                            changeBioButtonRef.current.textContent = "Save";
+                        } 
+                        else {
+                            changeBioHandler();
+                            if( changeBioInputRef.current && changeBioButtonRef.current){
+
+                                changeBioInputRef.current.disabled = true;
+                                changeBioButtonRef.current.textContent = "Edit";
+                            }
+                        }}}
+                    >
+                        Edit
+                    </button>
 
                 </div>
 

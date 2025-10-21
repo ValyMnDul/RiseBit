@@ -22,7 +22,8 @@ model User {
   password  String
   birthDate DateTime
   profilePic  String?
-  username String   @unique
+  username String    @unique
+  bio      String?  
   createdAt DateTime @default(now())
 }
 
