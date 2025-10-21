@@ -178,11 +178,24 @@ export default function EditProfile(){
     /// Change Password
 
     const [open, setOpen] = useState<boolean>(false);
+    const passwordMessage = useRef<HTMLParagraphElement>(null);
 
     const changePasswordButtonRef = useRef<HTMLButtonElement>(null);
     const changePasswordInputRef = useRef<HTMLInputElement>(null);
 
-    const changePasswordHandler = async () => {
+    const changePasswordHandler = async (e:React.FormEvent<HTMLFormElement>) => {
+
+        e.preventDefault();
+
+        const form=e.currentTarget;
+        const formData = new FormData(e.currentTarget);
+
+        const currentPassword = formData.get("currentPassword");
+        const newPassword = formData.get("newPassword");
+        const confirmNewPassword = formData.get("confirmNewPassword");
+
+
+
         const resPassword=await fetch('/api/change_password',{
             method:"POST",
             headers:{
@@ -190,9 +203,51 @@ export default function EditProfile(){
             },
             body:JSON.stringify({
                 email:session?.user.email,
-                newPassword:changePasswordInputRef.current?.textContent
+                newPassword: newPassword,
+                confirmNewPassword: confirmNewPassword,
+                currentPassword: currentPassword
             })
-        })
+        });
+
+        const {message} = await resPassword.json();
+        
+        if(resPassword.status===200){
+            if(passwordMessage.current){
+                passwordMessage.current.textContent=message;
+                passwordMessage.current.classList.remove("text-red-600");
+                passwordMessage.current.classList.add("text-green-600");
+                passwordMessage.current.classList.remove("italic");
+            }
+
+            setTimeout(()=>{
+                if(passwordMessage.current){
+                    setOpen(false);
+                    form.reset();
+                    passwordMessage.current.textContent="Use a strong password with at least 6 characters and less than 200 characters.";
+                    passwordMessage.current.classList.remove("text-green-600");
+                    passwordMessage.current.classList.add("text-gray-600");
+                    passwordMessage.current.classList.add("italic");
+                }
+            },1500);
+
+        }
+        else{
+            if(passwordMessage.current){
+                passwordMessage.current.textContent=message;
+                passwordMessage.current.classList.remove("text-green-600");
+                passwordMessage.current.classList.add("text-red-600");
+                passwordMessage.current.classList.remove("italic");
+            }
+
+            setTimeout(()=>{
+                if(passwordMessage.current){
+                    passwordMessage.current.textContent="Use a strong password with at least 6 characters and less than 200 characters.";
+                    passwordMessage.current.classList.remove("text-red-600");
+                    passwordMessage.current.classList.add("text-gray-600");
+                    passwordMessage.current.classList.add("italic");
+                }
+            },3000);
+        }
     }
 
     return(
@@ -340,7 +395,7 @@ export default function EditProfile(){
                     name="password"
                     ref={changePasswordInputRef}
                     type="password"
-                    defaultValue="password123"
+                    defaultValue="myStrongPassword123"
                     disabled={true}
                     className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[48px] ml-8 border-2 border-gray-300 rounded px-4 text-xl"
                     />
@@ -358,66 +413,89 @@ export default function EditProfile(){
                     </button>
 
                     <div
-                        className={`${open ? "fixed":"hidden"} fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-center items-center flex-col z-50 p-4 w-[700px] h-[400px] bg-white border-1 border-black rounded-2xl`}
+                        className={`${open ? "fixed":"hidden"} fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-center items-center flex-col z-50 p-[20px] w-[700px] h-[430px] bg-white border-1 border-black rounded-2xl`}
                     >
-                        <form>
+                        <form 
+                        onSubmit={changePasswordHandler}
+                        >
                             <label
+                            htmlFor="currentPassword"
                             className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
                             >
                                 Current Password
                             </label>
                             
                             <input 
+                            id="currentPassword"
+                            name="currentPassword"
                             type="password" 
-                            className="border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
+                            className="mt-[8px] border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
                             ></input>
 
                             <label
+                            htmlFor="newPassword"
                             className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
                             >
                                 New Password
                             </label>
 
                             <input 
+                            id="newPassword"
+                            name="newPassword"
                             type="password" 
-                            className="border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
+                            className="mt-[8px] border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
                             ></input>
                             
                             <label
+                            htmlFor="confirmNewPassword"
                             className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
                             >
                                 Confirm New Password
                             </label>
 
                             <input 
+                            id="confirmNewPassword"
+                            name="confirmNewPassword"
                             type="password" 
-                            className="border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
+                            className="mt-[8px] border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
                             ></input>
 
                             <div 
-                            className="flex justify-evenly mt-8"
+                            className="flex justify-evenly mt-[10px]"
                             >
                                 <button 
                                     type="button"
                                     onClick={()=>{
                                         setOpen(false);
+                                        const form = document.querySelector('form');
+                                        form?.reset();
+                                        if(passwordMessage.current){
+                                            passwordMessage.current.textContent="Use a strong password with at least 6 characters and less than 200 characters.";
+                                            passwordMessage.current.classList.remove("text-red-600");
+                                            passwordMessage.current.classList.add("text-gray-600");
+                                            passwordMessage.current.classList.add("italic");
+                                        }
                                     }}
                                     className="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded"
                                 >
                                     Cancel
                                 </button>
-                                
+
                                 <button 
-                                    type="button"
-                                    onClick={()=>{
-                                        changePasswordHandler();
-                                        setOpen(false);
-                                    }}
+                                    type="submit"
                                     className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                 >
                                     Set password
                                 </button>
+
                             </div>
+
+                            <p
+                            ref={passwordMessage}
+                            className="text-[17px] mono mt-[20px] text-center italic text-gray-600"
+                            >
+                                Use a strong password with at least 6 characters and less than 200 characters.
+                            </p>
 
                         </form>
                     </div>

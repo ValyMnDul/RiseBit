@@ -40,7 +40,7 @@ export default function Login(){
 
             setTimeout(() => {
                 window.location.href = "/profile";
-            }, 1000);
+            }, 2000);
         }
 
     }
