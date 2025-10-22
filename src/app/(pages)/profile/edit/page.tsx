@@ -1,15 +1,45 @@
 'use client';
 import {useSession} from "next-auth/react";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function EditProfile(){
+
+    const {data: session,update } = useSession();
+
+    /// Get Password Length
+
+    const [passwordLength,setPasswordLength] = useState<number>(0);
+
+    useEffect(()=>{
+
+        const getPasswordLength = async ()=>{
+
+            if (!session?.user?.email) return;
+
+            const resLength = await fetch('/api/get_password_length',{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    email:session?.user.email
+                })
+            });
+
+            const {passwordLength} = await resLength.json();
+
+            setPasswordLength(passwordLength);
+        }
+        getPasswordLength();
+    },[session]);
+
+    const fakePassword = "*".repeat(passwordLength);
 
     /// Change Profile Picture
 
     const changePictureButtonRef = useRef<HTMLLabelElement>(null);
 
-    const {data: session,update } = useSession();
     const message = useRef<HTMLParagraphElement>(null);
 
 
@@ -71,15 +101,15 @@ export default function EditProfile(){
 
         const {newUsername} = await resUsername.json()
 
-        await update({
-            ...session,
-            user: {
-                ...session!.user,
-                username: newUsername
-            }
-        });
-
         if(resUsername.status === 200){
+
+            await update({
+                ...session,
+                user: {
+                    ...session!.user,
+                    username: newUsername
+                }
+            });
 
             if(message.current){
                 message.current.textContent = "Username updated successfully!";
@@ -132,19 +162,21 @@ export default function EditProfile(){
             })
         });
 
-        const {newEmail} = await resEmail.json();
+        const {newEmail,message3} = await resEmail.json();
     
-        await update({
-            ...session,
-            user:{
-                ...session?.user,
-                email:newEmail
-            }
-        })
 
         if(resEmail.status===200){
+
+            await update({
+                ...session,
+                user:{
+                    ...session?.user,
+                    email:newEmail
+                }
+            })
+                            
             if(message.current){
-                message.current.textContent="Email updated successfully!";
+                message.current.textContent=message3;
                 message.current.classList.remove("text-red-600");
                 message.current.classList.add("text-green-600");
             }
@@ -157,7 +189,7 @@ export default function EditProfile(){
         else{
             if(message.current && changeEmailInputRef.current && changeEmailButtonRef.current){
 
-                message.current.textContent="Email already in use";
+                message.current.textContent=message3;
                 message.current.classList.remove("text-green-600");
                 message.current.classList.add("text-red-600");
 
@@ -192,7 +224,6 @@ export default function EditProfile(){
         const currentPassword = formData.get("currentPassword");
         const newPassword = formData.get("newPassword");
         const confirmNewPassword = formData.get("confirmNewPassword");
-
 
 
         const resPassword=await fetch('/api/change_password',{
@@ -269,15 +300,17 @@ export default function EditProfile(){
         
         const {newBio,message2} = await resBio.json();
 
-        await update({
-            ...session,
-            user:{
-                ...session?.user,
-                bio:newBio
-            }
-        });
 
         if(resBio.status===200){
+
+            await update({
+                ...session,
+                user:{
+                    ...session?.user,
+                    bio:newBio
+                }
+            });
+
             if(message.current){
                 message.current.textContent=message2;
                 message.current.classList.remove("text-red-600");
@@ -455,7 +488,7 @@ export default function EditProfile(){
                     name="password"
                     ref={changePasswordInputRef}
                     type="password"
-                    defaultValue="myStrongPassword123"
+                    defaultValue={fakePassword}
                     disabled={true}
                     className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[48px] ml-8 border-2 border-gray-300 rounded px-4 text-xl"
                     />
