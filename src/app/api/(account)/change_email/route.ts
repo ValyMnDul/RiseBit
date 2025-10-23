@@ -1,56 +1,44 @@
 import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
-export const POST= async (req:Request)=>{
-    const {email,newEmail,inputCode} = await req.json();
+export const POST = async (req: Request) => {
+    const { email, newEmail, inputCode } = await req.json()
 
     const user = await prisma.user.findUnique({
-        where:{
-            email:email
-        }
+        where: { email }
     })
 
-    if(!user){
-        return NextResponse.json({message3:"User not found",newEmail},{status:404})
+    if (!user) {
+        return NextResponse.json({ message3: "User not found", newEmail }, { status: 404 })
     }
 
-    await prisma.passwordReset.deleteMany({ where: { email } });
-
-    await prisma.passwordReset.create({
-        data: { 
-            email:email,
-            code:inputCode
-        },
-    });
-
-    
-
-    if(newEmail.length < 5){
-        return NextResponse.json({message3:"Email too short",newEmail},{status:400})
+    if (!inputCode || inputCode.length !== 5) {
+        return NextResponse.json({ message3: "Invalid code length", newEmail }, { status: 400 })
     }
 
-    if(newEmail.length > 100){
-        return NextResponse.json({message3:"Email too long",newEmail},{status:400})
+    const userCode = await prisma.passwordReset.findFirst({
+        where: { email: newEmail }
+    })
+
+    if (!userCode || userCode.code !== inputCode) {
+        return NextResponse.json({ message3: "Invalid code", newEmail }, { status: 400 })
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if(!emailRegex.test(newEmail)){
-        return NextResponse.json({message3:"Invalid email format",newEmail},{status:400})
+    if (!emailRegex.test(newEmail)) {
+        return NextResponse.json({ message3: "Invalid email format", newEmail }, { status: 400 })
     }
 
-    try{
+    try {
         await prisma.user.update({
-            where:{
-                email:email
-            },
-            data:{
-                email:newEmail
-            }
+            where: { email },
+            data: { email: newEmail }
         })
-    }
-    catch(e){
-        return NextResponse.json({error:e,message3:"Email already in use",newEmail},{status:400})
+        await prisma.passwordReset.deleteMany({ where: { email: newEmail } })
+    } catch (e) {
+        if(e){}
+        return NextResponse.json({ message3: "Email already in use", newEmail }, { status: 400 })
     }
 
-    return NextResponse.json({message3:"Email updated successfully",newEmail},{status:200})
+    return NextResponse.json({ message3: "Email updated successfully", newEmail }, { status: 200 })
 }

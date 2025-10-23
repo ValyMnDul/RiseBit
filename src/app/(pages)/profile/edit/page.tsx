@@ -160,7 +160,7 @@ export default function EditProfile(){
                 "Content-Type":"application/json"
             },
             body:JSON.stringify({
-                email:session?.user.email
+                email:changeEmailInputRef.current?.value
             })
         });
     }
@@ -169,7 +169,8 @@ export default function EditProfile(){
     const changeEmailHandler = async (e:React.FormEvent<HTMLFormElement>)=>{
 
         e.preventDefault();
-        const formDataEmailCode = new FormData(e.currentTarget);
+        const formDataEmail=e.currentTarget;
+        const formDataEmailCode = new FormData(formDataEmail);
         const inputCode = formDataEmailCode.get("emailCode");
 
         const resEmail = await fetch('/api/change_email',{
@@ -189,6 +190,11 @@ export default function EditProfile(){
 
         if(resEmail.status===200){
 
+            setTimeout(()=>{
+                formDataEmail.reset();
+                setOpenEmail(false)
+            },1500)
+
             await update({
                 ...session,
                 user:{
@@ -196,6 +202,7 @@ export default function EditProfile(){
                     email:newEmail
                 }
             })
+
                             
             if(message.current){
                 message.current.textContent=message3;
@@ -505,6 +512,8 @@ export default function EditProfile(){
                             </label>
                             
                             <input 
+                            maxLength={5}
+                            minLength={5}
                             id="emailCode"
                             name="emailCode"
                             type="text" 

@@ -1,26 +1,29 @@
-import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { sendVerifyEmailCode } from "@/lib/mailerForEmailVerify";
+import prisma from "@/lib/prisma"
+import { NextResponse } from "next/server"
+import { sendVerifyEmailCode } from "@/lib/mailerForEmailVerify"
 
-export async function POST(req: Request) {
-    const { email } = await req.json();
+export const POST = async (req: Request) => {
+    const { email } = await req.json()
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const existingUser = await prisma.user.findUnique({
+        where: { email }
+    })
 
-    if (!user) {
-      return NextResponse.json({}, { status: 200 });
+    if (existingUser) {
+        return NextResponse.json({ }, { status: 400 })
     }
 
-    const code = Math.floor(10000 + Math.random() * 90000).toString();
+    const code = Math.floor(10000 + Math.random() * 90000).toString()
 
-
-    await prisma.passwordReset.deleteMany({ where: { email } });
+    await prisma.passwordReset.deleteMany({
+        where: { email }
+    })
 
     await prisma.passwordReset.create({
-      data: { email, code },
-    });
+        data: { email, code }
+    })
 
-    await sendVerifyEmailCode(email, code);
+    await sendVerifyEmailCode(email, code)
 
-    return NextResponse.json({}, { status: 200 });
+    return NextResponse.json({ message: "Code sent" }, { status: 200 })
 }
