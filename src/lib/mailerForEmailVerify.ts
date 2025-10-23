@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-export async function sendResetEmail(to:string,code:string) {
+export async function sendVerifyEmailCode(to:string,code:string) {
 
     const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -13,12 +13,12 @@ export async function sendResetEmail(to:string,code:string) {
     const mailOptions = {
     from: `"RiseBit Support" <${process.env.EMAIL_USER}>`,
     to,
-    subject: "Password Reset - RiseBit",
+    subject: "Verify Your Email - RiseBit",
     text: `
     Hi,
 
-    You requested to reset your password.
-    Your reset code is: ${code}
+    You requested to verify your email address.
+    Your verification code is: ${code}
 
     The code will expire in 10 minutes.
 
@@ -45,9 +45,9 @@ export async function sendResetEmail(to:string,code:string) {
                 <!-- Content -->
                 <tr>
                 <td style="padding: 40px 60px;">
-                    <h2 style="color: #333; font-size: 22px; margin-bottom: 16px;">Hi!</h2>
+                    <h2 style="color: #333; font-size: 22px; margin-bottom: 16px;">Hello!</h2>
                     <p style="font-size: 16px; color: #555; line-height: 1.7; margin: 0 0 24px;">
-                    You have requested to reset your password. Please use the code below to continue:
+                    You requested to verify your email address. Please use the verification code below:
                     </p>
 
                     <div style="text-align: center; margin: 40px 0;">
@@ -61,7 +61,7 @@ export async function sendResetEmail(to:string,code:string) {
                     </p>
 
                     <p style="font-size: 15px; color: #777; margin-top: 24px;">
-                    If you didn’t request this password reset, you can safely ignore this message.
+                    If you didn’t request this verification, you can safely ignore this message.
                     </p>
                 </td>
                 </tr>
@@ -80,7 +80,6 @@ export async function sendResetEmail(to:string,code:string) {
     </body>
     `,
     };
-
 
     await transporter.sendMail(mailOptions);
 

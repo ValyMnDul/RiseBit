@@ -2,7 +2,28 @@ import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
 export const POST= async (req:Request)=>{
-    const {email,newEmail} = await req.json();
+    const {email,newEmail,inputCode} = await req.json();
+
+    const user = await prisma.user.findUnique({
+        where:{
+            email:email
+        }
+    })
+
+    if(!user){
+        return NextResponse.json({message3:"User not found",newEmail},{status:404})
+    }
+
+    await prisma.passwordReset.deleteMany({ where: { email } });
+
+    await prisma.passwordReset.create({
+        data: { 
+            email:email,
+            code:inputCode
+        },
+    });
+
+    
 
     if(newEmail.length < 5){
         return NextResponse.json({message3:"Email too short",newEmail},{status:400})

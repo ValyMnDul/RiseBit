@@ -38,6 +38,7 @@ export default function EditProfile(){
 
     /// Change Profile Picture
 
+
     const changePictureButtonRef = useRef<HTMLLabelElement>(null);
 
     const message = useRef<HTMLParagraphElement>(null);
@@ -149,8 +150,28 @@ export default function EditProfile(){
     const changeEmailButtonRef = useRef<HTMLButtonElement>(null);
     const changeEmailInputRef = useRef<HTMLInputElement>(null);
 
+    const [openEmail, setOpenEmail] = useState<boolean>(false);
 
-    const changeEmailHandler = async ()=>{
+    const sendEmailCode = async () => {
+
+        await fetch('/api/verify_email',{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                email:session?.user.email
+            })
+        });
+    }
+
+
+    const changeEmailHandler = async (e:React.FormEvent<HTMLFormElement>)=>{
+
+        e.preventDefault();
+        const formDataEmailCode = new FormData(e.currentTarget);
+        const inputCode = formDataEmailCode.get("emailCode");
+
         const resEmail = await fetch('/api/change_email',{
             method:"POST",
             headers:{
@@ -158,7 +179,8 @@ export default function EditProfile(){
             },
             body:JSON.stringify({
                 email:session?.user.email,
-                newEmail:changeEmailInputRef.current?.value
+                newEmail:changeEmailInputRef.current?.value,
+                inputCode:inputCode
             })
         });
 
@@ -453,23 +475,75 @@ export default function EditProfile(){
                     ref={changeEmailButtonRef}
                     className="cursor-pointer h-12 px-5 ml-8 w-[120px] border-2 border-blue-600 text-blue-600 font-bold rounded hover:bg-gray-300"
                     onClick={()=>{
-                        if(changeEmailInputRef.current?.disabled && changeEmailButtonRef.current){
+                        if(changeEmailInputRef.current?.disabled===true){
 
                             changeEmailInputRef.current.disabled = false;
                             changeEmailInputRef.current.focus();
-                            changeEmailButtonRef.current.textContent = "Save";
-                        } 
-                        else {
-                            changeEmailHandler();
-                            if( changeEmailInputRef.current && changeEmailButtonRef.current){
-
-                                changeEmailInputRef.current!.disabled = true;
-                                changeEmailButtonRef.current!.textContent = "Edit";
-                            }
-                        }}}
+                            changeEmailButtonRef.current!.textContent = "Save";
+                        } else {
+                            setOpenEmail(true);
+                            sendEmailCode();
+                            changeEmailInputRef.current!.disabled = true;
+                            changeEmailButtonRef.current!.textContent = "Edit";
+                        }
+                    }}
                     >
                         Edit
                     </button>
+
+                    <div
+                        className={`${openEmail ? "fixed":"hidden"} top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-center items-center flex-col z-50 p-[20px] w-[700px] h-[230px] bg-white border-1 border-black rounded-2xl`}
+                    >
+                        <form 
+                        onSubmit={changeEmailHandler}
+                        >
+                            <label
+                            htmlFor="emailCode"
+                            className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
+                            >
+                                Code
+                            </label>
+                            
+                            <input 
+                            id="emailCode"
+                            name="emailCode"
+                            type="text" 
+                            className="mt-[8px] border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
+                            ></input>
+
+                            <div 
+                            className="flex justify-evenly mt-[10px]"
+                            >
+                                <button 
+                                    type="button"
+                                    onClick={()=>{
+                                        setOpenEmail(false);
+                                        const form = document.querySelector('form');
+                                        form?.reset();
+                                    }}
+                                    className="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded"
+                                >
+                                    Cancel
+                                </button>
+
+                                <button 
+                                    type="submit"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                >
+                                    Set email
+                                </button>
+
+                            </div>
+
+                            <p
+                            ref={passwordMessage}
+                            className="text-[17px] mono mt-[20px] text-center italic text-gray-600"
+                            >
+                                Enter the code sent to your new email address.
+                            </p>
+
+                        </form>
+                    </div>
 
                 </div>
 
