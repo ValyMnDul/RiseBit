@@ -202,12 +202,12 @@ export default function EditProfile(){
                     email:newEmail
                 }
             })
-
                             
-            if(message.current){
+            if(message.current && changeEmailButtonRef.current){
                 message.current.textContent=message3;
                 message.current.classList.remove("text-red-600");
                 message.current.classList.add("text-green-600");
+                changeEmailButtonRef.current.disabled = false;
             }
             setTimeout(()=>{
                 if(message.current){
@@ -221,10 +221,6 @@ export default function EditProfile(){
                 message.current.textContent=message3;
                 message.current.classList.remove("text-green-600");
                 message.current.classList.add("text-red-600");
-
-                changeEmailInputRef.current.disabled = false;
-                changeEmailInputRef.current.focus();
-                changeEmailButtonRef.current.textContent = "Save";
 
                 setTimeout(()=>{
                     if(message.current){
@@ -492,6 +488,7 @@ export default function EditProfile(){
                             sendEmailCode();
                             changeEmailInputRef.current!.disabled = true;
                             changeEmailButtonRef.current!.textContent = "Edit";
+                            changeEmailButtonRef.current!.disabled = true;
                         }
                     }}
                     >
@@ -529,6 +526,8 @@ export default function EditProfile(){
                                         setOpenEmail(false);
                                         const form = document.querySelector('form');
                                         form?.reset();
+                                        changeEmailButtonRef.current!.disabled = false;
+
                                     }}
                                     className="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded"
                                 >
