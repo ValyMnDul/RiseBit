@@ -6,6 +6,8 @@ import Post from "@/components/(feedComponents)/post"
 
 export default function Feed(){
 
+    /// Get Posts
+
     const [posts, setPosts] = useState<Array<{
         username:string,
         subtitle:string,
@@ -37,6 +39,9 @@ export default function Feed(){
 
             <button
             className="cursor-pointer select-none relative mt-4 px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-pink-500/40 transition-all duration-300 hover:scale-105 active:scale-95"
+            onClick={()=>{
+                window.location.href='/create';
+            }}
             >
                 Create Post
                 <span className="absolute inset-0 rounded-xl bg-white/10 opacity-0 hover:opacity-10 transition-opacity duration-300"></span>
