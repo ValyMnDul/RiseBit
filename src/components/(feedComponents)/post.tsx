@@ -1,6 +1,19 @@
+'use client'
 import Image from "next/image"
 
-export default function Post({username,subtitle,content,updatedAt}:{username:string,subtitle:string,content:string,updatedAt:string}) {
+
+export default function Post({
+    username,
+    subtitle,
+    content,
+    updatedAt
+}:{
+    username:string,
+    subtitle:string,
+    content:string,
+    updatedAt:string
+}) {
+
     return (
         <div
         className="border p-4 rounded-2xl shadow-md h-auto w-[60%] mt-6"
@@ -12,7 +25,7 @@ export default function Post({username,subtitle,content,updatedAt}:{username:str
                 className="flex items-center gap-4"
                 >
                     <Image
-                    src="/defaultUser.png"
+                    src={'defaultUser.png'}
                     alt="Profile Picture"
                     width={50}
                     height={50}
