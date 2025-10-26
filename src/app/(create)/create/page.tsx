@@ -61,7 +61,7 @@ export default function CreatePostPage(){
 
     return(
         <form 
-        className="h-[100%] w-[100%] flex flex-col items-center justify-center"
+        className="h-[100%] w-[100%] flex flex-col items-center justify-center flex-1"
         onSubmit={createPost}
         >
             <h1

@@ -29,7 +29,7 @@ export default async function ProfilePage() {
 
   return (
     <main 
-    className="flex flex-col items-center justify-evenly w-[100%] h-[100%]"
+    className="flex flex-col items-center justify-evenly w-[100%] h-[100%] flex-1"
     >
       <h1 
       className="cursor-default text-4xl text-center mt-[10px] font-bold"

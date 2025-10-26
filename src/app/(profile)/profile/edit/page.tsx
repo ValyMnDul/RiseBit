@@ -370,7 +370,7 @@ export default function EditProfile(){
 
     return(
         <main
-        className="flex w-[100%] h-[100%] mt-16"
+        className="flex w-[100%] h-[100%] mt-16 flex-1"
         >
             <div
             className="w-[30%] h-[100%] border-r-3 border-white"
