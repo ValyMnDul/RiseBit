@@ -92,7 +92,7 @@ export default function Post({
                 </h3>
 
                 <p 
-                className="mt-2 text-gray-800"
+                className="mt-2 text-gray-800 break-all whitespace-pre-wrap leading-relaxed"
                 >
                     {content}
                 </p>

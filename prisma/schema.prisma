@@ -38,7 +38,7 @@ model Post {
   id        Int      @id @default(autoincrement())
   subtitle  String 
   content   String
-  username  String   @unique
+  username  String  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

@@ -2,8 +2,11 @@
 
 import React from "react";
 import { useSession } from "next-auth/react";
+import { useRef } from "react";
 
 export default function CreatePostPage(){
+
+    const messageRef = useRef<HTMLParagraphElement>(null);
 
     const {data:session} = useSession();
 
@@ -32,8 +35,28 @@ export default function CreatePostPage(){
                 content:content,
                 username:session?.user?.username
             })
-        })
+        });
 
+        const {message} = await res.json();
+
+        if(res.status === 201){
+
+            if(messageRef.current){
+                messageRef.current.textContent = message;
+            }
+
+            form.reset();
+
+            globalThis.setTimeout(()=>{
+                globalThis.location.href = '/feed';
+            },1500)
+        }
+        else {
+
+            if(messageRef.current){
+                messageRef.current.textContent = message;
+            }
+        }
     }
 
     return(
@@ -68,6 +91,7 @@ export default function CreatePostPage(){
             </button>
             
             <p
+            ref={messageRef}
             className="mt-3 text-2xl text-center  font-medium tracking-wide 
                         bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 
                         bg-clip-text text-transparent transition-all duration-300
