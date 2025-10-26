@@ -54,7 +54,8 @@ export default function Post({
                     alt="Profile Picture"
                     width={50}
                     height={50}
-                    className="rounded-full"
+                    className="select-none border-[1px] border-white object-cover rounded-full"
+                    style={{ aspectRatio: "1 / 1" }} 
                     />
 
                     <div 
@@ -77,8 +78,13 @@ export default function Post({
                 </div>
 
                 <button
-                className="px-4 py-2 bg-blue-500 text-white rounded-[6px] hover:bg-blue-600 transition cursor-pointer"
-                >Follow</button>
+                className="px-4 py-1.5 rounded-lg font-semibold text-transparent bg-clip-text 
+                            bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
+                            border border-indigo-300 hover:border-pink-400 
+                            transition-all duration-300 hover:scale-105 active:scale-95"
+                >
+                    Follow
+                </button>
     
             </div>
 

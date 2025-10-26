@@ -381,7 +381,8 @@ export default function EditProfile(){
                 alt="Profile Picture"
                 width={350}
                 height={350}
-                className="rounded-full mx-auto mt-8 border-4 border-white"
+                className="rounded-full object-cover mx-auto mt-8 border-4 border-white"
+                style={{ aspectRatio: "1 / 1" }} 
                 />
 
                 <label

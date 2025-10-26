@@ -16,28 +16,36 @@ export default function Footer() {
 
           <Link 
           href="/terms_and_conditions" 
-          className="hover:text-blue-600 transition-colors"
+          className="px-4 py-2 font-semibold text-transparent bg-clip-text 
+             bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+             hover:opacity-80 transition-all duration-200"
           >
           Terms & Conditions
           </Link>
 
           <Link 
           href="/privacy_policy" 
-          className="hover:text-blue-600 transition-colors"
+          className="px-4 py-2 font-semibold text-transparent bg-clip-text 
+             bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+             hover:opacity-80 transition-all duration-200"
           >
           Privacy Policy
           </Link>
 
           <Link 
           href="/contact" 
-          className="hover:text-blue-600 transition-colors"
+          className="px-4 py-2 font-semibold text-transparent bg-clip-text 
+             bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+             hover:opacity-80 transition-all duration-200"
           >
           Contact
           </Link>
 
           <Link 
           href="/about" 
-          className="hover:text-blue-600 transition-colors"
+          className="px-4 py-2 font-semibold text-transparent bg-clip-text 
+             bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+             hover:opacity-80 transition-all duration-200"
           >
           About
           </Link>
