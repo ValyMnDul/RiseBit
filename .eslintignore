@@ -1,1 +1,6 @@
-/src/generated/prisma
+node_modules
+.next
+dist
+build
+out
+src/generated
