@@ -138,7 +138,7 @@ export default function CodeVerify(){
                 id="code" name="code" 
                 minLength={5} 
                 maxLength={5} 
-                className="text-[21px] text-center border-1 rounded h-[40px] pl-[10px] pr-[10px]"
+                className="text-[21px] text-center border rounded h-10 pl-2.5 pr-2.5"
                 ></input>
 
             </div>

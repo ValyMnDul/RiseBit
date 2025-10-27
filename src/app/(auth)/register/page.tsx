@@ -116,7 +116,7 @@ export default function Register(){
 
     return (
         <form 
-        className="flex flex-col gap-4 w-1/3 mx-auto mt-[40px]" 
+        className="flex flex-col gap-4 w-1/3 mx-auto mt-10" 
         onSubmit={handleSubmit}
         >
             <p 
@@ -144,7 +144,8 @@ export default function Register(){
                     type="text" 
                     maxLength={50} 
                     required
-                    className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" 
+                    autoComplete="first-name"
+                    className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-full" 
                     ></input>
 
                 </div>
@@ -162,10 +163,11 @@ export default function Register(){
                     <input  
                     required 
                     maxLength={50} 
-                    className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" 
+                    className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-full" 
                     name="lastName" 
                     id="lastName" 
                     type="text"
+                    autoComplete="last-name"
                     ></input>
 
                 </div>
@@ -188,7 +190,8 @@ export default function Register(){
                 id="email" 
                 name="email" 
                 maxLength={100} 
-                className="border-1 text-[21px] rounded h-[40px] pl-[10px] pr-[10px]"
+                autoComplete="email"
+                className="border rounded h-10 text-[21px] pl-2.5 pr-2.5"
                 ></input>
 
             </div>
@@ -207,13 +210,14 @@ export default function Register(){
                     </label>
 
                     <input 
+                    autoComplete="new-password"
                     required 
                     type="password" 
                     id="password" 
                     name="password" 
                     minLength={6} 
                     maxLength={200} 
-                    className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" 
+                    className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-full" 
                     ></input>
 
                 </div>
@@ -229,13 +233,14 @@ export default function Register(){
                     </label>
 
                     <input 
+                    autoComplete="new-password"
                     required 
                     type="password" 
                     id="cPassword" 
                     name="cPassword" 
                     minLength={6} 
                     maxLength={200} 
-                    className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" 
+                    className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-full" 
                     ></input>
 
                 </div>
@@ -263,7 +268,8 @@ export default function Register(){
                     name="userName" 
                     minLength={2} 
                     maxLength={20} 
-                    className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%]" 
+                    autoComplete="username"
+                    className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-full" 
                     ></input>
 
                 </div>
@@ -283,7 +289,8 @@ export default function Register(){
                     type="date" 
                     id="birth" 
                     name="birth" 
-                    className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[175px]" 
+                    autoComplete="bday"
+                    className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-[175px]" 
                     ></input>
 
                 </div>
@@ -305,7 +312,7 @@ export default function Register(){
                 name="file" 
                 accept="image/*" 
                 id="file" 
-                className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px] w-[100%] mt-[9px]"
+                className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-full mt-2.5"
                 onChange={async (e)=>{
                     const f = e.target.files?.[0];
                     if(f){
@@ -323,7 +330,7 @@ export default function Register(){
                     height={300} 
                     src={preview} 
                     alt="Preview" 
-                    className="rounded-full object-cover mt-[20px] mb-[20px] border-[4px] border-white mx-auto" 
+                    className="rounded-full object-cover mt-5 mb-5 border-4 border-white mx-auto" 
                     style={{aspectRatio:"1 / 1"}}
                     ></Image>
                     

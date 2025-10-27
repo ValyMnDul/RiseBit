@@ -84,7 +84,7 @@ export default function ForgottenPassword(){
                 name="email" 
                 minLength={6} 
                 maxLength={200} 
-                className="text-[21px] border-1 rounded h-[40px] pl-[10px] pr-[10px]"
+                className="text-[21px] border rounded h-10 pl-2.5 pr-2.5"
                 ></input>
 
             </div>

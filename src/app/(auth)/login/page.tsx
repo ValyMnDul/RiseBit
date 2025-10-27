@@ -72,7 +72,7 @@ export default function Login(){
                 id="email" 
                 name="email" 
                 maxLength={100} 
-                className="border-1 rounded h-[40px] text-[21px] pl-[10px] pr-[10px]"
+                className="border rounded h-10 text-[21px] pl-2.5 pr-2.5"
                 ></input>
 
             </div>
@@ -94,7 +94,7 @@ export default function Login(){
                 name="password" 
                 minLength={6} 
                 maxLength={200} 
-                className="border-1 rounded text-[21px] h-[40px] pl-[10px] pr-[10px]"
+                className="border rounded text-[21px] h-10 pl-2.5 pr-2.5"
                 ></input>
 
             </div>

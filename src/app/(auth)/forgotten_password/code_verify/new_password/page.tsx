@@ -68,7 +68,7 @@ export default function NewPassword(){
             </p>
 
             <p 
-            className="mb-[10px] text-[21px] text-center select-none"
+            className="mb-2.5 text-[21px] text-center select-none"
             >
                 Time to set your new password
             </p>
@@ -90,12 +90,12 @@ export default function NewPassword(){
                 name="password" 
                 minLength={6} 
                 maxLength={200} 
-                className="text-[21px] border-1 rounded h-[40px] pl-[10px] pr-[10px]"
+                className="text-[21px] border rounded h-10 pl-2.5 pr-2.5"
                 ></input>
 
                 <label 
                 htmlFor="cPassword" 
-                className="mt-[12px] text-[1.4rem]"
+                className="mt-3 text-[1.4rem]"
                 >
                     Confirm Password
                 </label>
@@ -107,7 +107,7 @@ export default function NewPassword(){
                 name="cPassword" 
                 minLength={6} 
                 maxLength={200} 
-                className="text-[21px] border-1 rounded h-[40px] pl-[10px] pr-[10px]"
+                className="text-[21px] border rounded h-10 pl-2.5 pr-2.5"
                 ></input>
 
             </div>
