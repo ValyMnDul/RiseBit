@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
+import Loading from "@/components/loading";
+
 
 export default function Register(){
 
@@ -120,7 +122,7 @@ export default function Register(){
     }
 
     if(session===undefined){
-        return <>Loading...</>;
+        return <Loading/>
     }
 
     return (
