@@ -2,17 +2,21 @@
 
 import React from "react";
 import { useSession } from "next-auth/react";
-import { useRef } from "react";
+import { useRef,useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function CreatePostPage(){
 
     const messageRef = useRef<HTMLParagraphElement>(null);
 
     const {data:session} = useSession();
+    const router = useRouter();
 
-    if(!session){
-        globalThis.location.href = '/login';
-    }
+    useEffect(()=>{
+        if(!session){
+            router.push('/login');
+        }
+    },[session,router]);
 
     const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
         
