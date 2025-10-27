@@ -1,17 +1,22 @@
 'use client'
 import Link from "next/link"
-import { useRef,useState } from "react";
+import { useRef,useState ,useEffect} from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 
 export default function Register(){
 
+    const router = useRouter();
     const { data: session } = useSession();
 
-    if(session){
-        window.location.href="/profile";
-    }
+    useEffect(()=>{
+        if(session){
+            router.push('/profile');
+        }
+    },[session,router])
+
 
     const message = useRef<HTMLParagraphElement>(null);
     const [url, setUrl] = useState<string | null>(null);
@@ -112,6 +117,10 @@ export default function Register(){
                 window.location.href="/login";
             },1500);
         }
+    }
+
+    if(session===undefined){
+        return <>Loading...</>;
     }
 
     return (

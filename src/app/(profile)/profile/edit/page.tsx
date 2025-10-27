@@ -2,10 +2,21 @@
 import {useSession} from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import Loading from "@/components/loading";
 
 export default function EditProfile(){
 
     const {data: session,update } = useSession();
+    const router = useRouter();
+
+    useEffect(()=>{
+        if(session===null){
+            router.push('/login');
+        }
+    },[session,router]);
+
 
     /// Get Password Length
 
@@ -368,12 +379,16 @@ export default function EditProfile(){
         }
     }
 
+    if(session===undefined){
+        return <Loading/>;
+    }
+
     return(
         <main
-        className="flex w-[100%] h-[100%] mt-16 flex-1"
+        className="flex w-full h-full mt-16 flex-1"
         >
             <div
-            className="w-[30%] h-[100%] border-r-3 border-white"
+            className="w-[30%] h-full border-r-3 border-white"
             >
                 <Image
                 priority
@@ -388,7 +403,7 @@ export default function EditProfile(){
                 <label
                 ref={changePictureButtonRef}
                 htmlFor="profilePicture"
-                className="cursor-pointer flex items-center mx-auto mt-[30px] justify-center h-[48px] w-[170px] border-2 hover:bg-gray-300 text-blue-600 border-blue-600 font-bold text-center px-4 rounded"                >
+                className="cursor-pointer flex items-center mx-auto mt-[30px] justify-center h-12 w-[170px] border-2 hover:bg-gray-300 text-blue-600 border-blue-600 font-bold text-center px-4 rounded"                >
                     Change Picture
                 </label>
                 <input
@@ -413,7 +428,7 @@ export default function EditProfile(){
             </div>
 
             <div
-            className="w-[70%] h-[100%] flex flex-col items-center"
+            className="w-[70%] h-full flex flex-col items-center"
             >
                 <div
                 className="flex items-center mt-8"
@@ -432,7 +447,8 @@ export default function EditProfile(){
                     type="text"
                     defaultValue={session?.user.username}
                     disabled={true}
-                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[48px] ml-8 border-2 border-gray-300 rounded px-4 text-xl"
+                    autoComplete="username"
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-12 ml-8 border-2 border-gray-300 rounded px-4 text-xl"
                     />
 
                     <button
@@ -470,9 +486,10 @@ export default function EditProfile(){
                     name="email"
                     ref={changeEmailInputRef}
                     type="text"
+                    autoComplete="email"
                     defaultValue={session?.user.email}
                     disabled={true}
-                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[48px] ml-8 border-2 border-gray-300 rounded px-4 text-xl"
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-12 ml-8 border-2 border-gray-300 rounded px-4 text-xl"
                     />
 
                     <button
@@ -497,7 +514,7 @@ export default function EditProfile(){
                     </button>
 
                     <div
-                        className={`${openEmail ? "fixed":"hidden"} top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-center items-center flex-col z-50 p-[20px] w-[700px] h-[230px] bg-white border-1 border-black rounded-2xl`}
+                        className={`${openEmail ? "fixed":"hidden"} top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-center items-center flex-col z-50 p-5 w-[700px] h-[230px] bg-white border border-black rounded-2xl`}
                     >
                         <form 
                         onSubmit={changeEmailHandler}
@@ -515,11 +532,11 @@ export default function EditProfile(){
                             id="emailCode"
                             name="emailCode"
                             type="text" 
-                            className="mt-[8px] border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
+                            className="mt-2 border-2 border-gray-300 rounded px-4 py-2 w-full mb-4"
                             ></input>
 
                             <div 
-                            className="flex justify-evenly mt-[10px]"
+                            className="flex justify-evenly mt-2.5"
                             >
                                 <button 
                                     type="button"
@@ -546,7 +563,7 @@ export default function EditProfile(){
 
                             <p
                             ref={passwordMessage}
-                            className="text-[17px] mono mt-[20px] text-center italic text-gray-600"
+                            className="text-[17px] mono mt-5 text-center italic text-gray-600"
                             >
                                 Enter the code sent to your new email address.
                             </p>
@@ -573,7 +590,7 @@ export default function EditProfile(){
                     type="password"
                     defaultValue={fakePassword}
                     disabled={true}
-                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[48px] ml-8 border-2 border-gray-300 rounded px-4 text-xl"
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-12 ml-8 border-2 border-gray-300 rounded px-4 text-xl"
                     />
 
                     <button
@@ -589,7 +606,7 @@ export default function EditProfile(){
                     </button>
 
                     <div
-                        className={`${open ? "fixed":"hidden"} fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-center items-center flex-col z-50 p-[20px] w-[700px] h-[430px] bg-white border-1 border-black rounded-2xl`}
+                        className={`${open ? "fixed":"hidden"} fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-center items-center flex-col z-50 p-5 w-[700px] h-[430px] bg-white border border-black rounded-2xl`}
                     >
                         <form 
                         onSubmit={changePasswordHandler}
@@ -605,7 +622,8 @@ export default function EditProfile(){
                             id="currentPassword"
                             name="currentPassword"
                             type="password" 
-                            className="mt-[8px] border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
+                            autoComplete="current-password"
+                            className="mt-2 border-2 border-gray-300 rounded px-4 py-2 w-full mb-4"
                             ></input>
 
                             <label
@@ -619,7 +637,8 @@ export default function EditProfile(){
                             id="newPassword"
                             name="newPassword"
                             type="password" 
-                            className="mt-[8px] border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
+                            autoComplete="new-password"
+                            className="mt-2 border-2 border-gray-300 rounded px-4 py-2 w-full mb-4"
                             ></input>
                             
                             <label
@@ -633,11 +652,12 @@ export default function EditProfile(){
                             id="confirmNewPassword"
                             name="confirmNewPassword"
                             type="password" 
-                            className="mt-[8px] border-2 border-gray-300 rounded px-4 py-2 w-[100%] mb-4"
+                            autoComplete="new-password"
+                            className="mt-2 border-2 border-gray-300 rounded px-4 py-2 w-full mb-4"
                             ></input>
 
                             <div 
-                            className="flex justify-evenly mt-[10px]"
+                            className="flex justify-evenly mt-2.5"
                             >
                                 <button 
                                     type="button"
@@ -668,7 +688,7 @@ export default function EditProfile(){
 
                             <p
                             ref={passwordMessage}
-                            className="text-[17px] mono mt-[20px] text-center italic text-gray-600"
+                            className="text-[17px] mono mt-5 text-center italic text-gray-600"
                             >
                                 Use a strong password with at least 6 characters and less than 200 characters.
                             </p>
@@ -694,7 +714,7 @@ export default function EditProfile(){
                     ref={changeBioInputRef}
                     defaultValue={session?.user.bio || ""}
                     disabled={true}
-                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[390px] ml-8 border-2 border-gray-300 rounded px-4 py-[12px] text-xl"
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[390px] ml-8 border-2 border-gray-300 rounded px-4 py-3 text-xl"
                     ></textarea>
 
                     <button

@@ -1,9 +1,10 @@
 'use client'
 
-import React from "react";
 import { useSession } from "next-auth/react";
-import { useRef,useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+
+import Loading from "@/components/loading";
 
 export default function CreatePostPage(){
 
@@ -13,10 +14,11 @@ export default function CreatePostPage(){
     const router = useRouter();
 
     useEffect(()=>{
-        if(!session){
+        if(session === null){
             router.push('/login');
         }
     },[session,router]);
+
 
     const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
         
@@ -65,6 +67,10 @@ export default function CreatePostPage(){
                 messageRef.current.textContent = message;
             }
         }
+    }
+
+    if(session===undefined){
+        return <Loading/>;
     }
 
     return(
