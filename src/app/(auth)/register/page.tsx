@@ -10,6 +10,8 @@ import Loading from "@/components/loading";
 
 export default function Register(){
 
+    const submitButton = useRef<HTMLButtonElement>(null);
+
     const router = useRouter();
     const { data: session } = useSession();
 
@@ -29,6 +31,12 @@ export default function Register(){
     
 
     const sendImage = async (file: File) => {
+
+        submitButton.current!.disabled=true;
+        submitButton.current!.textContent="Uploading Image...";
+        submitButton.current!.style.backgroundColor="#6b7280";
+        submitButton.current!.style.cursor="not-allowed";
+
         const formData = new FormData();
         formData.append("file", file);
 
@@ -38,6 +46,12 @@ export default function Register(){
         });
 
         if (res.ok) {
+            setTimeout(() => {
+                submitButton.current!.disabled=false;
+                submitButton.current!.textContent="Submit";
+                submitButton.current!.style.backgroundColor="#3b82f6";
+                submitButton.current!.style.cursor="pointer";
+            }, 1000);
             const data = await res.json() as { url: string };
             return data.url;
         }
@@ -371,6 +385,7 @@ export default function Register(){
 
 
             <button 
+            ref={submitButton}
             type="submit" 
             className="bg-blue-500 text-white rounded px-4 py-2 mt-4 select-none"
             >

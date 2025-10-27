@@ -54,7 +54,7 @@ export default function Post({
                     alt="Profile Picture"
                     width={50}
                     height={50}
-                    className="select-none border-[1px] border-white object-cover rounded-full"
+                    className="select-none border border-white object-cover rounded-full"
                     style={{ aspectRatio: "1 / 1" }} 
                     />
 
@@ -79,7 +79,7 @@ export default function Post({
 
                 <button
                 className="px-4 py-1.5 rounded-lg font-semibold text-transparent bg-clip-text 
-                            bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
+                            bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 
                             border border-indigo-300 hover:border-pink-400 
                             transition-all duration-300 hover:scale-105 active:scale-95"
                 >
@@ -98,7 +98,7 @@ export default function Post({
                 </h3>
 
                 <p 
-                className="mt-2 text-gray-800 break-all whitespace-pre-wrap leading-relaxed"
+                className="mt-2 text-gray-800 whitespace-pre-wrap leading-relaxed"
                 >
                     {content}
                 </p>
