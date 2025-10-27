@@ -106,7 +106,7 @@ export default function Contact(){
                 </p>
 
                 <div 
-                className="mt-[30px] flex justify-center space-x-4 text-gray-800 gap-x-[20px]"
+                className="mt-[30px] flex justify-center space-x-4 text-gray-800 gap-x-5"
                 >
                     <Github 
                     onClick={()=>{

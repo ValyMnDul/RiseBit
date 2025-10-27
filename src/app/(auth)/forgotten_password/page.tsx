@@ -1,15 +1,22 @@
 'use client'
 import Link from "next/link";
-import { useRef} from "react";
+import { useRef,useEffect} from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+import Loading from "@/components/loading";
+
 
 export default function ForgottenPassword(){
 
     const {data:session}=useSession();
+    const router=useRouter();
 
-    if(session){
-        window.location.href="/profile";
-    }
+    useEffect(()=>{
+        if(session){
+            router.push('/profile')
+        }
+    },[session,router])
 
     const message=useRef<HTMLParagraphElement>(null);
     const submitButton=useRef<HTMLButtonElement>(null);
@@ -48,6 +55,10 @@ export default function ForgottenPassword(){
         setTimeout(() => {
             global.location.href = '/forgotten_password/code_verify';
         }, 2000);
+    }
+
+    if(session===undefined){
+        return <Loading/>
     }
 
     return (

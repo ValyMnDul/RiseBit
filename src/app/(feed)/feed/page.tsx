@@ -28,7 +28,7 @@ export default function Feed(){
 
     return (
         <main 
-        className="w-[100%] h-[100%] flex flex-col items-center"
+        className="w-full h-full flex flex-col items-center"
         >
 
             <input
@@ -38,7 +38,7 @@ export default function Feed(){
             />
 
             <button
-            className="cursor-pointer select-none relative mt-4 px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-pink-500/40 transition-all duration-300 hover:scale-105 active:scale-95"
+            className="cursor-pointer select-none relative mt-4 px-6 py-2.5 rounded-xl bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-pink-500/40 transition-all duration-300 hover:scale-105 active:scale-95"
             onClick={()=>{
                 window.location.href='/create';
             }}

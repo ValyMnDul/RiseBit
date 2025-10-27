@@ -7,9 +7,10 @@ import DeleteAccountButton from "@/components/deleteAccountButton";
 import EditAccountButton from "@/components/editAccountButton";
 
 export default async function ProfilePage() {
+
   const session = await getServerSession(authOptions);
 
-  if (!session) {
+  if (session===null) {
     redirect('/login');
   }
 
@@ -29,17 +30,17 @@ export default async function ProfilePage() {
 
   return (
     <main 
-    className="flex flex-col items-center justify-evenly w-[100%] h-[100%] flex-1"
+    className="flex flex-col items-center justify-evenly w-full h-full flex-1"
     >
       <h1 
-      className="cursor-default text-4xl text-center mt-[10px] font-bold"
+      className="cursor-default text-4xl text-center mt-2.5 font-bold"
       >
         Welcome, {user.firstName} {user.lastName}
       </h1>
 
       <Image
       priority
-      className="select-none border-[4px] border-white object-cover rounded-full" 
+      className="select-none border-4 border-white object-cover rounded-full" 
       style={{ aspectRatio: "1 / 1" }} 
       src={user.profilePic || "/defaultUser.png"} 
       width={350} 
@@ -91,7 +92,7 @@ export default async function ProfilePage() {
       </div>
       
       <div 
-      className=" flex justify-center items-center gap-x-[20px]"
+      className=" flex justify-center items-center gap-x-5"
       >
         
         <EditAccountButton />
