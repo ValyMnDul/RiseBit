@@ -72,6 +72,7 @@ export default function Login(){
                 id="email" 
                 name="email" 
                 maxLength={100} 
+                autoComplete="email"
                 className="border rounded h-10 text-[21px] pl-2.5 pr-2.5"
                 ></input>
 
@@ -95,6 +96,7 @@ export default function Login(){
                 minLength={6} 
                 maxLength={200} 
                 className="border rounded text-[21px] h-10 pl-2.5 pr-2.5"
+                autoComplete="current-password"
                 ></input>
 
             </div>

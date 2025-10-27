@@ -10,6 +10,10 @@ export default function CreatePostPage(){
 
     const {data:session} = useSession();
 
+    if(!session){
+        globalThis.location.href = '/login';
+    }
+
     const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
         
         e.preventDefault();
