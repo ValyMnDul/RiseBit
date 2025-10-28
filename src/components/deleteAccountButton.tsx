@@ -39,7 +39,12 @@ export default function DeleteAccountButton({email}:{email:string}) {
                 warningRef.current?.classList.add("flex");
                 setOpen(true);
             }} 
-            className="text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            className="px-4 py-2 rounded-xl font-semibold 
+                border border-rose-400 text-rose-500
+                hover:bg-linear-to-r hover:from-rose-500 hover:via-pink-500 hover:to-fuchsia-500 
+                hover:text-white hover:border-transparent
+                transition-all duration-300 cursor-pointer shadow-sm
+                hover:shadow-rose-500/30 active:scale-95"
             >
             Delete Account
             </button>
@@ -55,7 +60,7 @@ export default function DeleteAccountButton({email}:{email:string}) {
                 </p>
 
                 <div
-                className="flex justify-evenly items-center mt-4 text-center"
+                className="flex justify-evenly items-center mt-7 text-center"
                 >
                     <button
                     onClick={()=>{
@@ -63,15 +68,25 @@ export default function DeleteAccountButton({email}:{email:string}) {
                         warningRef.current?.classList.remove("flex");
                         setOpen(false);
                     }} 
-                    className="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded mt-4 "
+                    className="px-5 py-2.5 rounded-xl font-semibold 
+                                border border-indigo-400 text-indigo-500 
+                                hover:bg-linear-to-r hover:from-indigo-500 
+                                hover:via-purple-500 hover:to-pink-500 
+                                hover:text-white hover:border-transparent 
+                                transition-all duration-300 cursor-pointer"
                     >
                     CANCEL
                     </button>
 
                     <button
                     onClick={deleteAccount}
-                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 text-center"
-                    >
+                    className=" px-5 py-2.5 rounded-xl font-semibold 
+                                border border-rose-400 text-rose-500
+                                hover:bg-linear-to-r hover:from-rose-500 hover:via-pink-500 hover:to-fuchsia-500 
+                                hover:text-white hover:border-transparent
+                                transition-all duration-300 cursor-pointer shadow-sm
+                                hover:shadow-rose-500/30 active:scale-95"
+                            >
                     DELETE
                     </button>
                 </div>

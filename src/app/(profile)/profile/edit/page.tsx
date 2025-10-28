@@ -403,7 +403,14 @@ export default function EditProfile(){
                 <label
                 ref={changePictureButtonRef}
                 htmlFor="profilePicture"
-                className="cursor-pointer flex items-center mx-auto mt-[30px] justify-center h-12 w-[170px] border-2 hover:bg-gray-300 text-blue-600 border-blue-600 font-bold text-center px-4 rounded"                >
+                className="
+                    cursor-pointer flex items-center justify-center mx-auto 
+                    mt-[30px] h-12 w-[170px] 
+                    px-4 py-2 rounded-xl font-semibold 
+                    border-2 border-indigo-400 text-indigo-500 
+                    hover:bg-gray-300
+                    transition-all duration-300 text-center
+                ">
                     Change Picture
                 </label>
                 <input
@@ -448,12 +455,18 @@ export default function EditProfile(){
                     defaultValue={session?.user.username}
                     disabled={true}
                     autoComplete="username"
-                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-12 ml-8 border-2 border-gray-300 rounded px-4 text-xl"
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-12 ml-8 border-2 border-gray-300 rounded-lg px-4 text-xl"
                     />
 
                     <button
                     ref={changeUsernameButtonRef}
-                    className="cursor-pointer h-12 px-5 ml-8 w-[120px] border-2 border-blue-600 text-blue-600 font-bold rounded hover:bg-gray-300"
+                    className="
+                        cursor-pointer h-12 w-[120px] px-5 py-2 ml-8 
+                        rounded-xl font-semibold 
+                        border-2 border-indigo-400 text-indigo-500 
+                        hover:bg-gray-300 
+                        transition-all duration-200
+                    "
                     onClick={()=>{
                         if(changeUsernameInputRef.current?.disabled){
                             changeUsernameInputRef.current.disabled = false;
@@ -489,12 +502,18 @@ export default function EditProfile(){
                     autoComplete="email"
                     defaultValue={session?.user.email}
                     disabled={true}
-                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-12 ml-8 border-2 border-gray-300 rounded px-4 text-xl"
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-12 ml-8 border-2 border-gray-300 rounded-lg px-4 text-xl"
                     />
 
                     <button
                     ref={changeEmailButtonRef}
-                    className="cursor-pointer h-12 px-5 ml-8 w-[120px] border-2 border-blue-600 text-blue-600 font-bold rounded hover:bg-gray-300"
+                    className="
+                        cursor-pointer h-12 w-[120px] px-5 py-2 ml-8 
+                        rounded-xl font-semibold 
+                        border-2 border-indigo-400 text-indigo-500 
+                        hover:bg-gray-300 
+                        transition-all duration-200
+                    "
                     onClick={()=>{
                         if(changeEmailInputRef.current?.disabled===true){
 
@@ -514,11 +533,21 @@ export default function EditProfile(){
                     </button>
 
                     <div
-                        className={`${openEmail ? "fixed":"hidden"} top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-center items-center flex-col z-50 p-5 w-[700px] h-[230px] bg-white border border-black rounded-2xl`}
+                    className={`${openEmail ? "fixed" : "hidden"} top-[50%] left-[50%] 
+                        -translate-x-1/2 -translate-y-1/2 
+                        flex flex-col justify-center items-center 
+                        z-50 p-8 w-[700px] bg-white border border-gray-300 
+                        rounded-2xl shadow-xl transition-all duration-300`}
+
                     >
                         <form 
                         onSubmit={changeEmailHandler}
+                        className="w-full"
                         >
+                            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                                Change Email
+                            </h2>
+
                             <label
                             htmlFor="emailCode"
                             className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
@@ -532,7 +561,10 @@ export default function EditProfile(){
                             id="emailCode"
                             name="emailCode"
                             type="text" 
-                            className="mt-2 border-2 border-gray-300 rounded px-4 py-2 w-full mb-4"
+                            className="mt-2 border-2 border-gray-300 rounded-lg px-4 py-2 w-full mb-4 
+                                focus:outline-none focus:border-indigo-500 transition-all duration-200
+                            "
+
                             ></input>
 
                             <div 
@@ -547,14 +579,27 @@ export default function EditProfile(){
                                         changeEmailButtonRef.current!.disabled = false;
 
                                     }}
-                                    className="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded"
+                                    className="
+                                        cursor-pointer h-11 w-[120px] px-5 ml-8 
+                                        rounded-xl font-semibold 
+                                        border-2 border-gray-300 text-gray-700 
+                                        hover:bg-gray-100 transition-all duration-200
+                                    "
+
                                 >
                                     Cancel
                                 </button>
 
                                 <button 
                                     type="submit"
-                                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                    className="
+                                        cursor-pointer h-11 w-[130px] px-5 ml-8 
+                                        rounded-xl font-semibold text-white 
+                                        bg-indigo-500 border-2 border-indigo-500 
+                                        hover:bg-indigo-600 active:scale-[0.98] 
+                                        transition-all duration-200 shadow-sm
+                                    "
+
                                 >
                                     Set email
                                 </button>
@@ -563,7 +608,7 @@ export default function EditProfile(){
 
                             <p
                             ref={passwordMessage}
-                            className="text-[17px] mono mt-5 text-center italic text-gray-600"
+                            className="text-[15px] mt-5 text-center italic text-gray-600"
                             >
                                 Enter the code sent to your new email address.
                             </p>
@@ -590,12 +635,18 @@ export default function EditProfile(){
                     type="password"
                     defaultValue={fakePassword}
                     disabled={true}
-                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-12 ml-8 border-2 border-gray-300 rounded px-4 text-xl"
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-12 ml-8 border-2 border-gray-300 rounded-lg px-4 text-xl"
                     />
 
                     <button
                     ref={changePasswordButtonRef}
-                    className="cursor-pointer h-12 px-5 ml-8 w-[120px] border-2 border-blue-600 text-blue-600 font-bold rounded hover:bg-gray-300"
+                    className="
+                        cursor-pointer h-12 w-[120px] px-5 py-2 ml-8 
+                        rounded-xl font-semibold 
+                        border-2 border-indigo-400 text-indigo-500 
+                        hover:bg-gray-300 
+                        transition-all duration-200
+                    "
                     onClick={()=>{
                         if(open===false){
                             setOpen(true);
@@ -606,11 +657,20 @@ export default function EditProfile(){
                     </button>
 
                     <div
-                        className={`${open ? "fixed":"hidden"} fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] justify-center items-center flex-col z-50 p-5 w-[700px] h-[430px] bg-white border border-black rounded-2xl`}
+                    className={`${open ? "fixed" : "hidden"} fixed top-[50%] left-[50%] 
+                        translate-x-[-50%] translate-y-[-50%] 
+                        flex flex-col justify-center items-center 
+                        z-50 p-8 w-[700px] bg-white border border-gray-300 
+                        rounded-2xl shadow-xl transition-all duration-300`}
                     >
                         <form 
                         onSubmit={changePasswordHandler}
                         >
+
+                            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                                Change Password
+                            </h2>
+
                             <label
                             htmlFor="currentPassword"
                             className="text-lg font-bold text-gray-800 uppercase tracking-wide w-[120px]"
@@ -623,7 +683,10 @@ export default function EditProfile(){
                             name="currentPassword"
                             type="password" 
                             autoComplete="current-password"
-                            className="mt-2 border-2 border-gray-300 rounded px-4 py-2 w-full mb-4"
+                            className="
+                                mt-2 border-2 border-gray-300 rounded-lg px-4 py-2 w-full mb-4 
+                                focus:outline-none focus:border-indigo-500 transition-all duration-200
+                            "
                             ></input>
 
                             <label
@@ -638,7 +701,10 @@ export default function EditProfile(){
                             name="newPassword"
                             type="password" 
                             autoComplete="new-password"
-                            className="mt-2 border-2 border-gray-300 rounded px-4 py-2 w-full mb-4"
+                            className="
+                                mt-2 border-2 border-gray-300 rounded-lg px-4 py-2 w-full mb-4 
+                                focus:outline-none focus:border-indigo-500 transition-all duration-200
+                            "
                             ></input>
                             
                             <label
@@ -653,7 +719,10 @@ export default function EditProfile(){
                             name="confirmNewPassword"
                             type="password" 
                             autoComplete="new-password"
-                            className="mt-2 border-2 border-gray-300 rounded px-4 py-2 w-full mb-4"
+                            className="
+                                mt-2 border-2 border-gray-300 rounded-lg px-4 py-2 w-full mb-4 
+                                focus:outline-none focus:border-indigo-500 transition-all duration-200
+                            "
                             ></input>
 
                             <div 
@@ -672,14 +741,26 @@ export default function EditProfile(){
                                             passwordMessage.current.classList.add("italic");
                                         }
                                     }}
-                                    className="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded"
+                                    className="
+                                        cursor-pointer h-11 w-[120px] px-5 ml-8 
+                                        rounded-xl font-semibold 
+                                        border-2 border-gray-300 text-gray-700 
+                                        hover:bg-gray-100 transition-all duration-200
+                                    "
                                 >
                                     Cancel
                                 </button>
 
                                 <button 
                                     type="submit"
-                                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                    className="
+                                        cursor-pointer h-11 px-5 ml-8 
+                                        rounded-xl font-semibold text-white 
+                                        bg-indigo-500 border-2 border-indigo-500 
+                                        hover:bg-indigo-600 active:scale-[0.98] 
+                                        transition-all duration-200 shadow-sm
+                                    "
+
                                 >
                                     Set password
                                 </button>
@@ -688,7 +769,7 @@ export default function EditProfile(){
 
                             <p
                             ref={passwordMessage}
-                            className="text-[17px] mono mt-5 text-center italic text-gray-600"
+                            className="text-[15px] mt-5 text-center italic text-gray-600"
                             >
                                 Use a strong password with at least 6 characters and less than 200 characters.
                             </p>
@@ -714,12 +795,18 @@ export default function EditProfile(){
                     ref={changeBioInputRef}
                     defaultValue={session?.user.bio || ""}
                     disabled={true}
-                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[390px] ml-8 border-2 border-gray-300 rounded px-4 py-3 text-xl"
+                    className="focus:ring-2 outline-0 focus:ring-blue-400 disabled:bg-gray-100 disabled:text-gray-500 w-[700px] h-[390px] ml-8 border-2 border-gray-300 rounded-lg px-4 py-3 text-xl"
                     ></textarea>
 
                     <button
                     ref={changeBioButtonRef}
-                    className="cursor-pointer h-12 px-5 ml-8 w-[120px] border-2 border-blue-600 text-blue-600 font-bold rounded hover:bg-gray-300"
+                    className="
+                        cursor-pointer h-12 w-[120px] px-5 py-2 ml-8 
+                        rounded-xl font-semibold 
+                        border-2 border-indigo-400 text-indigo-500 
+                        hover:bg-gray-300 
+                        transition-all duration-200
+                    "
                     onClick={()=>{
                         if(changeBioInputRef.current?.disabled && changeBioButtonRef.current){
 
