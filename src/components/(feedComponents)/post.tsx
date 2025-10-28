@@ -1,43 +1,21 @@
 'use client'
 import Image from "next/image"
-import { useEffect,useState } from "react"
 
 
 export default function Post({
     username,
     subtitle,
     content,
-    updatedAt
+    updatedAt,
+    profilePic
 }:{
     username:string,
     subtitle:string,
     content:string,
-    updatedAt:string
+    updatedAt:string,
+    profilePic:string
 }) {
 
-    const [user,setUser] = useState<{
-        profilePic: string;
-        followers: number
-    }|null>(null);
-
-    useEffect(()=>{
-
-        const getUserDetails = async () => {
-            const res = await fetch('/api/getUser',{
-                method:"POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body:JSON.stringify({username})
-            });
-
-            const userData = await res.json();
-            setUser(userData);
-        }
-
-        getUserDetails();
-
-    },[username]);
 
     return (
         <div
@@ -50,7 +28,7 @@ export default function Post({
                 className="flex items-center gap-4"
                 >
                     <Image
-                    src={user?.profilePic || '/defaultUser.png'}
+                    src={profilePic}
                     alt="Profile Picture"
                     width={50}
                     height={50}

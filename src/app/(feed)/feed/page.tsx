@@ -1,30 +1,58 @@
 'use client'
-import {useEffect ,useState} from "react"
+import { useEffect ,useState} from "react"
 
 import Post from "@/components/(feedComponents)/post"
+import Loading from "@/components/loading";
 
 
 export default function Feed(){
 
-    /// Get Posts
 
     const [posts, setPosts] = useState<Array<{
         username:string,
         subtitle:string,
         content:string,
-        updatedAt:string
+        updatedAt:string,
+
     }>>([]);
 
-    useEffect(() => {
-        const getPosts = async () =>{
+    const [userDetails, setUserDetails] = useState<Array<{
+        username:string,
+        profilePic:string,
+    }>>([]);
 
-            const res=await fetch('/api/getPosts',{method:"GET"});
-            
-            const data=await res.json(); 
-            setPosts(data);
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const resPosts = await fetch('/api/getPosts', { method: "GET" })
+                const postsData = await resPosts.json()
+                setPosts(postsData)
+
+                if (postsData.length > 0) {
+                    const resUsers = await fetch('/api/getUsers', {
+                        method: "POST",
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ usernames: (postsData as Array<{ username: string }>).map(p => p.username) })
+                    });
+                    const usersData = await resUsers.json()
+                    setUserDetails(usersData)
+                }
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
         }
-        getPosts();
-    }, [])
+
+        fetchData()
+    }, []);
+
+    if (loading) {
+        return <Loading />
+    }
+
 
     return (
         <main 
@@ -58,6 +86,7 @@ export default function Feed(){
                             subtitle={post.subtitle}
                             content={post.content}
                             updatedAt={post.updatedAt} 
+                            profilePic={userDetails.find(user => user.username === post.username)?.profilePic || '/defaultUser.png'}
                             />
                         );
                     })
