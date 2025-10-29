@@ -60,6 +60,7 @@ export default function Feed(){
         >
 
             <input
+            name="searchBar"
             type="text"
             placeholder="Search for posts..."
             className="mt-6 px-4 py-2 border border-gray-400 rounded w-[50%] focus:outline-none focus:ring-2 focus:ring-blue-500"

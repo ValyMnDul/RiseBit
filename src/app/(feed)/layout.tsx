@@ -1,6 +1,10 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 
+export const viewport = {
+  scrollRestoration: "manual",
+};
+
 export default function infoLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen">
