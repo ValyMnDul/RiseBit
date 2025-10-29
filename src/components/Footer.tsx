@@ -17,7 +17,7 @@ export default function Footer() {
           <Link 
           href="/terms_and_conditions" 
           className="px-4 py-2 font-semibold text-transparent bg-clip-text 
-             bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+             bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500
              hover:opacity-80 transition-all duration-200"
           >
           Terms & Conditions
@@ -26,7 +26,7 @@ export default function Footer() {
           <Link 
           href="/privacy_policy" 
           className="px-4 py-2 font-semibold text-transparent bg-clip-text 
-             bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+             bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500
              hover:opacity-80 transition-all duration-200"
           >
           Privacy Policy
@@ -35,7 +35,7 @@ export default function Footer() {
           <Link 
           href="/contact" 
           className="px-4 py-2 font-semibold text-transparent bg-clip-text 
-             bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+             bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500
              hover:opacity-80 transition-all duration-200"
           >
           Contact
@@ -44,7 +44,7 @@ export default function Footer() {
           <Link 
           href="/about" 
           className="px-4 py-2 font-semibold text-transparent bg-clip-text 
-             bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+             bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500
              hover:opacity-80 transition-all duration-200"
           >
           About

@@ -33,7 +33,8 @@ export default async function ProfilePage() {
       >
         <Image
           priority
-          className="rounded-full border-4 border-white shadow-lg object-cover"
+          className="rounded-full border-4 border-white 
+            shadow-lg object-cover select-none"
           style={{ aspectRatio: "1 / 1" }}
           src={user.profilePic || "/defaultUser.png"}
           alt="Profile Picture"
