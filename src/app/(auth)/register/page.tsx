@@ -12,6 +12,7 @@ export default function Register(){
 
     const submitButton = useRef<HTMLButtonElement>(null);
 
+
     const router = useRouter();
     const { data: session } = useSession();
 
@@ -60,6 +61,8 @@ export default function Register(){
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
+        submitButton.current!.disabled=true;
+
         const form = e.currentTarget;
         const formData = new FormData(form);
         
@@ -81,57 +84,21 @@ export default function Register(){
             body: JSON.stringify(data),
         });
 
-        if(res.status===400){
-            message.current!.textContent="Passwords do not match.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===401){
-            message.current!.textContent="One or more fields exceed the maximum length.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===402){
-            message.current!.textContent="An account with this email already exists.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===409){
-            message.current!.textContent="An account with this username already exists.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===403){
-            message.current!.textContent="Invalid date of birth.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===405){
-            message.current!.textContent="Invalid email format.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===406){
-            message.current!.textContent="One or more required fields are empty.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===422){
-            message.current!.textContent="You must be at least 13 years old to register.";
-            message.current!.style.color="red";
-        }
-
-        if(res.status===408){
-            message.current!.textContent="I don't think you're that old. Please enter a valid date of birth.";
-            message.current!.style.color="red";
-        }
+        const messageFromServer = (await res.json()).message;
 
         if(res.status===201){
-            message.current!.textContent="Account created successfully. You can now log in.";
+            message.current!.textContent=messageFromServer
             message.current!.style.color="green";
             global.setTimeout(()=>{
                 window.location.href="/login";
             },1500);
+        }
+        else{
+            message.current!.textContent=messageFromServer
+            message.current!.style.color="red";
+            setTimeout(()=>{
+                submitButton.current!.disabled=false;
+            },1000)
         }
     }
 

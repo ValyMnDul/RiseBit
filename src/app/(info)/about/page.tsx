@@ -12,7 +12,7 @@ export default function about(){
             <h1 
             className="text-5xl font-extrabold text-center mb-10"
             >
-                About <span className="text-blue-600">RiseBit</span>
+                About RiseBit
 
             </h1>
 
@@ -54,7 +54,7 @@ export default function about(){
             className="mb-12"
             >
                 <h2 
-                className="text-[30px] font-bold mb-4 text-blue-600"
+                className="text-[30px] font-bold mb-4 "
                 >
                     Our Vision
                 </h2>
@@ -75,7 +75,7 @@ export default function about(){
             <section>
 
                 <h2 
-                className="text-[30px] font-bold mb-6 text-blue-600"
+                className="text-[30px] font-bold mb-6"
                 >
                     Tech Stack
                 </h2>

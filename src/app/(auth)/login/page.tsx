@@ -21,9 +21,13 @@ export default function Login(){
     
 
     const message=useRef<HTMLParagraphElement>(null);
+    const submitButton=useRef<HTMLButtonElement>(null);
 
     const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
+
         e.preventDefault();
+
+        submitButton.current!.disabled=true;
 
         const form = e.currentTarget;
         const formData = new FormData(form);
@@ -40,6 +44,9 @@ export default function Login(){
         if (res?.error) {
             message.current!.textContent = "Email or password incorrect!";
             message.current!.style.color = "red";
+            setTimeout(()=>{
+                submitButton.current!.disabled=false;
+            },1000)
         } 
         else {
             message.current!.textContent = "Login successful!";
@@ -114,6 +121,7 @@ export default function Login(){
 
             <button 
             type="submit" 
+            ref={submitButton}
             className="bg-blue-500 text-white text-xl rounded px-4 py-2 mt-4 select-none"
             >
                 Submit
