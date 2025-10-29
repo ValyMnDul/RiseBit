@@ -16,7 +16,7 @@ export default function ProfilePage() {
   const router = useRouter();
   const params = useParams();
 
-
+  const formatDate = (date: Date | null) => date ? new Date(date).toLocaleDateString() : "Unknown";
   const usernameFromParams = params.name;
   
   const [isBioOpen,setIsBioOpen] =useState<boolean>(false);
@@ -25,11 +25,17 @@ export default function ProfilePage() {
     firstName:string | null,
     lastName:string | null,
     bio:string | null,
+    profilePic:string | null,
+    birthDate:Date | null,
+    createdAt:Date | null,
   }>({
     username: null,
     firstName:null,
     lastName:null,
-    bio:null
+    bio:null,
+    profilePic:null,
+    birthDate:null,
+    createdAt:null,
   });
 
 
@@ -175,13 +181,109 @@ export default function ProfilePage() {
  
   if(anotherUser===null)
   {
-    return<>no user</>
+    return<>no user</> 
   }
 
   if(anotherUser.username === null) {
     return <Loading /> 
   }
   
-  return(<>{anotherUser?.username}</>)
+  return(
+    <main
+    className="flex justify-center items-center"
+    >
+      <div 
+      className="flex flex-col items-center justify-center flex-1 max-w-220 px-4 py-6 -mb-5"
+      >
+        <div 
+        className="relative w-75 h-75 mb-6 shrink-0"
+        >
+          <Image
+            priority
+            className="rounded-full border-4 border-white 
+              shadow-lg object-cover select-none"
+            style={{ aspectRatio: "1 / 1" }}
+            src={anotherUser?.profilePic || "/defaultUser.png"}
+            alt="Profile Picture"
+            sizes="(max-width: 768px) 128px, 224px"
+            fill
+          />
+        </div>
+
+        <div 
+        className="bg-white shadow-lg rounded-2xl p-7 w-full max-w-2xl shrink-0"
+        >
+          <div
+          className="flex justify-between items-center text-center mb-5"
+          >
+            <h2 
+            className="text-3xl font-bold  text-center"
+            >
+              {anotherUser?.firstName} {anotherUser?.lastName}
+            </h2>
+
+            <p 
+            className="text-gray-700 text-lg font-medium bg-gray-100 px-3 py-1 rounded-full inline-block shadow-sm"
+            >
+              0 followers
+            </p>
+
+          </div>
+
+          <div 
+          className="flex flex-col gap-2.5 text-gray-800 text-xl"
+          >
+            <div 
+            className="flex justify-between border-b border-gray-200 pb-2"
+            >
+              <span className="font-semibold">Username:</span>
+              <span>{anotherUser?.username}</span>
+
+            </div>
+
+            <div 
+            className="flex justify-between border-b border-gray-200 pb-2"
+            >
+              <span className="font-semibold">Birth Date:</span>
+              <span>{formatDate(anotherUser.birthDate)}</span>
+
+            </div>
+
+            <div 
+            className="flex justify-between border-b border-gray-200 pb-2"
+            >
+              <span className="font-semibold">Account Created:</span>
+              <span>{formatDate(anotherUser.createdAt)}</span>
+
+            </div>
+
+          </div>
+ 
+          <div 
+          className="flex justify-center gap-8 mt-5 flex-wrap"
+          >
+            <ViewBioButton set={setIsBioOpen} />
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <textarea
+      readOnly
+      className={`
+        ${isBioOpen ? 'flex' : 'hidden'} 
+        mt-6 px-5 py-4 w-90 max-w-2xl min-h-130 max-h-180
+        bg-gray-50 border border-gray-200 rounded-xl shadow-sm
+        text-gray-700  leading-relaxed resize-none
+        focus:outline-none focus:ring-2 focus:ring-gray-300
+        transition-all duration-300 text-[18px]
+      `}
+      defaultValue={anotherUser?.bio || "No biography provided."}
+      />
+      
+    </main>
+  )
 
 }

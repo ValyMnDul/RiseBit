@@ -15,6 +15,8 @@ export const POST = async (req: Request) => {
             firstName:true,
             birthDate:true,
             bio:true,
+            profilePic:true,
+            createdAt:true,
         }
     })
 
