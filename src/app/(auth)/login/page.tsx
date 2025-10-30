@@ -53,10 +53,11 @@ export default function Login(){
             message.current!.style.color = "green";
 
             setTimeout(() => {
-                window.location.href = "/profile";
+            if (session?.user?.username) {
+                router.push(`/${session.user.username}`);
+            }
             }, 2000);
         }
-
     }
 
     if(session===undefined){
