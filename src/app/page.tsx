@@ -1,63 +1,70 @@
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import Link from "next/link";
 
 export default async function Main() {
 
   return (
-    <div 
-    className="h-screen w-screen flex flex-col justify-between"
+    <div
+    className="flex-1 h-screen w-screen flex flex-col justify-between"
     >
+      <Navbar/>
 
       <div 
-      className="flex flex-col w-full h-[90%] justify-center items-center gap-y-2.5"
+      className="h-full w-full flex flex-1 flex-col justify-between"
       >
 
         <div 
-        className="flex gap-x-2.5"
+        className="flex flex-col w-full h-[90%] justify-center items-center gap-y-2.5"
         >
-
-          <Image 
-          priority 
-          className="border-4 rounded-2xl cursor-pointer" 
-          src="/logo.png" 
-          width={600} 
-          height={600} 
-          alt="RiceBit Logo"
-          ></Image>
 
           <div 
-          className="flex flex-col justify-evenly"
+          className="flex gap-x-2.5"
           >
 
-            <Link 
-            href="/login" 
-            className="flex justify-center items-center text-[40px] w-[200px] h-[70px] font-bold bg-white rounded-2xl text-center cursor-pointer"
-            >
-              Login
-            </Link>
+            <Image 
+            priority 
+            className="border-4 rounded-2xl cursor-pointer" 
+            src="/logo.png" 
+            width={600} 
+            height={600} 
+            alt="RiceBit Logo"
+            ></Image>
 
-            <Link 
-            href="/register" 
-            className="flex justify-center items-center text-[40px] w-[200px] h-[70px] font-bold bg-black text-white rounded-2xl text-center cursor-pointer"
+            <div 
+            className="flex flex-col justify-evenly"
             >
-              Register
-            </Link>
 
+              <Link 
+              href="/login" 
+              className="flex justify-center items-center text-[40px] w-[200px] h-[70px] font-bold bg-white rounded-2xl text-center cursor-pointer"
+              >
+                Login
+              </Link>
+
+              <Link 
+              href="/register" 
+              className="flex justify-center items-center text-[40px] w-[200px] h-[70px] font-bold bg-black text-white rounded-2xl text-center cursor-pointer"
+              >
+                Register
+              </Link>
+
+            </div>
+            
           </div>
-          
+
+          <h2 
+          className="text-[50px] font-bold"
+          >
+            Small connections create big changes!
+          </h2>
+
         </div>
 
-        <h2 
-        className="text-[50px] font-bold"
-        >
-          Small connections create big changes!
-        </h2>
+        <Footer/>
 
       </div>
-
-      <Footer/>
-
     </div>
   );
 }
