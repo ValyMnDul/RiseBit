@@ -1,5 +1,6 @@
 'use client'
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 
 export default function Post({
@@ -16,6 +17,7 @@ export default function Post({
     profilePic:string
 }) {
 
+    const router = useRouter()
 
     return (
         <div
@@ -25,7 +27,10 @@ export default function Post({
             className=" flex justify-between items-center"
             >
                 <div 
-                className="flex items-center gap-4"
+                className="flex items-center gap-4 cursor-pointer"
+                onClick={() => {
+                    router.push(`/profiles/${username}`);
+                }}
                 >
                     <Image
                     src={profilePic}
