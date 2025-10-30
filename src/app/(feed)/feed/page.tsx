@@ -1,7 +1,7 @@
 'use client'
 import { useEffect ,useState} from "react"
 
-import Post from "@/components/(feedComponents)/post"
+import Post from "@/components/post"
 import Loading from "@/components/loading";
 
 
