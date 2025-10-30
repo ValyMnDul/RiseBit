@@ -1,28 +1,20 @@
 import Image from "next/image";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/(auth)/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
 
 export default async function Main() {
-  const session = await getServerSession(authOptions);
-
-  if(session){
-    redirect('/profile');
-  }
 
   return (
     <div 
-    className="h-[100vh] w-[100vw] flex flex-col justify-between"
+    className="h-screen w-screen flex flex-col justify-between"
     >
 
       <div 
-      className="flex flex-col w-[100%] h-[90%] justify-center items-center gap-y-[10px]"
+      className="flex flex-col w-full h-[90%] justify-center items-center gap-y-2.5"
       >
 
         <div 
-        className="flex gap-x-[20px]"
+        className="flex gap-x-2.5"
         >
 
           <Image 

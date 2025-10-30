@@ -18,7 +18,7 @@ export default function Register(){
 
     useEffect(()=>{
         if(session){
-            router.push('/profile');
+            router.push(`${session.user?.username}`);
         }
     },[session,router])
 

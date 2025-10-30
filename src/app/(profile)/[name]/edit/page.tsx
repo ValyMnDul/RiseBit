@@ -3,6 +3,7 @@ import {useSession} from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 import Loading from "@/components/loading";
 
@@ -10,12 +11,21 @@ export default function EditProfile(){
 
     const {data: session,update } = useSession();
     const router = useRouter();
+    const params = useParams();
+
+    const usernameFromParams = params.name;
 
     useEffect(()=>{
+
         if(session===null){
             router.push('/login');
         }
-    },[session,router]);
+
+        if(session?.user.username !== usernameFromParams){
+            router.push(`/${usernameFromParams}`);
+        }
+        
+    },[session,router,usernameFromParams,session?.user.username]);
 
 
     /// Get Password Length

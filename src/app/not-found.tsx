@@ -1,14 +1,18 @@
 'use client'
 import Footer from "@/components/Footer"
+import { useRouter } from "next/navigation";
 
-export default function notFound(){
+export default function NotFound(){
+
+    const router = useRouter();
+
     return( 
         <div 
         className="flex flex-col h-screen"
         > 
 
             <main 
-            className="flex flex-col justify-center items-center h-[100%]"
+            className="flex flex-col justify-center items-center h-full"
             >
 
                 <p 
@@ -32,7 +36,7 @@ export default function notFound(){
                 <button 
                 className=" font-mono text-2xl mb-[60px] mt-[50px] px-6 py-3 bg-blue-600 text-white rounded-2xl cursor-pointer hover:bg-blue-700" 
                 onClick={() => {
-                    window.location.href = '/';
+                    router.push('/');
                 }}
                 >
                     Go to Home

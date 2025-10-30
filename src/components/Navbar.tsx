@@ -1,9 +1,15 @@
 
 "use client";
 import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 
 export default function Navbar(){
+
+    const {data:session} = useSession();
+    const router = useRouter();
+
     return(
         <nav 
         className="select-none px-5 flex justify-between items-center w-full h-[60px] bg-white"
@@ -14,7 +20,7 @@ export default function Navbar(){
             >
                 <button
                 onClick={()=>{
-                    global.location.href="/profile";
+                    router.push(`/${session?.user?.username}`);
                 }} 
                 className="px-4 py-2 rounded-xl font-semibold 
                             border border-indigo-400 text-indigo-500
@@ -27,7 +33,7 @@ export default function Navbar(){
 
                 <button 
                 onClick={()=>{
-                    global.location.href="/feed";
+                    router.push('/feed');
                 }} 
                 className="px-4 py-2 rounded-xl font-semibold 
                             border border-indigo-400 text-indigo-500
