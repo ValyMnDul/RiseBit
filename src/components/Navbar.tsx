@@ -20,7 +20,7 @@ export default function Navbar(){
             >
                 <button
                 onClick={()=>{
-                    router.push(`/${session?.user?.username}`);
+                    router.push(`/profiles/${session?.user?.username}`);
                 }} 
                 className="px-4 py-2 rounded-xl font-semibold 
                             border border-indigo-400 text-indigo-500

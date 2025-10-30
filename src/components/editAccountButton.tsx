@@ -15,7 +15,7 @@ export default function EditProfileButton() {
                     hover:text-white hover:border-transparent
                     transition-all duration-300 cursor-pointer"
         onClick={()=>{
-            router.push(`/${session?.user.username}/edit`);
+            router.push(`/profiles/${session?.user.username}/edit`);
         }}
         >
         Edit Profile

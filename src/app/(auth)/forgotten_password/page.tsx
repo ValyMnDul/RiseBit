@@ -14,7 +14,7 @@ export default function ForgottenPassword(){
 
     useEffect(()=>{
         if(session){
-            router.push(`/${session.user?.username}`)
+            router.push(`/profiles/${session.user?.username}`)
         }
     },[session,router])
 

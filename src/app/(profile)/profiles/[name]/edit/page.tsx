@@ -22,7 +22,7 @@ export default function EditProfile(){
         }
 
         if(session?.user.username !== usernameFromParams){
-            router.push(`/${usernameFromParams}`);
+            router.push(`/profiles/${usernameFromParams}`);
         }
         
     },[session,router,usernameFromParams,session?.user.username]);

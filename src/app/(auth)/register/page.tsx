@@ -18,7 +18,7 @@ export default function Register(){
 
     useEffect(()=>{
         if(session){
-            router.push(`${session.user?.username}`);
+            router.push(`/profiles/${session.user?.username}`);
         }
     },[session,router])
 
@@ -90,7 +90,7 @@ export default function Register(){
             message.current!.textContent=messageFromServer
             message.current!.style.color="green";
             global.setTimeout(()=>{
-                window.location.href="/login";
+                router.push("/login");
             },1500);
         }
         else{

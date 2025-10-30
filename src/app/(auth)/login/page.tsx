@@ -15,7 +15,7 @@ export default function Login(){
 
     useEffect(()=>{
         if(session){
-            router.push(`/${session.user?.username}`);
+            router.push(`/profiles/${session.user?.username}`);
         }
     },[session,router])
     
@@ -54,7 +54,7 @@ export default function Login(){
 
             setTimeout(() => {
             if (session?.user?.username) {
-                router.push(`/${session.user.username}`);
+                router.push(`/profiles/${session.user.username}`);
             }
             }, 2000);
         }

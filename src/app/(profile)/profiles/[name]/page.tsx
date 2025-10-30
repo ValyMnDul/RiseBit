@@ -194,13 +194,13 @@ export default function ProfilePage() {
         <p 
         className="text-[50px] font-semibold font-mono"
         >
-            404 - Page Not Found
+            404 - User Not Found
         </p>
 
         <p 
         className="text-[20px] mt-4 font-mono"
         >
-            The page you are looking for does not exist.
+            The user you are looking for does not exist.
         </p>
 
         <button 
