@@ -31,6 +31,16 @@ export default function FollowButton({ sessionUsername ,postUsername ,following}
             });
         }
 
+        else {
+            await fetch('/api/unfollow',{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({sessionUsername,postUsername})
+            })
+        }
+
         setIsFollowing((p)=>(!p))
     }
 
