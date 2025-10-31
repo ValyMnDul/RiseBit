@@ -65,6 +65,8 @@ export default function Post({
                 </div>
 
                 <FollowButton 
+                following={false}  // temporary
+                // I have to take this from props later
                 sessionUsername={sessionUsername}
                 postUsername={username} 
                 />
