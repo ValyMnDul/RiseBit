@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import FollowButton from "./followButton";
 import { useSession } from "next-auth/react";
 
-export default function Profile({username, profilePic}: {username: string, profilePic: string}) {
+export default function Profile({username, profilePic , following}: {username: string, profilePic: string , following:string}) {
 
     const {data:session} = useSession();
     const router = useRouter();
@@ -52,7 +52,7 @@ export default function Profile({username, profilePic}: {username: string, profi
 
                 </div>
 
-                <FollowButton sessionUsername={sessionUsername} postUsername={username}/>
+                <FollowButton sessionUsername={sessionUsername} postUsername={username} following={following}/>
     
             </div>
             

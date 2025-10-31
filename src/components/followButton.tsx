@@ -3,9 +3,10 @@
 import React from "react";
 import {useRouter} from "next/navigation";
 
-export default function FollowButton({ sessionUsername ,postUsername}:{
+export default function FollowButton({ sessionUsername ,postUsername ,following}:{
     sessionUsername:string,
-    postUsername:string
+    postUsername:string,
+    following:string
 }) {
 
     const router = useRouter();
@@ -41,7 +42,7 @@ export default function FollowButton({ sessionUsername ,postUsername}:{
                     border border-indigo-300 hover:border-pink-400 
                     transition-all duration-300 hover:scale-105 active:scale-95"
         >
-            Follow
+            {following? "Unfollow":"Follow"}
         </button>
     )
 }

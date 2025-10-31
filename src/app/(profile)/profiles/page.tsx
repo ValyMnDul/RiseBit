@@ -2,22 +2,37 @@
 import Loading from "@/components/loading";
 import Profile from "@/components/profile";
 import { useEffect,useState } from "react";
+import { useSession } from "next-auth/react";
 
 
 export default function ProfilesPage() {
 
-  const [users, setUsers] = useState<Array<{username: string, profilePic: string}>>([]);
+  const {data:session} = useSession();
+  const sessionUsername = session?.user?.username || "";
+
+  const [users, setUsers] = useState<Array<{username: string, profilePic: string,following:string}>>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getAllUsers = async () => {
-      const res = await fetch('/api/getAllUsers');
-      const allUsers = await res.json();
+      const res = await fetch('/api/getAllUsers',{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({sessionUsername})
+      });
+
+      const allUsers = (await res.json()).data;
       setUsers(allUsers);
       setLoading(false);
     }
-    getAllUsers();
-  }, []);
+    if(sessionUsername != undefined){
+      getAllUsers();
+    }
+  }, [sessionUsername]);
+
+  console.log(users);
 
   if (loading) {
     return <Loading />
@@ -36,7 +51,12 @@ export default function ProfilesPage() {
 
       <div className="w-full flex flex-wrap justify-center gap-x-10 mt-6">
         {users.map((user) => (
-          <Profile key={user.username} username={user.username} profilePic={user.profilePic || "/defaultUser.png"} />
+          <Profile 
+          key={user.username} 
+          username={user.username} 
+          profilePic={user.profilePic || "/defaultUser.png"} 
+          following={user.following}
+          />
         ))}
       </div>
 
