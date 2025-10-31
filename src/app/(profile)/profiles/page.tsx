@@ -10,7 +10,7 @@ export default function ProfilesPage() {
   const {data:session} = useSession();
   const sessionUsername = session?.user?.username || "";
 
-  const [users, setUsers] = useState<Array<{username: string, profilePic: string,following:string}>>([]);
+  const [users, setUsers] = useState<Array<{username: string, profilePic: string,following:boolean}>>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -32,7 +32,6 @@ export default function ProfilesPage() {
     }
   }, [sessionUsername]);
 
-  console.log(users);
 
   if (loading) {
     return <Loading />

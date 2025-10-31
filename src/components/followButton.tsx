@@ -2,20 +2,36 @@
 
 import React from "react";
 import {useRouter} from "next/navigation";
+import { useState , useEffect } from "react";
 
 export default function FollowButton({ sessionUsername ,postUsername ,following}:{
     sessionUsername:string,
     postUsername:string,
-    following:string
+    following:boolean
 }) {
 
     const router = useRouter();
+    const [isFollowing,setIsFollowing] =useState<boolean>(following)
 
-    const followButtonHandler = (e:React.MouseEvent) => {
+    useEffect(() => {
+        setIsFollowing(following);
+    }, [following]);
+
+    const followButtonHandler = async (e:React.MouseEvent) => {
 
         e.stopPropagation();
 
-        
+        if(isFollowing === false){
+            await fetch('/api/follow',{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({sessionUsername,postUsername})
+            });
+        }
+
+        setIsFollowing((p)=>(!p))
     }
 
     if(sessionUsername === postUsername){
@@ -42,7 +58,7 @@ export default function FollowButton({ sessionUsername ,postUsername ,following}
                     border border-indigo-300 hover:border-pink-400 
                     transition-all duration-300 hover:scale-105 active:scale-95"
         >
-            {following? "Unfollow":"Follow"}
+            {isFollowing ? "Unfollow":"Follow"}
         </button>
     )
 }
