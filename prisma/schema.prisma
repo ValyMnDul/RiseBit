@@ -24,6 +24,8 @@ model User {
   profilePic  String?
   username String    @unique
   bio      String?  
+  followersList String[]  @default([])
+  followingList String[]  @default([])
   createdAt DateTime @default(now())
 }
 

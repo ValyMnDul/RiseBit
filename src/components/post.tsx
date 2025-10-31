@@ -1,6 +1,8 @@
 'use client'
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import FollowButton from "./followButton"
+import { useSession } from "next-auth/react"
 
 
 export default function Post({
@@ -17,7 +19,9 @@ export default function Post({
     profilePic:string
 }) {
 
-    const router = useRouter()
+    const router = useRouter();
+    const { data : session } = useSession();
+    const sessionUsername = session?.user?.username || "";
 
     return (
         <div
@@ -60,14 +64,10 @@ export default function Post({
 
                 </div>
 
-                <button
-                className="px-4 py-1.5 rounded-lg font-semibold text-transparent bg-clip-text 
-                            bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 
-                            border border-indigo-300 hover:border-pink-400 
-                            transition-all duration-300 hover:scale-105 active:scale-95"
-                >
-                    Follow
-                </button>
+                <FollowButton 
+                sessionUsername={sessionUsername}
+                postUsername={username} 
+                />
     
             </div>
 
