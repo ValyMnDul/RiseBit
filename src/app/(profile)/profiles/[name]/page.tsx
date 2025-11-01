@@ -30,6 +30,8 @@ export default function ProfilePage() {
     birthDate: Date | null,
     createdAt: Date | null,
     following: boolean | null,
+    followersNumber: number,
+    followingNumber: number
   }>({
     username: null,
     firstName: null,
@@ -39,7 +41,13 @@ export default function ProfilePage() {
     birthDate: null,
     createdAt: null,
     following: null,
+    followersNumber: -1,
+    followingNumber:-1
   });
+
+  const [myFollowersNumber,setMyFollowersNumber] = useState<number>(-1);
+  const [myFollowingNumber,setMyFollowingNumber] = useState<number>(-1);
+
 
   useEffect(() => {
     if (session === null) {
@@ -48,7 +56,9 @@ export default function ProfilePage() {
   }, [session, router]);
 
   useEffect(() => {
-    if (usernameFromParams !== session?.user?.username && session?.user?.username) {
+    if (!session?.user?.username) return;
+
+    if (usernameFromParams !== session?.user?.username) {
       const getAnotherUser = async () => {
         try {
           const resAnotherUser = await fetch('/api/getAnotherUser', {
@@ -72,6 +82,8 @@ export default function ProfilePage() {
               birthDate: null,
               createdAt: null,
               following: null,
+              followersNumber:-1,
+              followingNumber:-1
             });
             return;
           }
@@ -88,6 +100,8 @@ export default function ProfilePage() {
               birthDate: null,
               createdAt: null,
               following: null,
+              followersNumber:-1,
+              followingNumber:-1
             });
             return;
           }
@@ -104,12 +118,38 @@ export default function ProfilePage() {
             birthDate: null,
             createdAt: null,
             following: null,
+            followersNumber:0,
+            followingNumber:0
           });
         }
       }
       getAnotherUser()
     }
+    else {
+      const getMyFlNumbers = async () => {
+        const fetchRes = await fetch('/api/getMyFlNumbers', {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            sessionUsername: session?.user.username
+          })
+        });
+
+        const followData = await fetchRes.json();
+
+        setMyFollowersNumber(followData.followersNumber || 0);
+        setMyFollowingNumber(followData.followingNumber || 0);
+      }
+      getMyFlNumbers();
+    }
   }, [usernameFromParams, session?.user?.username])
+
+
+  if (usernameFromParams === session?.user?.username && (myFollowingNumber === -1 || myFollowersNumber === -1)) {
+    return <Loading />
+  }
 
   if (session === undefined) {
     return <Loading />
@@ -139,11 +179,11 @@ export default function ProfilePage() {
 
               <div className="flex gap-4">
                 <p className="cursor-pointer text-gray-700 text-lg font-medium bg-gray-100 px-3 py-1 rounded-full inline-block shadow-sm">
-                  0 following &nbsp;
+                  {myFollowingNumber} following &nbsp;
                 </p>
 
                 <p className="cursor-pointer text-gray-700 text-lg font-medium bg-gray-100 px-3 py-1 rounded-full inline-block shadow-sm">
-                  0 followers
+                  {myFollowersNumber} followers
                 </p>
               </div>
             </div>
@@ -248,11 +288,11 @@ export default function ProfilePage() {
 
             <div className="flex gap-4">
               <p className="cursor-pointer text-gray-700 text-lg font-medium bg-gray-100 px-3 py-1 rounded-full inline-block shadow-sm">
-                0 following &nbsp;
+                {anotherUser.followingNumber} following &nbsp;
               </p>
               
               <p className="cursor-pointer text-gray-700 text-lg font-medium bg-gray-100 px-3 py-1 rounded-full inline-block shadow-sm">
-                0 followers
+                {anotherUser.followersNumber} followers
               </p>
             </div>
           </div>

@@ -17,8 +17,13 @@ export const POST = async (req: Request) => {
             bio: true,
             profilePic: true,
             createdAt: true,
+            followersList:true,
+            followingList:true
         }
     });
+
+    const followersNumber = anotherUser?.followersList.length;
+    const followingNumber = anotherUser?.followingList.length;
 
     const me = await prisma.user.findUnique({
         where:{
@@ -33,7 +38,9 @@ export const POST = async (req: Request) => {
 
     const data = {
         ...anotherUser,
-        following: followingList?.includes(username)
+        following: followingList?.includes(username),
+        followersNumber:followersNumber,
+        followingNumber:followingNumber
     }
 
     return NextResponse.json({data}, {status: 200})
