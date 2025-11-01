@@ -3,22 +3,38 @@ import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
 
-    const {username} = await req.json();
+    const {username, sessionUsername} = await req.json();
 
     const anotherUser = await prisma.user.findUnique({
         where:{
-            username:username
+            username: username
         },
         select:{
-            username:true,
-            lastName:true,
-            firstName:true,
-            birthDate:true,
-            bio:true,
-            profilePic:true,
-            createdAt:true,
+            username: true,
+            lastName: true,
+            firstName: true,
+            birthDate: true,
+            bio: true,
+            profilePic: true,
+            createdAt: true,
+        }
+    });
+
+    const me = await prisma.user.findUnique({
+        where:{
+            username: sessionUsername
+        },
+        select:{
+            followingList: true
         }
     })
 
-    return NextResponse.json({anotherUser},{status:200})
+    const followingList = me?.followingList;
+
+    const data = {
+        ...anotherUser,
+        following: followingList?.includes(username)
+    }
+
+    return NextResponse.json({data}, {status: 200})
 }
