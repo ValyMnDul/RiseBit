@@ -1,17 +1,50 @@
-import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma"
+import { NextResponse } from "next/server"
 
-export const GET= async () =>{
+export const POST = async (request: Request) => {
+    const { sessionUsername } = await request.json()
+
     try {
         const posts = await prisma.post.findMany({
-            orderBy:{
-                createdAt:"desc"
+            orderBy: {
+                createdAt: "desc"
             }
-        });
-        return NextResponse.json( posts, {status:200});
+        })
+
+        const usernames = [...new Set(posts.map(p => p.username))]
+
+        const users = await prisma.user.findMany({
+            where: {
+                username: { in: usernames }
+            },
+            select: {
+                username: true,
+                profilePic: true
+            }
+        })
+
+        let followingList: string[] = []
+        if (sessionUsername) {
+            const currentUser = await prisma.user.findUnique({
+                where: { username: sessionUsername },
+                select: { followingList: true }
+            })
+            followingList = currentUser?.followingList || []
+        }
+
+        const postsWithDetails = posts.map(post => {
+            const user = users.find(u => u.username === post.username)
+            return {
+                ...post,
+                profilePic: user?.profilePic || '/defaultUser.png',
+                following: followingList.includes(post.username)
+            }
+        })
+
+        return NextResponse.json(postsWithDetails, { status: 200 })
     }
     catch (error) {
-        if (error){}
-        return NextResponse.json({message:"Internal Server Error"}, {status:500});
+        console.error(error)
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 })
     }
 }

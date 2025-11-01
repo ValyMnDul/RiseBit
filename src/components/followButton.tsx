@@ -1,74 +1,77 @@
 'use client'
 
-import React from "react";
-import {useRouter} from "next/navigation";
-import { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 
-export default function FollowButton({ sessionUsername ,postUsername ,following}:{
-    sessionUsername:string,
-    postUsername:string,
-    following:boolean
+export default function FollowButton({ sessionUsername, postUsername, following }: {
+    sessionUsername: string,
+    postUsername: string,
+    following: boolean
 }) {
-
-    const router = useRouter();
-    const [isFollowing,setIsFollowing] =useState<boolean>(following)
+    const router = useRouter()
+    const [isFollowing, setIsFollowing] = useState<boolean>(following)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        setIsFollowing(following);
-    }, [following]);
+        setIsFollowing(following)
+    }, [following])
 
-    const followButtonHandler = async (e:React.MouseEvent) => {
+    const followButtonHandler = async (e: React.MouseEvent) => {
+        e.stopPropagation()
 
-        e.stopPropagation();
+        if (isLoading) return
 
-        if(isFollowing === false){
-            await fetch('/api/follow',{
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
+        setIsLoading(true)
+
+        try {
+            await fetch('/api/follow', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
                 },
-                body:JSON.stringify({sessionUsername,postUsername})
-            });
-        }
-
-        else {
-            await fetch('/api/unfollow',{
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({sessionUsername,postUsername})
+                body: JSON.stringify({
+                    sessionUsername,
+                    postUsername,
+                    action: isFollowing ? "unfollow" : "follow"
+                })
             })
-        }
 
-        setIsFollowing((p)=>(!p))
+            setIsFollowing(prev => !prev)
+        } catch (error) {
+            console.error("Follow error:", error)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
-    if(sessionUsername === postUsername){
+    if (sessionUsername === postUsername) {
         return (
-        <button
-        onClick={()=>{
-            router.push(`/profiles/${sessionUsername}`);
-        }}
-        className="px-4 py-1.5 rounded-lg font-semibold text-transparent bg-clip-text 
+            <button
+                onClick={(e) => {
+                    e.stopPropagation()
+                    router.push(`/profiles/${sessionUsername}`)
+                }}
+                className="px-4 py-1.5 rounded-lg font-semibold text-transparent bg-clip-text 
                     bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 
                     border border-indigo-300 hover:border-pink-400 
                     transition-all duration-300 hover:scale-105 active:scale-95"
-        >
-            View Profile
-        </button>
-    )
+            >
+                View Profile
+            </button>
+        )
     }
 
     return (
         <button
-        onClick={(e)=>{followButtonHandler(e)}}
-        className="px-4 py-1.5 rounded-lg font-semibold text-transparent bg-clip-text 
-                    bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 
-                    border border-indigo-300 hover:border-pink-400 
-                    transition-all duration-300 hover:scale-105 active:scale-95"
+            onClick={followButtonHandler}
+            disabled={isLoading}
+            className={`px-4 py-1.5 rounded-lg font-semibold text-transparent bg-clip-text 
+                bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 
+                border border-indigo-300 hover:border-pink-400 
+                transition-all duration-300 hover:scale-105 active:scale-95
+                ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-            {isFollowing ? "Unfollow":"Follow"}
+            {isLoading ? "..." : (isFollowing ? "Unfollow" : "Follow")}
         </button>
     )
 }
