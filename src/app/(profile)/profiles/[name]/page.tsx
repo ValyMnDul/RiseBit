@@ -142,7 +142,9 @@ export default function ProfilePage() {
         setMyFollowersNumber(followData.followersNumber || 0);
         setMyFollowingNumber(followData.followingNumber || 0);
       }
-      getMyFlNumbers();
+      if(usernameFromParams && session?.user?.username !== undefined){
+        getMyFlNumbers();
+      }
     }
   }, [usernameFromParams, session?.user?.username])
 
