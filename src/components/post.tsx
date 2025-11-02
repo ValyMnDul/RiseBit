@@ -10,7 +10,8 @@ export default function Post({
     updatedAt,
     profilePic,
     following,
-    sessionUsername
+    sessionUsername,
+    followersNumber
 }:{
     username: string,
     subtitle: string,
@@ -18,7 +19,8 @@ export default function Post({
     updatedAt: string,
     profilePic: string,
     following: boolean,
-    sessionUsername: string
+    sessionUsername: string,
+    followersNumber:number
 }) {
     const router = useRouter()
 
@@ -43,7 +45,7 @@ export default function Post({
                             {username}
                         </h2>
                         <p className="text-sm text-gray-500">
-                            0 followers
+                            {followersNumber} followers
                         </p>
                     </div>
                 </div>

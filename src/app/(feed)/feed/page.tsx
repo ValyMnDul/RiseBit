@@ -15,6 +15,7 @@ export default function Feed(){
         updatedAt: string,
         profilePic: string,
         following: boolean, 
+        followersNumber:number
     }>>([])
 
     const [loading, setLoading] = useState(true)
@@ -81,6 +82,7 @@ export default function Feed(){
                         profilePic={post.profilePic}
                         following={post.following}
                         sessionUsername={sessionUsername}
+                        followersNumber={post.followersNumber}
                     />
                 ))
             : <p className="mt-8 text-gray-500">No posts yet</p>}

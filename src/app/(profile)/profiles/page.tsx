@@ -10,7 +10,7 @@ export default function ProfilesPage() {
   const {data:session} = useSession();
   const sessionUsername = session?.user?.username || "";
 
-  const [users, setUsers] = useState<Array<{username: string, profilePic: string,following:boolean}>>([]);
+  const [users, setUsers] = useState<Array<{username: string, profilePic: string,following:boolean,followersNumber:number}>>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function ProfilesPage() {
       setUsers(allUsers);
       setLoading(false);
     }
-    if(sessionUsername != undefined){
+    if(sessionUsername != ""){
       getAllUsers();
     }
   }, [sessionUsername]);
@@ -55,6 +55,7 @@ export default function ProfilesPage() {
           username={user.username} 
           profilePic={user.profilePic || "/defaultUser.png"} 
           following={user.following}
+          followersNumber={user.followersNumber}
           />
         ))}
       </div>

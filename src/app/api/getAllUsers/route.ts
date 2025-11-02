@@ -11,7 +11,8 @@ export async function POST(req:Request) {
         },
         select: {
             username: true,
-            profilePic: true
+            profilePic: true,
+            followersList:true,
         },
     });
 
@@ -29,7 +30,8 @@ export async function POST(req:Request) {
     const data = users.map((user)=>{
         return {
             ...user,
-            following:followingList?.includes(user.username)
+            following:followingList?.includes(user.username),
+            followersNumber:user.followersList.length
         }
     })
 

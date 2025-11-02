@@ -19,7 +19,8 @@ export const POST = async (request: Request) => {
             },
             select: {
                 username: true,
-                profilePic: true
+                profilePic: true,
+                followersList:true
             }
         })
 
@@ -37,7 +38,8 @@ export const POST = async (request: Request) => {
             return {
                 ...post,
                 profilePic: user?.profilePic || '/defaultUser.png',
-                following: followingList.includes(post.username)
+                following: followingList.includes(post.username),
+                followersNumber:user?.followersList.length
             }
         })
 

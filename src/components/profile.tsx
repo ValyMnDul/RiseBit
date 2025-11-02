@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import FollowButton from "./followButton";
 import { useSession } from "next-auth/react";
 
-export default function Profile({username, profilePic , following}: {username: string, profilePic: string , following:boolean}) {
+export default function Profile({username, profilePic , following,followersNumber}: {username: string, profilePic: string , following:boolean , followersNumber:number}) {
 
     const {data:session} = useSession();
     const router = useRouter();
@@ -45,7 +45,7 @@ export default function Profile({username, profilePic , following}: {username: s
                         <p
                         className="text-sm text-gray-500"
                         >
-                            0 followers
+                            {followersNumber} followers
                         </p>
 
                     </div>
