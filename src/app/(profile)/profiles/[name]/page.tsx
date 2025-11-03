@@ -198,6 +198,9 @@ export default function ProfilePage() {
               >
                 <p 
                 className="cursor-pointer text-gray-700 text-lg font-medium bg-gray-100 px-3 py-1 rounded-full inline-block shadow-sm"
+                onClick={()=>{
+                  router.push(`/profiles/${usernameFromParams}/following`)
+                }}
                 >
                   {myFollowingNumber} following &nbsp;
 
@@ -205,6 +208,9 @@ export default function ProfilePage() {
 
                 <p 
                 className="cursor-pointer text-gray-700 text-lg font-medium bg-gray-100 px-3 py-1 rounded-full inline-block shadow-sm"
+                onClick={()=>{
+                  router.push(`/profiles/${usernameFromParams}/followers`)
+                }}
                 >
                   {myFollowersNumber} followers
                 </p>
