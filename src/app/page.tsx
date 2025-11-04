@@ -76,24 +76,6 @@ export default function Main() {
         </div>
 
         <div 
-        className="mt-20 relative w-full flex justify-center"
-        >
-          <div 
-          className="w-[85%] max-w-5xl rounded-3xl overflow-hidden shadow-2xl"
-          >
-            <Image
-            src="/preview.png"
-            alt="App Preview"
-            width={1600}
-            height={900}
-            className="object-cover w-full h-auto"
-            priority
-            />
-          </div>
-
-        </div>
-
-        <div 
         className="mt-20 text-gray-500 text-lg font-medium"
         >
           Small connections create 

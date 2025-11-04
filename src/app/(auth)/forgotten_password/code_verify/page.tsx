@@ -2,16 +2,31 @@
 
 import Link from "next/link"
 import { useEffect,useState,useRef } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Loading from "@/components/loading";
 
 export default function CodeVerify(){
 
-    useEffect(() => {
-        if (!localStorage.getItem('email')) {
-            global.location.href = '/forgotten_password';
-        }
-    }, []);
+    const { data:session } = useSession();
+    const searchParams = useSearchParams();
+    const router = useRouter()
 
-    const [email,setEmail]=useState<string|null>(null);
+    useEffect(()=>{
+        if(session){
+            router.push(`/profiles/${session.user?.username}`)
+        }
+    },[session,router])
+
+    useEffect(() => {
+        if (searchParams?.size === 0 && router) {
+            router.push('/forgotten_password');
+        }
+    }, [searchParams,router]);
+
+    const email = searchParams.get("email");
+    console.log(email)
     const message=useRef<HTMLParagraphElement>(null);
     const submitButton=useRef<HTMLButtonElement>(null);
     const resendButton=useRef<HTMLAnchorElement>(null);
@@ -19,42 +34,42 @@ export default function CodeVerify(){
     const [timeLeft,setTimeLeft]=useState<number>(120);
     if(timeLeft){}
 
-    useEffect(()=>{
-        setEmail(localStorage.getItem("email"));
-    },[])
 
     const handleSubmit=async (e:React.FormEvent<HTMLFormElement>)=>{
+
         e.preventDefault();
 
         submitButton.current!.disabled = true; 
 
-        const form=e.currentTarget;
-        const inputCode=form.code.value;
+        const form = e.currentTarget;
+        const inputCode = form.code.value;
 
-        const res=await fetch('/api/forgotten_password/code_verify',{
+        const res = await fetch('/api/forgotten_password/code_verify', {
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
             },
-            body:JSON.stringify({email})
+            body:JSON.stringify({
+                email:email,
+                inputCode:inputCode
+            })
         })
 
-        const data=await res.json();
-        const code= data.code;
+        const {resMessage} = await res.json();
 
-        if(code===inputCode){
-            message.current!.textContent = 'Code verified!';
+        if(res.status === 200 ){
+            message.current!.textContent = resMessage;
             message.current!.style.color = 'green';
 
-            localStorage.setItem('FPPass','true');
 
             setTimeout(() => {
-                global.location.href = '/forgotten_password/code_verify/new_password';
+                router.push(`/forgotten_password/code_verify/new_password?email=${email}`);
             }, 2000);
         }
         else{
-            message.current!.textContent = 'Invalid code. Try again.';
+            message.current!.textContent = resMessage;
             message.current!.style.color = 'red';
+            submitButton.current!.disabled = false; 
         }
 
         form.reset();
@@ -62,12 +77,13 @@ export default function CodeVerify(){
 
     const resendEmail = async ()=>{
 
-
         resendButton.current!.style.pointerEvents = 'none';
         resendButton.current!.style.opacity = '0.5';
 
         const interval = globalThis.setInterval(() => {
+
         setTimeLeft((prev) => {
+
             const newTime = prev - 1;
             resendButton.current!.textContent = `${newTime}s`;
 
@@ -82,10 +98,9 @@ export default function CodeVerify(){
 
             return newTime;
         });
+
         }, 1000);
-
-
-        
+   
 
         const res=await fetch('/api/forgotten_password',{
             method:"POST",
@@ -99,10 +114,14 @@ export default function CodeVerify(){
             message.current!.textContent = 'The code has been resent via email!';
             message.current!.style.color = 'green';
         }
-        else{
+        else {
             message.current!.textContent = 'Error. Try again.';
             message.current!.style.color = 'red';
         }
+    }
+
+    if(session === undefined) {
+        return <Loading/>
     }
 
     return (

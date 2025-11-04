@@ -22,15 +22,13 @@ export default function ForgottenPassword(){
     const submitButton=useRef<HTMLButtonElement>(null);
 
     const handleSubmit=async (e:React.FormEvent<HTMLFormElement>)=>{
+
         e.preventDefault();
 
         submitButton.current!.disabled = true; 
 
         const form=e.currentTarget;
         const email=form.email.value;
-
-        localStorage.setItem('email',email);
-        localStorage.setItem('FPPass','false');
         
         const res=await fetch('/api/forgotten_password',{
             method:"POST",
@@ -43,18 +41,20 @@ export default function ForgottenPassword(){
         const data=await res.json();
 
         if (res.status === 200) {
+
             message.current!.textContent = data.message;
             message.current!.style.color = 'green';
+
+            form.reset();
+
+            setTimeout(() => {
+                router.push(`/forgotten_password/code_verify?email=${email}`);
+            }, 2000);
         }
         else {
             message.current!.textContent = 'Error. Try again.';
             message.current!.style.color = 'red';
         }
-
-        form.reset();
-        setTimeout(() => {
-            global.location.href = '/forgotten_password/code_verify';
-        }, 2000);
     }
 
     if(session===undefined){

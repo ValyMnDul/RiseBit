@@ -160,7 +160,7 @@ export default function ProfilePage() {
   if (usernameFromParams === session?.user?.username) {
     return (
       <main 
-      className="flex justify-center items-center"
+      className="flex flex-1 justify-center items-center"
       >
         <div 
         className="flex flex-col items-center justify-center flex-1 max-w-220 px-4 py-6 -mb-5"
@@ -184,7 +184,7 @@ export default function ProfilePage() {
           className="bg-white shadow-lg rounded-2xl p-7 w-full max-w-2xl shrink-0"
           >
             <div 
-            className="flex justify-between items-center text-center mb-5"
+            className="flex flex-1 justify-between items-center text-center mb-5"
             >
               <h2 
               className="text-3xl font-bold text-center">
@@ -220,7 +220,7 @@ export default function ProfilePage() {
             </div>
 
             <div 
-            className="flex flex-col gap-2.5 text-gray-800 text-xl"
+            className="flex flex-col flex-1 gap-2.5 text-gray-800 text-xl"
             >
               <div 
               className="flex justify-between border-b border-gray-200 pb-2"
@@ -343,7 +343,7 @@ export default function ProfilePage() {
   
   return (
     <main 
-    className="flex justify-center items-center"
+    className="flex flex-1 justify-center items-center"
     >
       <div 
       className="flex flex-col items-center justify-center flex-1 max-w-220 px-4 py-6 -mb-5"

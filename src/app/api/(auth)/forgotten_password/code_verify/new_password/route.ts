@@ -30,5 +30,11 @@ export const POST = async (req:Request)=>{
         return NextResponse.json({message: 'Error updating password.'}, {status: 500});
     }
 
+    await prisma.passwordReset.deleteMany({
+        where:{
+            email:email
+        }
+    })
+
     return NextResponse.json({message: 'Password updated successfully.'}, {status: 200});
 }

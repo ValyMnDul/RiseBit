@@ -33,6 +33,7 @@ model PasswordReset {
   id        Int   @id @default(autoincrement())
   email     String
   code      String
+  succes    Boolean  @default(false)
   createdAt DateTime @default(now())
 }
 

@@ -1,27 +1,65 @@
 'use client'
  
 import Link from "next/link"
-import { useRef,useEffect,useState } from "react";
+import { useRef,useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Loading from "@/components/loading";
 
 export default function NewPassword(){
 
-    useEffect(()=>{
-        if(localStorage.getItem('FPPass')!=='true'){
-            global.location.href = '/forgotten_password/code_verify';
+    const { data:session } = useSession();
+    const searchParams = useSearchParams();
+    const router = useRouter();
+
+    const email = searchParams.get('email');
+
+    useEffect(() => {
+        if (searchParams?.size === 0 && router) {
+            router.push('/forgotten_password');
         }
-    },[])
+    }, [searchParams,router]);
+
+    useEffect(()=>{
+        if(session){
+            router.push(`/profiles/${session.user?.username}`)
+        }
+    },[session,router])
+
+    useEffect(()=>{
+
+        const getSuccesValue = async () => {
+
+            const succesValueRes = await fetch('/api/forgotten_password/code_verify/new_password/getSuccesValue',{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    email:email
+                })
+            });
+
+            const { succesValue } = await succesValueRes.json();
+            
+            if(!succesValue){
+                router.push(`/forgotten_password`);
+            }
+        }
+
+        if(searchParams){
+            getSuccesValue();
+        }
+
+    },[email,searchParams,router])
+
 
     const message=useRef<HTMLParagraphElement>(null);
-
-    const [email,setEmail]=useState<string|null>(null);
     const submitButton=useRef<HTMLButtonElement>(null);
 
-    useEffect(()=>{
-        setEmail(localStorage.getItem("email"));
-    },[])
-
-
     const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
+
         e.preventDefault();
 
         submitButton.current!.disabled = true;
@@ -53,7 +91,10 @@ export default function NewPassword(){
             message.current!.textContent = data.message;
             message.current!.style.color = 'red';
         }
+    }
 
+    if(session === undefined) {
+        return <Loading />
     }
 
     return (
