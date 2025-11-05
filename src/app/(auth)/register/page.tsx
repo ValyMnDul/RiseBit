@@ -108,23 +108,26 @@ export default function Register(){
 
     return (
         <form 
-        className="flex flex-col gap-4 w-1/3 mx-auto mt-10" 
+        className="flex flex-col gap-4 w-full sm:w-[90%] md:w-[80%] lg:w-[60%] 
+        xl:w-[50%] 2xl:w-[40%] mx-auto mt-8 sm:mt-12 md:mt-16 
+        lg:mt-20 px-4 sm:px-6 mb-12" 
         onSubmit={handleSubmit}
         >
             <p 
-            className="text-[70px] font-bold text-center select-none"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl 
+            font-bold text-center select-none"
             >
-                Register
+                Register 
             </p>
 
             <div 
-            className="flex gap-x-4 justify-between"
+            className="flex flex-col sm:flex-row gap-4 sm:gap-x-4 justify-between"
             >
                 <div 
-                className="flex flex-col gap-y-2"
+                className="flex flex-col gap-y-2 flex-1"
                 >
                     <label 
-                    className="text-[1.4rem]" 
+                    className="text-lg sm:text-xl md:text-2xl" 
                     htmlFor="firstName" 
                     >
                         First Name
@@ -137,16 +140,17 @@ export default function Register(){
                     maxLength={50} 
                     required
                     autoComplete="first-name"
-                    className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-full" 
+                    className="border rounded h-10 sm:h-11 md:h-12 text-base 
+                    sm:text-lg md:text-xl px-2.5 w-full" 
                     ></input>
 
                 </div>
 
                 <div 
-                className="flex flex-col gap-y-2"
+                className="flex flex-col gap-y-2 flex-1"
                 >
                     <label 
-                    className="text-[1.4rem]" 
+                    className="text-lg sm:text-xl md:text-2xl" 
                     htmlFor="lastName"
                     >
                         Last Name
@@ -155,7 +159,8 @@ export default function Register(){
                     <input  
                     required 
                     maxLength={50} 
-                    className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-full" 
+                    className="border rounded h-10 sm:h-11 md:h-12 text-base 
+                    sm:text-lg md:text-xl px-2.5 w-full" 
                     name="lastName" 
                     id="lastName" 
                     type="text"
@@ -170,7 +175,7 @@ export default function Register(){
             className="flex flex-col gap-y-2"
             >
                 <label 
-                className="text-[1.4rem]" 
+                className="text-lg sm:text-xl md:text-2xl" 
                 htmlFor="email"
                 >
                     Email
@@ -183,19 +188,20 @@ export default function Register(){
                 name="email" 
                 maxLength={100} 
                 autoComplete="email"
-                className="border rounded h-10 text-[21px] pl-2.5 pr-2.5"
+                className="border rounded h-10 sm:h-11 md:h-12 text-base 
+                sm:text-lg md:text-xl px-2.5"
                 ></input>
 
             </div>
 
             <div 
-            className="flex gap-x-4 justify-between"
+            className="flex flex-col sm:flex-row gap-4 sm:gap-x-4 justify-between"
             >
                 <div 
-                className="flex flex-col gap-y-2"
+                className="flex flex-col gap-y-2 flex-1"
                 >
                     <label 
-                    className="text-[1.4rem]" 
+                    className="text-lg sm:text-xl md:text-2xl" 
                     htmlFor="password"
                     >
                         Password
@@ -209,16 +215,17 @@ export default function Register(){
                     name="password" 
                     minLength={6} 
                     maxLength={200} 
-                    className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-full" 
+                    className="border rounded h-10 sm:h-11 md:h-12 text-base 
+                    sm:text-lg md:text-xl px-2.5 w-full" 
                     ></input>
 
                 </div>
 
                 <div 
-                className="flex flex-col gap-y-2"
+                className="flex flex-col gap-y-2 flex-1"
                 >
                     <label 
-                    className="text-[1.4rem]" 
+                    className="text-lg sm:text-xl md:text-2xl" 
                     htmlFor="cPassword"
                     >
                         Confirm Password
@@ -232,7 +239,8 @@ export default function Register(){
                     name="cPassword" 
                     minLength={6} 
                     maxLength={200} 
-                    className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-full" 
+                    className="border rounded h-10 sm:h-11 md:h-12 text-base 
+                    sm:text-lg md:text-xl px-2.5 w-full" 
                     ></input>
 
                 </div>
@@ -240,14 +248,14 @@ export default function Register(){
             </div>
 
             <div 
-            className="flex gap-x-4 justify-between"
+            className="flex flex-col sm:flex-row gap-4 sm:gap-x-4 justify-between"
             >
 
                 <div 
-                className="flex flex-col gap-y-2"
+                className="flex flex-col gap-y-2 flex-1"
                 >
                     <label 
-                    className="text-[1.4rem]" 
+                    className="text-lg sm:text-xl md:text-2xl" 
                     htmlFor="userName"
                     >
                         User Name
@@ -261,16 +269,17 @@ export default function Register(){
                     minLength={2} 
                     maxLength={20} 
                     autoComplete="username"
-                    className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-full" 
+                    className="border rounded h-10 sm:h-11 md:h-12 text-base 
+                    sm:text-lg md:text-xl px-2.5 w-full" 
                     ></input>
 
                 </div>
 
                 <div 
-                className="flex flex-col gap-y-2"
+                className="flex flex-col gap-y-2 flex-1"
                 >
                     <label 
-                    className="text-[1.4rem]" 
+                    className="text-lg sm:text-xl md:text-2xl" 
                     htmlFor="birth"
                     >
                         Date of birth
@@ -282,7 +291,8 @@ export default function Register(){
                     id="birth" 
                     name="birth" 
                     autoComplete="bday"
-                    className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-[175px]" 
+                    className="border rounded h-10 sm:h-11 md:h-12 text-base 
+                    sm:text-lg md:text-xl px-2.5 w-full" 
                     ></input>
 
                 </div>
@@ -293,7 +303,7 @@ export default function Register(){
             <div>
 
                 <label 
-                className="text-[1.4rem]" 
+                className="text-lg sm:text-xl md:text-2xl" 
                 htmlFor="file"
                 >
                     Profile Photo (optional)
@@ -304,7 +314,8 @@ export default function Register(){
                 name="file" 
                 accept="image/*" 
                 id="file" 
-                className="border rounded h-10 text-[21px] pl-2.5 pr-2.5 w-full mt-2.5"
+                className="border rounded h-10 sm:h-11 md:h-12 text-base sm:text-lg 
+                md:text-xl px-2.5 w-full mt-2.5"
                 onChange={async (e)=>{
                     const f = e.target.files?.[0];
                     if(f){
@@ -322,7 +333,9 @@ export default function Register(){
                     height={300} 
                     src={preview} 
                     alt="Preview" 
-                    className="rounded-full object-cover mt-5 mb-5 border-4 border-white mx-auto" 
+                    className="rounded-full object-cover mt-5 mb-5 border-4 border-white 
+                    mx-auto w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-[300px] 
+                    lg:h-[300px]" 
                     style={{aspectRatio:"1 / 1"}}
                     ></Image>
                     
@@ -331,18 +344,20 @@ export default function Register(){
 
             </div>
 
-            <div>
+            <div 
+            className="flex items-center gap-2"
+            >
 
                 <input 
                 required 
                 type="checkbox" 
                 id="terms" 
                 name="terms" 
-                className="ml-2 scale-150"
+                className="scale-125 sm:scale-150"
                 ></input>
 
                 <label 
-                className="text-[1.2rem] ml-4" 
+                className="text-base sm:text-lg md:text-xl" 
                 htmlFor="terms"
                 >
                     I agree to the Terms and Conditions
@@ -354,7 +369,9 @@ export default function Register(){
             <button 
             ref={submitButton}
             type="submit" 
-            className="bg-blue-500 text-white rounded px-4 py-2 mt-4 select-none"
+            className="bg-blue-500 text-white text-lg sm:text-xl rounded px-4 
+            py-2 sm:py-3 mt-4 select-none hover:bg-blue-600 transition-colors 
+            duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 Submit
             </button>
@@ -363,7 +380,7 @@ export default function Register(){
 
                 <Link 
                 href="/login" 
-                className="text-blue-900 text-lg"
+                className="text-blue-900 text-base sm:text-lg hover:underline"
                 >
                     Already have an account? Login
                 </Link>
@@ -371,7 +388,7 @@ export default function Register(){
             </div>
 
             <p 
-            className="mb-[50px]" 
+            className="text-sm sm:text-base text-center" 
             ref={message}
             >
                 Accounts are for demo purposes only. Do not use real information.

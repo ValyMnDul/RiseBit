@@ -66,11 +66,11 @@ export default function Login(){
 
     return(
         <form 
-        className="flex flex-col gap-y-4 w-1/3 mx-auto mt-[100px]" 
+        className="flex flex-col gap-y-4 w-full sm:w-[90%] md:w-[70%] lg:w-[50%] xl:w-[40%] 2xl:w-[33%] mx-auto mt-32 sm:mt-40 md:mt-28 lg:mt-32 px-4 sm:px-6" 
         onSubmit={handleSubmit}
         >
             <p 
-            className="text-[80px] font-bold text-center select-none"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-center select-none"
             >
                 Login
             </p>
@@ -79,7 +79,7 @@ export default function Login(){
             className="flex flex-col gap-y-2"
             >
                 <label 
-                className="text-[1.4rem]" 
+                className="text-lg sm:text-xl md:text-2xl" 
                 htmlFor="email"
                 >
                     Email
@@ -92,7 +92,7 @@ export default function Login(){
                 name="email" 
                 maxLength={100} 
                 autoComplete="email"
-                className="border rounded h-10 text-[21px] pl-2.5 pr-2.5"
+                className="border rounded h-10 sm:h-11 md:h-12 text-base sm:text-lg md:text-xl px-2.5"
                 ></input>
 
             </div>
@@ -101,7 +101,7 @@ export default function Login(){
             className="flex flex-col gap-y-2"
             >
                 <label 
-                className="text-[1.4rem]" 
+                className="text-lg sm:text-xl md:text-2xl" 
                 htmlFor="password"
                 >
                     Password
@@ -114,7 +114,7 @@ export default function Login(){
                 name="password" 
                 minLength={6} 
                 maxLength={200} 
-                className="border rounded text-[21px] h-10 pl-2.5 pr-2.5"
+                className="border rounded text-base sm:text-lg md:text-xl h-10 sm:h-11 md:h-12 px-2.5"
                 autoComplete="current-password"
                 ></input>
 
@@ -123,22 +123,24 @@ export default function Login(){
             <button 
             type="submit" 
             ref={submitButton}
-            className="bg-blue-500 text-white text-xl rounded px-4 py-2 mt-4 select-none"
+            className="bg-blue-500 text-white text-lg sm:text-xl rounded px-4 py-2 sm:py-3 mt-4 select-none hover:bg-blue-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 Submit
             </button>
 
-            <div>
+            <div 
+            className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4"
+            >
                 <Link 
                 href="/register" 
-                className="text-blue-900 text-lg"
+                className="text-blue-900 text-base sm:text-lg hover:underline"
                 >
                     Don&apos;t have an account? Register
                 </Link>
 
                 <Link 
                 href="/forgotten_password" 
-                className="text-blue-900 text-lg float-right"
+                className="text-blue-900 text-base sm:text-lg hover:underline"
                 >
                     Forgot Password?
                 </Link>
@@ -147,7 +149,7 @@ export default function Login(){
 
             <p 
             ref={message} 
-            className="text-center text-[18px]"
+            className="text-center text-base sm:text-lg"
             ></p>
 
         </form>
