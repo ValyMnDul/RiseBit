@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 
 export default function ProfilesPage() {
 
-  const {data:session} = useSession();
+  const {data:session, status} = useSession();
   const sessionUsername = session?.user?.username || "";
 
   const [users, setUsers] = useState<Array<{username: string, profilePic: string,following:boolean,followersNumber:number}>>([]);
@@ -15,25 +15,40 @@ export default function ProfilesPage() {
 
   useEffect(() => {
     const getAllUsers = async () => {
-      const res = await fetch('/api/getAllUsers',{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({sessionUsername})
-      });
+      try {
 
-      const allUsers = (await res.json()).data;
-      setUsers(allUsers);
-      setLoading(false);
+        const res = await fetch('/api/getAllUsers', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ sessionUsername })
+        });
+
+        const allUsers = (await res.json()).data;
+        setUsers(allUsers);
+
+      } 
+      catch (error) {
+
+        console.error("Error fetching users:", error);
+
+      } 
+      finally {
+
+        setLoading(false);
+
+      }
     }
-    if(sessionUsername != ""){
+    
+    if(status !== "loading"){
       getAllUsers();
     }
-  }, [sessionUsername]);
+    
+  }, [sessionUsername, status]);
 
 
-  if (loading) {
+  if (loading || status === "loading") {
     return <Loading />
   }
       

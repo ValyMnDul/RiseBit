@@ -37,14 +37,8 @@ export default function Feed(){
             }
         }
 
-        if (status === "loading") {
-            return
-        }
-
-        if (sessionUsername) {
+        if (status !== "loading") {
             fetchData()
-        } else {
-            setLoading(false)
         }
     }, [sessionUsername, status])
 
@@ -53,7 +47,8 @@ export default function Feed(){
     }
 
     return (
-        <main className="w-full h-full flex flex-col items-center">
+        <main 
+        className="w-full h-full flex flex-col items-center">
             <input
                 name="searchBar"
                 type="text"
@@ -68,24 +63,35 @@ export default function Feed(){
                 }}
             >
                 Create Post
-                <span className="absolute inset-0 rounded-xl bg-white/10 opacity-0 hover:opacity-10 transition-opacity duration-300"></span>
+                <span 
+                className="absolute inset-0 rounded-xl bg-white/10 opacity-0 hover:opacity-10 transition-opacity duration-300"
+                ></span>
+
             </button>
 
-            {posts.length > 0 ? 
-                posts.map((post, i) => (
-                    <Post
-                        key={post.username + i}
-                        username={post.username}
-                        subtitle={post.subtitle}
-                        content={post.content}
-                        updatedAt={post.updatedAt} 
-                        profilePic={post.profilePic}
-                        following={post.following}
-                        sessionUsername={sessionUsername}
-                        followersNumber={post.followersNumber}
-                    />
-                ))
-            : <p className="mt-8 text-gray-500">No posts yet</p>}
+            {
+                posts.length > 0 ? 
+                    posts.map((post, i) => (
+                        <Post
+                            key={post.username + i}
+                            username={post.username}
+                            subtitle={post.subtitle}
+                            content={post.content}
+                            updatedAt={post.updatedAt} 
+                            profilePic={post.profilePic}
+                            following={post.following}
+                            sessionUsername={sessionUsername}
+                            followersNumber={post.followersNumber}
+                        />
+                    ))
+                : 
+                <p 
+                className="mt-8 text-gray-500"
+                >
+                    No posts yet
+                </p>
+            }
+
         </main>
     )
 }

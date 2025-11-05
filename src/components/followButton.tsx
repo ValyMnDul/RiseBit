@@ -2,13 +2,18 @@
 
 import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 
 export default function FollowButton({ sessionUsername, postUsername, following }: {
     sessionUsername: string,
     postUsername: string,
     following: boolean
 }) {
+
+    const { data:session } = useSession();
     const router = useRouter()
+    
+
     const [isFollowing, setIsFollowing] = useState<boolean>(following)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -17,9 +22,17 @@ export default function FollowButton({ sessionUsername, postUsername, following 
     }, [following])
 
     const followButtonHandler = async (e: React.MouseEvent) => {
+
         e.stopPropagation()
 
-        if (isLoading) return
+
+        if(session === undefined || isLoading){
+            return
+        }
+        
+        if(session === null){
+            router.push('/login');
+        }
 
         setIsLoading(true)
 
@@ -37,6 +50,7 @@ export default function FollowButton({ sessionUsername, postUsername, following 
             })
 
             setIsFollowing(prev => !prev)
+
         } catch (error) {
             console.error("Follow error:", error)
         } finally {
