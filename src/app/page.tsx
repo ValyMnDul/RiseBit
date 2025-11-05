@@ -10,13 +10,13 @@ export default function Main() {
       <Navbar />
 
       <main 
-      className="border-t border-gray-200 flex-1 flex flex-col items-center justify-center px-6 py-20 text-center"
+      className="border-t border-gray-200 flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-16 md:py-20 text-center"
       >
         <div 
-        className="max-w-5xl mx-auto"
+        className="max-w-5xl mx-auto w-full"
         >
           <h1 
-          className="text-6xl md:text-7xl font-extrabold text-center leading-tight"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-center leading-tight"
           >
             <span 
             className="text-transparent bg-clip-text bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 drop-shadow-sm"
@@ -37,18 +37,18 @@ export default function Main() {
           </h1>
 
           <p 
-          className="mt-6 text-lg text-gray-700 max-w-2xl mx-auto"
+          className="mt-4 sm:mt-6 text-base sm:text-lg text-gray-700 max-w-2xl mx-auto px-4"
           >
             RiseBit is a new kind of social space, fast, honest, and built around real connections.  
             Share your ideas, projects, and stories with people who truly care.
           </p>
 
           <div 
-          className="mt-10 flex flex-col sm:flex-row justify-center gap-4" 
+          className="mt-8 sm:mt-10 flex flex-col sm:flex-row justify-center gap-4 px-4" 
           >
             <Link
             href="/login"
-            className="flex justify-center items-center text-center px-10 py-4 font-semibold rounded-xl text-white bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg shadow-indigo-500/30 hover:shadow-pink-500/40 transition-all duration-300 hover:scale-105 active:scale-95"
+            className="flex justify-center items-center text-center px-8 sm:px-10 py-3 sm:py-4 font-semibold rounded-xl text-white bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg shadow-indigo-500/30 hover:shadow-pink-500/40 transition-all duration-300 hover:scale-105 active:scale-95"
             >
               Get Started
             </Link>
@@ -58,7 +58,7 @@ export default function Main() {
             className="flex justify-center items-center text-center relative rounded-xl p-0.5 bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 hover:scale-105 active:scale-95 transition-all duration-300"
             >
               <span 
-              className="block bg-white rounded-[inherit] px-10 py-4 text-center"
+              className="block bg-white rounded-[inherit] px-8 sm:px-10 py-3 sm:py-4 text-center"
               >
                 <span 
                 className="bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent font-semibold"
@@ -75,7 +75,7 @@ export default function Main() {
         </div>
 
         <div 
-        className="mt-20 text-gray-500 text-lg font-medium"
+        className="mt-12 sm:mt-16 md:mt-20 text-gray-500 text-base sm:text-lg font-medium px-4"
         >
           Small connections create 
           <span 
