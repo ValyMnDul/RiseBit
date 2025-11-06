@@ -498,7 +498,7 @@ export default function ProfilePage() {
           </div>
  
           <div 
-          className="flex justify-center gap-3 sm:gap-4 md:gap-8 mt-4 sm:mt-5 flex-wrap"
+          className="flex justify-between gap-3 sm:gap-4 md:gap-8 mt-4 sm:mt-5 flex-wrap"
           >
             <ViewBioButton 
             set={setIsBioOpen} 
