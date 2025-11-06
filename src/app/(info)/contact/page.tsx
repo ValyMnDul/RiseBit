@@ -40,16 +40,16 @@ export default function Contact(){
 
     return ( 
         <main 
-        className="max-w-2xl mx-auto py-12 px-6"
+        className="max-w-2xl mx-auto py-8 sm:py-10 md:py-12 px-4 sm:px-6"
         >
             <h1 
-            className="text-[50px] font-bold mb-6 text-center"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-center"
             >
                 Contact Us
             </h1>
 
             <p 
-            className="mb-6 text-center text-[22px]"
+            className="mb-6 text-center text-base sm:text-lg md:text-xl"
             >
                 We&apos;d love to hear from you! Whether you have questions, 
                 feedback, or collaboration ideas, reach out using the form below.
@@ -63,7 +63,8 @@ export default function Contact(){
                 type="text" 
                 name="name" 
                 placeholder="Your Name" 
-                className="border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                className="border rounded-xl p-3 text-sm sm:text-base 
+                focus:outline-none focus:ring-2 focus:ring-blue-500" 
                 required 
                 ></input>
 
@@ -71,20 +72,23 @@ export default function Contact(){
                 type="email" 
                 name="email" 
                 placeholder="Your Email" 
-                className="border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                className="border rounded-xl p-3 text-sm sm:text-base 
+                focus:outline-none focus:ring-2 focus:ring-blue-500" 
                 required 
                 ></input>
 
                 <textarea 
                 name="message" 
                 placeholder="Your Message" 
-                rows={6} className="border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                rows={6} className="border rounded-xl p-3 text-sm sm:text-base 
+                focus:outline-none focus:ring-2 focus:ring-blue-500" 
                 required
                 ></textarea>
 
                 <button 
                 type="submit" 
-                className="bg-blue-600 text-white rounded-xl p-3 hover:bg-blue-700 transition"
+                className="bg-blue-600 text-white text-base sm:text-lg rounded-xl 
+                p-3 hover:bg-blue-700 transition"
                 >
                     Send Message
                 </button>
@@ -93,45 +97,49 @@ export default function Contact(){
 
             <p 
             ref={sendMesRef} 
-            className="mt-6 text-center"
+            className="mt-6 text-center text-sm sm:text-base"
             ></p>
 
             <div 
-            className="mt-10 text-center text-gray-600"
+            className="mt-8 sm:mt-10 text-center text-gray-600"
             >
                 <p 
-                className="text-2xl"
+                className="text-base sm:text-lg md:text-xl"
                 >
                     Email: <strong>mindrilavasilevalentin@gmail.com</strong>
                 </p>
 
                 <div 
-                className="mt-[30px] flex justify-center space-x-4 text-gray-800 gap-x-5"
+                className="mt-6 sm:mt-8 flex justify-center space-x-4 sm:space-x-6 
+                text-gray-800"
                 >
                     <Github 
                     onClick={()=>{
                         global.open("https://github.com/valymndul","_blank");
                     }} 
-                    className="w-[70px] h-[70px] text-gray-700 cursor-pointer" 
+                    className="w-12 h-12 sm:w-16 sm:h-16 md:w-[70px] md:h-[70px] 
+                    text-gray-700 cursor-pointer hover:text-gray-900 transition" 
                     />
 
                     <Linkedin 
                     onClick={()=>{
                         global.open("https://www.linkedin.com/in/vasilemindrila/","_blank");
                     }} 
-                    className="w-[70px] h-[70px] text-gray-700 cursor-pointer" 
+                    className="w-12 h-12 sm:w-16 sm:h-16 md:w-[70px] md:h-[70px] 
+                    text-gray-700 cursor-pointer hover:text-gray-900 transition" 
                     />
 
                     <Instagram 
                     onClick={()=>{
                         global.open("https://www.instagram.com/valymnd/","_blank");
                     }} 
-                    className="w-[70px] h-[70px] text-gray-700 cursor-pointer" 
+                    className="w-12 h-12 sm:w-16 sm:h-16 md:w-[70px] md:h-[70px] 
+                    text-gray-700 cursor-pointer hover:text-gray-900 transition" 
                     />
 
                 </div>
                 <p 
-                className="mt-4 text-[20px] text-gray-600"
+                className="mt-4 text-sm sm:text-base md:text-lg text-gray-600"
                 >
                     Follow us on social media!
                 </p>
