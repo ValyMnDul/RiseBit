@@ -54,7 +54,7 @@ export default function ProfilesPage() {
       
   return (
     <main 
-    className="w-full h-full flex flex-col flex-1 items-center px-4 sm:px-6"
+    className="w-full flex flex-col flex-1 items-center px-4 sm:px-6 pb-6"
     >
       <input
       name="searchBar"
@@ -63,19 +63,27 @@ export default function ProfilesPage() {
       className="mt-6 px-4 py-2 border border-gray-400 rounded w-full sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
-      <div 
-      className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mt-6"
-      >
-        {users.map((user) => (
-          <Profile 
-          key={user.username} 
-          username={user.username} 
-          profilePic={user.profilePic || "/defaultUser.png"} 
-          following={user.following}
-          followersNumber={user.followersNumber}
-          />
-        ))}
-      </div>
+      {users.length > 0 ? (
+        <div 
+        className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mt-6"
+        >
+          {users.map((user) => (
+            <Profile 
+            key={user.username} 
+            username={user.username} 
+            profilePic={user.profilePic || "/defaultUser.png"} 
+            following={user.following}
+            followersNumber={user.followersNumber}
+            />
+          ))}
+        </div>
+      ) : (
+        <p 
+        className="mt-8 text-gray-500 text-base sm:text-lg"
+        >
+          No users found
+        </p>
+      )}
 
     </main>
   );

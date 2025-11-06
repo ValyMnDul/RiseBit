@@ -2,9 +2,11 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 export default function infoLayout({children}:{children:React.ReactNode}){
     return(
-        <div className="h-screen flex flex-col justify-between">
+        <div className="min-h-screen flex flex-col">
             <Navbar/>
-            {children}
+            <div className="flex-1 flex flex-col overflow-y-auto">
+                {children}
+            </div>
             <Footer/>
         </div>
     );

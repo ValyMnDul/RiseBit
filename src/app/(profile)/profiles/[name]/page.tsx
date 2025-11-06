@@ -160,54 +160,62 @@ export default function ProfilePage() {
   if (usernameFromParams === session?.user?.username) {
     return (
       <main 
-      className="flex flex-1 justify-center items-center"
+      className="flex flex-1 flex-col justify-center items-center px-4 sm:px-6 py-6 
+      overflow-y-auto"
       >
         <div 
-        className="flex flex-col items-center justify-center flex-1 max-w-220 px-4 py-6 -mb-5"
+        className="flex flex-col items-center w-full max-w-2xl"
         >
           <div 
-          className="relative w-75 h-75 mb-6 shrink-0"
+          className="relative w-48 h-48 sm:w-52 sm:h-52 md:w-56 md:h-56 lg:w-64 lg:h-64 
+          mb-4 sm:mb-6 shrink-0"
           >
             <Image
               priority
-              className="rounded-full border-4 border-white shadow-lg object-cover select-none"
+              className="rounded-full border-4 border-white shadow-lg object-cover 
+              select-none"
               style={{ aspectRatio: "1 / 1" }}
               src={session?.user?.profilePic || "/defaultUser.png"}
               alt="Profile Picture"
-              sizes="(max-width: 768px) 128px, 224px"
+              sizes="(max-width: 640px) 192px, (max-width: 768px) 208px, (max-width: 1024px) 
+              224px, 256px"
               fill
             />
 
           </div>
 
           <div 
-          className="bg-white shadow-lg rounded-2xl p-7 w-full max-w-2xl shrink-0"
+          className="bg-white shadow-lg rounded-2xl p-4 sm:p-5 md:p-7 w-full"
           >
             <div 
-            className="flex flex-1 justify-between items-center text-center mb-5"
+            className="flex flex-col sm:flex-row justify-between items-start 
+            sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-5"
             >
               <h2 
-              className="text-3xl font-bold text-center">
-
+              className="text-xl sm:text-2xl md:text-3xl font-bold"
+              >
                 {session?.user?.firstName} {session?.user?.lastName}
-
               </h2>
 
               <div 
-              className="flex gap-4"
+              className="flex gap-2 sm:gap-3 md:gap-4 flex-wrap"
               >
                 <p 
-                className="cursor-pointer text-gray-700 text-lg font-medium bg-gray-100 px-3 py-1 rounded-full inline-block shadow-sm"
+                className="cursor-pointer text-gray-700 text-xs sm:text-sm 
+                md:text-base lg:text-lg font-medium bg-gray-100 px-2 sm:px-3 
+                py-1 rounded-full inline-block shadow-sm whitespace-nowrap"
                 onClick={()=>{
                   router.push(`/profiles/${usernameFromParams}/following`)
                 }}
                 >
-                  {myFollowingNumber} following &nbsp;
+                  {myFollowingNumber} following
 
                 </p>
 
                 <p 
-                className="cursor-pointer text-gray-700 text-lg font-medium bg-gray-100 px-3 py-1 rounded-full inline-block shadow-sm"
+                className="cursor-pointer text-gray-700 text-xs sm:text-sm 
+                md:text-base lg:text-lg font-medium bg-gray-100 px-2 sm:px-3 
+                py-1 rounded-full inline-block shadow-sm whitespace-nowrap"
                 onClick={()=>{
                   router.push(`/profiles/${usernameFromParams}/followers`)
                 }}
@@ -220,10 +228,12 @@ export default function ProfilePage() {
             </div>
 
             <div 
-            className="flex flex-col flex-1 gap-2.5 text-gray-800 text-xl"
+            className="flex flex-col gap-2 sm:gap-2.5 text-gray-800 text-sm 
+            sm:text-base md:text-lg lg:text-xl"
             >
               <div 
-              className="flex justify-between border-b border-gray-200 pb-2"
+              className="flex flex-col sm:flex-row justify-between border-b 
+              border-gray-200 pb-2 gap-1"
               >
                 <span 
                 className="font-semibold"
@@ -231,14 +241,15 @@ export default function ProfilePage() {
                   Username:
                 </span>
 
-                <span>
+                <span className="break-all">
                   {session?.user?.username}
                 </span>
 
               </div>
 
               <div 
-              className="flex justify-between border-b border-gray-200 pb-2"
+              className="flex flex-col sm:flex-row justify-between border-b 
+              border-gray-200 pb-2 gap-1"
               >
                 <span 
                 className="font-semibold"
@@ -246,16 +257,15 @@ export default function ProfilePage() {
                   Email:
                 </span>
 
-                <span>
-
+                <span className="break-all">
                   {session?.user?.email}
-
                 </span>
 
               </div>
 
               <div 
-              className="flex justify-between border-b border-gray-200 pb-2"
+              className="flex flex-col sm:flex-row justify-between border-b 
+              border-gray-200 pb-2 gap-1"
               >
                 <span 
                 className="font-semibold"
@@ -270,7 +280,8 @@ export default function ProfilePage() {
               </div>
 
               <div 
-              className="flex justify-between border-b border-gray-200 pb-2"
+              className="flex flex-col sm:flex-row justify-between border-b 
+              border-gray-200 pb-2 gap-1"
               >
                 <span 
                 className="font-semibold"
@@ -287,7 +298,7 @@ export default function ProfilePage() {
             </div>
 
             <div 
-            className="flex justify-center gap-8 mt-5 flex-wrap"
+            className="flex justify-center gap-3 sm:gap-4 md:gap-8 mt-4 sm:mt-5 flex-wrap"
             >
               <ViewBioButton 
               set={setIsBioOpen}
@@ -303,20 +314,22 @@ export default function ProfilePage() {
 
           </div>
 
-        </div>
+          <textarea
+            readOnly
+            className={`
+              ${isBioOpen ? 'flex' : 'hidden'} 
+              mt-4 sm:mt-6 px-4 sm:px-5 py-3 sm:py-4 w-full
+              min-h-[200px] sm:min-h-[250px] md:min-h-[300px]
+              max-h-[300px] sm:max-h-[400px]
+              bg-gray-50 border border-gray-200 rounded-xl shadow-sm
+              text-gray-700 leading-relaxed resize-none
+              focus:outline-none focus:ring-2 focus:ring-gray-300
+              transition-all duration-300 text-sm sm:text-base md:text-lg
+            `}
+            defaultValue={session?.user?.bio || "No biography provided."}
+          />
 
-        <textarea
-          readOnly
-          className={`
-            ${isBioOpen ? 'flex' : 'hidden'} 
-            mt-6 px-5 py-4 w-90 max-w-2xl min-h-130 max-h-180
-            bg-gray-50 border border-gray-200 rounded-xl shadow-sm
-            text-gray-700 leading-relaxed resize-none
-            focus:outline-none focus:ring-2 focus:ring-gray-300
-            transition-all duration-300 text-[18px]
-          `}
-          defaultValue={session?.user?.bio || "No biography provided."}
-        />
+        </div>
       </main>
     );
   }
@@ -327,29 +340,53 @@ export default function ProfilePage() {
 
   if (anotherUser.username === null && usernameFromParams !== session?.user?.username) {
     return (
-      <main className="flex flex-1 flex-col justify-center items-center h-full">
-        <p className="text-[200px] font-bold font-mono">Oops!</p> 
-        <p className="text-[50px] font-semibold font-mono">404 - User Not Found</p>
-        <p className="text-[20px] mt-4 font-mono">The user you are looking for does not exist.</p>
+      <main 
+      className="flex flex-1 flex-col justify-center items-center h-full px-4"
+      >
+        <p 
+        className="text-6xl sm:text-8xl md:text-[120px] lg:text-[150px] xl:text-[200px] 
+        font-bold font-mono text-center"
+        >
+          Oops!
+        </p> 
+
+        <p 
+        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold font-mono 
+        text-center mt-4"
+        >
+          404 - User Not Found
+        </p>
+
+        <p 
+        className="text-base sm:text-lg md:text-xl mt-4 font-mono text-center"
+        >
+          The user you are looking for does not exist.
+        </p>
+
         <button 
-          className="font-mono text-2xl mb-[60px] mt-[50px] px-6 py-3 bg-blue-600 text-white rounded-2xl cursor-pointer hover:bg-blue-700" 
+          className="font-mono text-lg sm:text-xl md:text-2xl mt-8 sm:mt-10 md:mt-12 
+          px-6 py-3 bg-blue-600 text-white rounded-2xl cursor-pointer 
+          hover:bg-blue-700 transition-all duration-300 hover:scale-105 active:scale-95" 
           onClick={() => router.push('/')}
         >
           Go to Home
         </button>
+        
       </main>
     )
   }
   
   return (
     <main 
-    className="flex flex-1 justify-center items-center"
+    className="flex flex-1 flex-col justify-center items-center px-4 sm:px-6 py-6 
+    overflow-y-auto"
     >
       <div 
-      className="flex flex-col items-center justify-center flex-1 max-w-220 px-4 py-6 -mb-5"
+      className="flex flex-col items-center w-full max-w-2xl"
       >
         <div 
-        className="relative w-75 h-75 mb-6 shrink-0"
+        className="relative w-48 h-48 sm:w-52 sm:h-52 md:w-56 md:h-56 lg:w-64 lg:h-64 
+        mb-4 sm:mb-6 shrink-0"
         >
           <Image
             priority
@@ -357,30 +394,33 @@ export default function ProfilePage() {
             style={{ aspectRatio: "1 / 1" }}
             src={anotherUser?.profilePic || "/defaultUser.png"}
             alt="Profile Picture"
-            sizes="(max-width: 768px) 128px, 224px"
+            sizes="(max-width: 640px) 192px, (max-width: 768px) 208px, (max-width: 1024px) 224px, 256px"
             fill
           />
 
         </div>
 
         <div 
-        className="bg-white shadow-lg rounded-2xl p-7 w-full max-w-2xl shrink-0"
+        className="bg-white shadow-lg rounded-2xl p-4 sm:p-5 md:p-7 w-full"
         >
           <div 
-          className="flex justify-between items-center text-center mb-5"
+          className="flex flex-col sm:flex-row justify-between items-start 
+          sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-5"
           >
             <h2 
-            className="text-3xl font-bold text-center"
+            className="text-xl sm:text-2xl md:text-3xl font-bold"
             >
               {anotherUser?.firstName} {anotherUser?.lastName}
 
             </h2>
 
             <div 
-            className="flex gap-4"
+            className="flex gap-2 sm:gap-3 md:gap-4 flex-wrap"
             >
               <p 
-              className="cursor-pointer text-gray-700 text-lg font-medium bg-gray-100 px-4 py-1 rounded-full inline-block shadow-sm"
+              className="cursor-pointer text-gray-700 text-xs sm:text-sm 
+              md:text-base lg:text-lg font-medium bg-gray-100 px-2 sm:px-3 
+              md:px-4 py-1 rounded-full inline-block shadow-sm whitespace-nowrap"
               onClick={()=>{
                 router.push(`/profiles/${usernameFromParams}/following`);
               }}
@@ -389,7 +429,9 @@ export default function ProfilePage() {
               </p>
               
               <p 
-              className="cursor-pointer text-gray-700 text-lg font-medium bg-gray-100 px-4 py-1 rounded-full inline-block shadow-sm"
+              className="cursor-pointer text-gray-700 text-xs sm:text-sm 
+              md:text-base lg:text-lg font-medium bg-gray-100 px-2 sm:px-3 
+              md:px-4 py-1 rounded-full inline-block shadow-sm whitespace-nowrap"
               onClick={()=>{
                 router.push(`/profiles/${usernameFromParams}/followers`);
               }}
@@ -402,10 +444,12 @@ export default function ProfilePage() {
           </div>
 
           <div 
-          className="flex flex-col gap-2.5 text-gray-800 text-xl"
+          className="flex flex-col gap-2 sm:gap-2.5 text-gray-800 text-sm 
+          sm:text-base md:text-lg lg:text-xl"
           >
             <div 
-            className="flex justify-between border-b border-gray-200 pb-2"
+            className="flex flex-col sm:flex-row justify-between border-b 
+            border-gray-200 pb-2 gap-1"
             >
               <span 
               className="font-semibold"
@@ -413,14 +457,15 @@ export default function ProfilePage() {
                 Username:
               </span>
 
-              <span>
+              <span className="break-all">
                 {anotherUser?.username}
               </span> 
 
             </div>
 
             <div 
-            className="flex justify-between border-b border-gray-200 pb-2"
+            className="flex flex-col sm:flex-row justify-between border-b 
+            border-gray-200 pb-2 gap-1"
             >
               <span 
               className="font-semibold"
@@ -435,7 +480,8 @@ export default function ProfilePage() {
             </div>
 
             <div 
-            className="flex justify-between border-b border-gray-200 pb-2"
+            className="flex flex-col sm:flex-row justify-between border-b 
+            border-gray-200 pb-2 gap-1"
             >
               <span 
               className="font-semibold"
@@ -452,7 +498,7 @@ export default function ProfilePage() {
           </div>
  
           <div 
-          className="flex justify-between gap-8 mt-5 flex-wrap"
+          className="flex justify-center gap-3 sm:gap-4 md:gap-8 mt-4 sm:mt-5 flex-wrap"
           >
             <ViewBioButton 
             set={setIsBioOpen} 
@@ -468,21 +514,22 @@ export default function ProfilePage() {
 
         </div>
 
+        <textarea
+          readOnly
+          className={`
+            ${isBioOpen ? 'flex' : 'hidden'} 
+            mt-4 sm:mt-6 px-4 sm:px-5 py-3 sm:py-4 w-full
+            min-h-[200px] sm:min-h-[250px] md:min-h-[300px]
+            max-h-[300px] sm:max-h-[400px]
+            bg-gray-50 border border-gray-200 rounded-xl shadow-sm
+            text-gray-700 leading-relaxed resize-none
+            focus:outline-none focus:ring-2 focus:ring-gray-300
+            transition-all duration-300 text-sm sm:text-base md:text-lg
+          `}
+          defaultValue={anotherUser?.bio || "No biography provided."}
+        />
+
       </div>
-
-      <textarea
-        readOnly
-        className={`
-          ${isBioOpen ? 'flex' : 'hidden'} 
-          mt-6 px-5 py-4 w-90 max-w-2xl min-h-130 max-h-180
-          bg-gray-50 border border-gray-200 rounded-xl shadow-sm
-          text-gray-700 leading-relaxed resize-none
-          focus:outline-none focus:ring-2 focus:ring-gray-300
-          transition-all duration-300 text-[18px]
-        `}
-        defaultValue={anotherUser?.bio || "No biography provided."}
-      />
-
     </main>
   )
 }
