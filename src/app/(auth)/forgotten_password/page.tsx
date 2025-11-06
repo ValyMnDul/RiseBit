@@ -9,7 +9,7 @@ import Loading from "@/components/loading";
 
 export default function ForgottenPassword(){
 
-    const {data:session}=useSession();
+    const { data:session } = useSession();
     const router=useRouter();
 
     useEffect(()=>{
@@ -63,17 +63,18 @@ export default function ForgottenPassword(){
 
     return (
         <form 
-        className="flex flex-col gap-y-4 w-1/3 mx-auto mt-[150px]" 
+        className="flex flex-col gap-y-4 w-full sm:w-[90%] md:w-[70%] lg:w-[50%]
+        xl:w-[40%] 2xl:w-[33%] mx-auto mt-32 sm:mt-40 md:mt-36 lg:mt-40 px-4 sm:px-6" 
         onSubmit={handleSubmit}
         >
             <p 
-            className="text-[50px] font-bold text-center select-none"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-center select-none"
             >
                 Password Reset
             </p>
 
             <p 
-            className="text-[21px] text-center select-none"
+            className="text-base sm:text-lg md:text-xl text-center select-none"
             >
                 Provide your email to reset your password
             </p>
@@ -82,10 +83,10 @@ export default function ForgottenPassword(){
             className="flex flex-col gap-y-2"
             >
                 <label 
-                className="text-[1.4rem]" 
+                className="text-lg sm:text-xl md:text-2xl" 
                 htmlFor="email"
                 >
-                    Email
+                    Email 
                 </label>
 
                 <input 
@@ -95,31 +96,35 @@ export default function ForgottenPassword(){
                 name="email" 
                 minLength={6} 
                 maxLength={200} 
-                className="text-[21px] border rounded h-10 pl-2.5 pr-2.5"
+                className="text-base sm:text-lg md:text-xl border rounded h-10
+                 sm:h-11 md:h-12 px-2.5"
                 ></input>
 
             </div>
 
             <button 
-            ref={submitButton} 
+            ref={submitButton}
             type="submit" 
-            className="bg-blue-500 text-white text-xl rounded px-4 py-2 mt-4 select-none"
+            className="bg-blue-500 text-white text-lg sm:text-xl 
+            rounded px-4 py-2 sm:py-3 mt-4 select-none hover:bg-blue-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 Submit
             </button>
 
-            <div>
+            <div 
+            className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4"
+            >
 
                 <Link 
                 href="/register" 
-                className="text-blue-900 text-lg"
+                className="text-blue-900 text-base sm:text-lg hover:underline"
                 >
                     Don&apos;t have an account? Register
                 </Link>
 
                 <Link 
                 href="/login" 
-                className="text-blue-900 text-lg float-right"
+                className="text-blue-900 text-base sm:text-lg hover:underline"
                 >
                     Back to Login
                 </Link>
@@ -128,7 +133,7 @@ export default function ForgottenPassword(){
 
             <p 
             ref={message} 
-            className="text-xl text-center"
+            className="text-base sm:text-lg md:text-xl text-center"
             ></p>
 
         </form>

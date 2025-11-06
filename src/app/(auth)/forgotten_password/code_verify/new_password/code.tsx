@@ -99,17 +99,18 @@ export default function NewPassword(){
 
     return (
         <form 
-        className="flex flex-col gap-y-4 w-1/3 mx-auto mt-[150px]" 
+        className="flex flex-col gap-y-4 w-full sm:w-[90%] md:w-[70%] lg:w-[50%] 
+        xl:w-[40%] 2xl:w-[33%] mx-auto mt-32 sm:mt-40 md:mt-36 lg:mt-40 px-4 sm:px-6" 
         onSubmit={handleSubmit}
         >
             <p 
-            className="text-[50px] font-bold text-center select-none"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-center select-none"
             >
                 New Password
             </p>
 
             <p 
-            className="mb-2.5 text-[21px] text-center select-none"
+            className="mb-2.5 text-base sm:text-lg md:text-xl text-center select-none"
             >
                 Time to set your new password
             </p>
@@ -118,7 +119,7 @@ export default function NewPassword(){
             className="flex flex-col gap-y-2"
             >
                 <label 
-                className="text-[1.4rem]" 
+                className="text-lg sm:text-xl md:text-2xl" 
                 htmlFor="password"
                 >
                     New Password
@@ -131,12 +132,13 @@ export default function NewPassword(){
                 name="password" 
                 minLength={6} 
                 maxLength={200} 
-                className="text-[21px] border rounded h-10 pl-2.5 pr-2.5"
+                className="text-base sm:text-lg md:text-xl border rounded h-10 sm:h-11 
+                md:h-12 px-2.5"
                 ></input>
 
                 <label 
                 htmlFor="cPassword" 
-                className="mt-3 text-[1.4rem]"
+                className="mt-3 text-lg sm:text-xl md:text-2xl"
                 >
                     Confirm Password
                 </label>
@@ -148,7 +150,7 @@ export default function NewPassword(){
                 name="cPassword" 
                 minLength={6} 
                 maxLength={200} 
-                className="text-[21px] border rounded h-10 pl-2.5 pr-2.5"
+                className="text-base sm:text-lg md:text-xl border rounded h-10 sm:h-11 md:h-12 px-2.5"
                 ></input>
 
             </div>
@@ -156,7 +158,9 @@ export default function NewPassword(){
             <button 
             ref={submitButton} 
             type="submit" 
-            className="bg-blue-500 text-white text-xl rounded px-4 py-2 mt-4 select-none"
+            className="bg-blue-500 text-white text-lg sm:text-xl rounded px-4 py-2 
+            sm:py-3 mt-4 select-none hover:bg-blue-600 transition-colors duration-300 
+            disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 Submit
             </button>
@@ -166,7 +170,7 @@ export default function NewPassword(){
             >
                 <Link 
                 href="/login" 
-                className="text-blue-900 text-lg float-right"
+                className="text-blue-900 text-base sm:text-lg hover:underline"
                 >
                     Remembered your password? Login
                 </Link>
@@ -175,7 +179,7 @@ export default function NewPassword(){
 
             <p 
             ref={message} 
-            className="text-xl text-center"
+            className="text-base sm:text-lg md:text-xl text-center"
             ></p>
 
         </form>
