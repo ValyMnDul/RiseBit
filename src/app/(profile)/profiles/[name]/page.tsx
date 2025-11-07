@@ -315,6 +315,7 @@ export default function ProfilePage() {
           </div>
 
           <textarea
+            name="bio"
             readOnly
             className={`
               ${isBioOpen ? 'flex' : 'hidden'} 

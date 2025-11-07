@@ -570,7 +570,7 @@ export default function EditProfile(){
                         <div
                         className={`${openEmail ? "fixed" : "hidden"} 
                             fixed inset-0 z-50 flex items-center justify-center 
-                            bg-black bg-opacity-50 p-4`}
+                            bg-transparent  p-4`}
                         >
                             <div className="w-full max-w-lg bg-white border 
                             border-gray-300 rounded-2xl shadow-xl p-6 sm:p-8">
@@ -669,19 +669,24 @@ export default function EditProfile(){
                         >
                             Password:
                         </label>
-
-                        <input
-                        id="password"
-                        name="password"
-                        ref={changePasswordInputRef}
-                        type="password"
-                        defaultValue={fakePassword}
-                        disabled={true}
-                        className="focus:ring-2 outline-0 focus:ring-blue-400 
-                        disabled:bg-gray-100 disabled:text-gray-500 w-full 
-                        sm:flex-1 h-11 lg:h-14 sm:ml-6 lg:ml-8 border-2 border-gray-300 
-                        rounded-lg px-4 text-base lg:text-xl"
-                        />
+                                            
+                        <form 
+                        className="w-full sm:flex-1 sm:ml-6 lg:ml-8" 
+                        autoComplete="off"
+                        >
+                            <input
+                                id="password"
+                                name="password"
+                                ref={changePasswordInputRef}
+                                type="password"
+                                defaultValue={fakePassword}
+                                disabled
+                                className="focus:ring-2 outline-0 focus:ring-blue-400 
+                                disabled:bg-gray-100 disabled:text-gray-500 
+                                w-full h-11 lg:h-14 border-2 border-gray-300 
+                                rounded-lg px-4 text-base lg:text-xl"
+                            />
+                        </form>
 
                         <button
                         ref={changePasswordButtonRef}
@@ -706,7 +711,7 @@ export default function EditProfile(){
                         <div
                         className={`${open ? "fixed" : "hidden"} 
                             fixed inset-0 z-50 flex items-center justify-center 
-                            bg-black bg-opacity-50 p-4`}
+                            bg-transparent bg-opacity-50 p-4`}
                         >
                             <div className="w-full max-w-lg bg-white border 
                             border-gray-300 rounded-2xl shadow-xl p-6 sm:p-8">
