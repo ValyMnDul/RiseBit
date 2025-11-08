@@ -17,15 +17,21 @@ export default function EditProfile(){
 
     useEffect(()=>{
 
-        if(session===null){
+        if(session === undefined){
+            return;
+        }
+
+        if(session === null){
             router.push('/login');
+            return;
         }
 
         if(session?.user.username !== usernameFromParams){
             router.push(`/profiles/${usernameFromParams}`);
+            return;
         }
         
-    },[session,router,usernameFromParams,session?.user.username]);
+    },[session,router,usernameFromParams]);
 
 
     /// Get Password Length
@@ -699,7 +705,7 @@ export default function EditProfile(){
                             transition-all duration-200 text-sm lg:text-base
                         "
                         onClick={()=>{
-                            if(open===false){
+                            if(open === false){
                                 setOpen(true);
                             }
                         }}
