@@ -19,16 +19,15 @@ export default function FollowingPage(){
         profilePic:string;
         following:boolean;
         followersNumber:number;
-    }
+    };
 
     const [isLoading,setIsLoading] = useState<boolean>(true);
 
-    const [users,setUsers] = useState<User[]>([{
-        username:"",
-        profilePic:"",
-        following:false,
-        followersNumber:-1,
-    }]);
+    const [users,setUsers] = useState<Array<User>>([]);
+
+    const [filteredUsers,setFilteredUsers] = useState<Array<User>>([]);
+
+    const [filter,setFilter] = useState<string>('');
 
     useEffect(()=>{
         const fetchFollowing = async () => {
@@ -43,9 +42,9 @@ export default function FollowingPage(){
                 })
             });
             
-            const { users } = await res.json()
+            const { users } = await res.json();
 
-            if(res.status===200){
+            if(res.status === 200){
                 setUsers(users);
                 setIsLoading(false);
             }
@@ -56,6 +55,19 @@ export default function FollowingPage(){
         }
 
     },[sessionUsername,postUsername])
+
+    useEffect(()=>{
+        if(filter === ''){
+            setFilteredUsers(users);
+        }
+        else{
+            const filteredList = users.filter((user) => (
+                user.username.toLowerCase().includes(filter.toLowerCase())
+            ));
+            setFilteredUsers(filteredList);
+        }
+
+    },[filter,users]);
 
     if(isLoading === true){
         return <Loading/>
@@ -70,18 +82,22 @@ export default function FollowingPage(){
             name="searchBar"
             type="text"
             placeholder="Search for users..."
+            value={filter}
+            onChange={(e) => {
+                setFilter(e.currentTarget.value);
+            }}
             className="mt-6 px-4 py-2 border border-gray-400 rounded w-full 
             sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] focus:outline-none focus:ring-2
             focus:ring-blue-500"
             />
 
-            {users.length > 0 && users[0].username !== "" ? (
+            {filteredUsers.length > 0 ? (
                 <div 
                 className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 
                 xl:grid-cols-4 gap-4 sm:gap-6 mt-6 mb-6"
                 >
                     {
-                        users.map((u,i)=>{
+                        filteredUsers.map((u,i)=>{
                             return <Profile
                             key={i+u.username}
                             username={u.username}
@@ -96,7 +112,7 @@ export default function FollowingPage(){
                 <p 
                 className="mt-8 text-gray-500 text-base sm:text-lg"
                 >
-                    No following yet
+                    No following
                 </p>
             )}
             
