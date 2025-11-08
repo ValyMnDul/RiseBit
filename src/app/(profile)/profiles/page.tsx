@@ -10,13 +10,27 @@ export default function ProfilesPage() {
   const {data:session, status} = useSession();
   const sessionUsername = session?.user?.username || "";
 
-  const [users, setUsers] = useState<Array<{username: string, profilePic: string,following:boolean,followersNumber:number}>>([]);
+  const [users, setUsers] = useState<Array<{
+    username: string, 
+    profilePic: string,
+    following:boolean,
+    followersNumber:number
+  }>>([]);
+
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [filteredUsers,setFilteredUsers] = useState<Array<{
+    username:string,
+    profilePic:string,
+    following:boolean,
+    followersNumber:number
+  }>>([]);
+
+  const [filter,setFilter] = useState<string>("");
 
   useEffect(() => {
     const getAllUsers = async () => {
       try {
-
         const res = await fetch('/api/getAllUsers', {
           method: "POST",
           headers: {
@@ -27,17 +41,12 @@ export default function ProfilesPage() {
 
         const allUsers = (await res.json()).data;
         setUsers(allUsers);
-
       } 
       catch (error) {
-
         console.error("Error fetching users:", error);
-
       } 
       finally {
-
         setLoading(false);
-
       }
     }
     
@@ -47,11 +56,23 @@ export default function ProfilesPage() {
     
   }, [sessionUsername, status]);
 
+  useEffect(()=>{
+
+    if(filter === ''){
+      setFilteredUsers(users)
+    }
+    else{
+      const filteredList = users.filter((user) => (
+        user.username.toLowerCase().includes(filter.toLowerCase())
+      ));
+      setFilteredUsers(filteredList);
+    }
+  },[filter,users]);
 
   if (loading || status === "loading") {
     return <Loading />
   }
-      
+ 
   return (
     <main 
     className="w-full flex flex-col flex-1 items-center px-4 sm:px-6 pb-6"
@@ -60,14 +81,20 @@ export default function ProfilesPage() {
       name="searchBar"
       type="text"
       placeholder="Search for users..."
-      className="mt-6 px-4 py-2 border border-gray-400 rounded w-full sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] focus:outline-none focus:ring-2 focus:ring-blue-500"
+      value={filter}
+      onChange={(e)=>{
+        setFilter(e.currentTarget.value);
+      }}
+      className="mt-6 px-4 py-2 border border-gray-400 rounded w-full 
+      sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] focus:outline-none 
+      focus:ring-2 focus:ring-blue-500"
       />
 
-      {users.length > 0 ? (
+      {filteredUsers.length > 0 ? (
         <div 
         className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mt-6"
         >
-          {users.map((user) => (
+          {filteredUsers.map((user) => (
             <Profile 
             key={user.username} 
             username={user.username} 
@@ -84,7 +111,6 @@ export default function ProfilesPage() {
           No users found
         </p>
       )}
-
     </main>
   );
 }

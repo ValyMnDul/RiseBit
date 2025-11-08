@@ -18,6 +18,18 @@ export default function Feed(){
         followersNumber:number
     }>>([])
 
+    const [filteredPosts,setFilteredPosts] = useState<Array<{
+        username: string,
+        subtitle: string,
+        content: string,
+        updatedAt: string,
+        profilePic: string,
+        following: boolean,
+        followersNumber: number
+    }>>([])
+
+    const [filter,setFilter] = useState<string>("");
+
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -40,7 +52,20 @@ export default function Feed(){
         if (status !== "loading") {
             fetchData()
         }
-    }, [sessionUsername, status])
+    }, [sessionUsername, status]);
+
+    useEffect(()=>{
+        if(filter === ""){
+            setFilteredPosts(posts);
+        }
+        else{
+            const filteredList = posts.filter((post) => (
+                post.username.toLowerCase().includes(filter.toLowerCase()) ||
+                post.subtitle.toLowerCase().includes(filter.toLowerCase())
+            ));
+            setFilteredPosts(filteredList);
+        }
+    },[filter,posts])
 
     if (loading || status === "loading") {
         return <Loading />
@@ -54,6 +79,10 @@ export default function Feed(){
                 name="searchBar"
                 type="text"
                 placeholder="Search for posts..."
+                value={filter}
+                onChange={(e) => {
+                    setFilter(e.currentTarget.value);
+                }}
                 className="mt-6 px-4 py-2 border border-gray-400 rounded w-full 
                 sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] focus:outline-none 
                 focus:ring-2 focus:ring-blue-500"
@@ -78,8 +107,8 @@ export default function Feed(){
             </button>
 
             {
-                posts.length > 0 ? 
-                    posts.map((post, i) => (
+                filteredPosts.length > 0 ? 
+                    filteredPosts.map((post, i) => (
                         <Post
                             key={post.username + i}
                             username={post.username}
@@ -96,7 +125,7 @@ export default function Feed(){
                 <p 
                 className="mt-8 text-gray-500"
                 >
-                    No posts yet
+                    No posts
                 </p>
             }
 
