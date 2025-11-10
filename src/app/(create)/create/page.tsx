@@ -1,7 +1,8 @@
 'use client'
 
+import { Image as ImageIcon} from 'lucide-react'
 import { useSession } from "next-auth/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef ,useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Loading from "@/components/loading";
@@ -18,6 +19,19 @@ export default function CreatePostPage(){
             router.push('/login');
         }
     },[session,router]);
+
+    ////
+
+    const [photos,setPhotos] = useState<Array<File>>([]);
+
+    const onFileChenge = (e:React.ChangeEvent<HTMLInputElement>) => {
+
+        if(e.target.files){
+            const selectedFiles = Array.from(e.target.files);
+            setPhotos(selectedFiles.slice(0,5));
+        }
+
+    }
 
 
     const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
@@ -104,6 +118,40 @@ export default function CreatePostPage(){
             h-[200px] sm:h-[250px] focus:outline-none focus:ring-2 focus:ring-blue-500 
             resize-none"
             ></textarea>
+
+            <div
+            className="mt-6 text-base sm:text-lg md:text-xl px-4 py-2 border 
+            border-gray-400 rounded w-full sm:w-[80%] md:w-[70%] lg:w-[60%] 
+            xl:w-[50%] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+
+                <div
+                className='hover:bg-gray-300 h-full w-8 flex justify-center
+                items-center rounded-full'
+                >
+
+                    <label
+                    className='cursor-pointer '
+                    htmlFor="photos"
+                    >
+                        <ImageIcon width={25} height={25}/>
+                    </label>
+
+                    <input
+                    onChange={(e)=>{
+                        onFileChenge(e);
+                    }}
+                    type="file"
+                    id='photos'
+                    name="photos"
+                    className='hidden'
+                    multiple
+                    accept="image/*"
+                    ></input>
+
+                </div>
+
+            </div>
 
             <button
             type="submit"
