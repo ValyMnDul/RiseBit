@@ -1,9 +1,11 @@
 'use client'
 
 import { Image as ImageIcon} from 'lucide-react'
+import {X} from 'lucide-react'
 import { useSession } from "next-auth/react";
 import { useEffect, useRef ,useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
 
 import Loading from "@/components/loading";
 
@@ -20,18 +22,41 @@ export default function CreatePostPage(){
         }
     },[session,router]);
 
+
     ////
 
     const [photos,setPhotos] = useState<Array<File>>([]);
+    const [previewURLs,setPreviewURLs] = useState<Array<string>>([])
+
+    useEffect(() => {
+        return () => {
+            previewURLs.forEach(url => URL.revokeObjectURL(url));
+        };
+    }, [previewURLs]);
+
 
     const onFileChenge = (e:React.ChangeEvent<HTMLInputElement>) => {
 
         if(e.target.files){
-            const selectedFiles = Array.from(e.target.files);
-            setPhotos(selectedFiles.slice(0,5));
+            const selectedPhotos = Array.from(e.target.files).slice(0,6);
+            setPhotos(selectedPhotos);
+
+            const urls = selectedPhotos.map((photo) => (URL.createObjectURL(photo)));
+            setPreviewURLs(urls);
+
         }
 
+        e.target.value = '';
     }
+
+    const removePhoto = (iToRemove:number) => {
+
+        URL.revokeObjectURL(previewURLs[iToRemove]);
+
+        setPreviewURLs(previewURLs.filter((_,i)=>( i !== iToRemove )));
+        setPhotos(photos.filter((_,i) => ( i !== iToRemove )));
+    }
+
 
 
     const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
@@ -89,14 +114,14 @@ export default function CreatePostPage(){
 
     return(
         <form 
-        className="h-full w-full flex flex-col items-center justify-center 
-        flex-1 px-4 sm:px-6"
+        className="w-full h-full flex flex-col items-center justify-center 
+        px-4 sm:px-6"
         onSubmit={createPost}
         >
             <h1
             className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-linear-to-r 
             from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent 
-            drop-shadow-md select-none mt-6"
+            drop-shadow-md select-none lg:mt-18 mt-10"
             >
             Create Post
             </h1>
@@ -126,7 +151,7 @@ export default function CreatePostPage(){
             >
 
                 <div
-                className='hover:bg-gray-300 h-full w-8 flex justify-center
+                className='hover:bg-gray-300 h-full w-8 flex flex-1 justify-center
                 items-center rounded-full'
                 >
 
@@ -151,6 +176,39 @@ export default function CreatePostPage(){
 
                 </div>
 
+            </div>
+
+            <div
+            className="grid grid-cols-3 gap-4 mt-10 mb-5 select-none"
+            >
+                {
+                    previewURLs.map(((url,i) => (
+                        <div
+                        key={url}
+                        className='relative'
+                        >
+                            <Image 
+                            width={200}
+                            height={200}
+                            src={url}
+                            alt={`Preview ${i + 1}`}
+                            style={{aspectRatio:"1 / 1"}}
+                            className="w-full h-32 object-cover rounded-lg border border-gray-400
+                            border-solid"
+                            />
+
+                            <div
+                            onClick={() => { removePhoto(i); }}
+                            className="absolute top-1 right-1 bg-red-400 text-white 
+                            rounded-full w-5 h-5 flex items-center justify-center 
+                            hover:bg-red-500 cursor-pointer"
+                            >
+                                <X width={14} height={14}/>
+                            </div>
+
+                        </div>
+                    )))
+                }
             </div>
 
             <button
