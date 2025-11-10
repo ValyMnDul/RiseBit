@@ -43,7 +43,6 @@ export default function CreatePostPage(){
 
             const urls = selectedPhotos.map((photo) => (URL.createObjectURL(photo)));
             setPreviewURLs(urls);
-
         }
 
         e.target.value = '';
@@ -56,7 +55,6 @@ export default function CreatePostPage(){
         setPreviewURLs(previewURLs.filter((_,i)=>( i !== iToRemove )));
         setPhotos(photos.filter((_,i) => ( i !== iToRemove )));
     }
-
 
 
     const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
@@ -108,7 +106,7 @@ export default function CreatePostPage(){
         }
     }
 
-    if(session===undefined){
+    if(session === undefined){
         return <Loading/>;
     }
 
@@ -187,7 +185,8 @@ export default function CreatePostPage(){
                         key={url}
                         className='relative'
                         >
-                            <Image 
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img 
                             width={200}
                             height={200}
                             src={url}
