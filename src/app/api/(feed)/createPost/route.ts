@@ -1,9 +1,16 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import cloudinary from "@/lib/cloudinary";
 
 export const POST = async (req:Request) => {
 
-    const {subtitle,content,username} = await req.json()
+    const formData = await req.formData();
+
+    const subtitle = formData.get('subtitle') as string;
+    const content = formData.get('content') as string;
+    const username = formData.get('username') as string;
+    const photos = formData.getAll('photo') as Array<File>
+
 
     if(!subtitle || !content){
         return NextResponse.json({message:"Subtitle or content required"},{status:400});
@@ -21,11 +28,29 @@ export const POST = async (req:Request) => {
         return NextResponse.json({message:"Content too long"},{status:400});
     }
 
+    const photosURLs = [];
+
+    for(const photo of photos){
+
+        const buffer = Buffer.from(await photo.arrayBuffer());
+        const base64String=buffer.toString("base64");
+        const base64Image=`data:${photo.type};base64,${base64String}`;
+
+        const cloudinaryRes = await cloudinary.uploader.upload(base64Image,{
+            folder:"ReseBit_Posts_Images",
+            resource_type:"image",
+            transformation:[{width:800,crop:"limit"}],
+        });
+
+        photosURLs.push(cloudinaryRes.secure_url);
+    }
+
     await prisma.post.create({
         data:{
             subtitle:subtitle,
             content:content,
-            username:username
+            username:username,
+            photos:photosURLs
         }
     });
     

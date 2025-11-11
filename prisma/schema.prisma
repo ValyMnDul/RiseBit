@@ -42,6 +42,7 @@ model Post {
   subtitle  String 
   content   String
   username  String  
+  photos    String[] @default([])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

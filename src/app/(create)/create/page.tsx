@@ -1,11 +1,10 @@
 'use client'
 
 import { Image as ImageIcon} from 'lucide-react'
-import {X} from 'lucide-react'
+import { X } from 'lucide-react'
 import { useSession } from "next-auth/react";
 import { useEffect, useRef ,useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from 'next/image';
 
 import Loading from "@/components/loading";
 
@@ -68,20 +67,15 @@ export default function CreatePostPage(){
         const form = e.currentTarget;
         const formData = new FormData(form);
 
-        const subtitle = formData.get('subtitle') as string;
-        const content = formData.get('content') as string;
+        formData.set('username',session?.user?.username);
 
+        photos.forEach(( photo )=> {
+            formData.append('photo', photo )
+        })
 
         const res = await fetch('/api/createPost',{
             method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-                subtitle:subtitle,
-                content:content,
-                username:session?.user?.username
-            })
+            body:formData
         });
 
         const {message} = await res.json();
