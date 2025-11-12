@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
 export const POST = async (request: Request) => {
+    
     const { sessionUsername } = await request.json()
 
     try {
@@ -20,7 +21,7 @@ export const POST = async (request: Request) => {
             select: {
                 username: true,
                 profilePic: true,
-                followersList:true
+                followersList:true,
             }
         })
 

@@ -15,7 +15,8 @@ export default function Feed(){
         updatedAt: string,
         profilePic: string,
         following: boolean, 
-        followersNumber:number
+        followersNumber: number,
+        photos: Array<string>
     }>>([])
 
     const [filteredPosts,setFilteredPosts] = useState<Array<{
@@ -25,7 +26,8 @@ export default function Feed(){
         updatedAt: string,
         profilePic: string,
         following: boolean,
-        followersNumber: number
+        followersNumber: number,
+        photos: Array<string>
     }>>([])
 
     const [filter,setFilter] = useState<string>("");
@@ -119,6 +121,7 @@ export default function Feed(){
                             following={post.following}
                             sessionUsername={sessionUsername}
                             followersNumber={post.followersNumber}
+                            photos={post.photos}
                         />
                     ))
                 : 
