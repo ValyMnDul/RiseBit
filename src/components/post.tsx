@@ -261,7 +261,13 @@ export default function Post({
                 <p 
                 className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-500"
                 >
-                    Posted on: {updatedAt}
+                    Created in {new Date(updatedAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                    })}
                 </p>
 
             </div>

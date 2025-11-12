@@ -55,11 +55,15 @@ export default function CreatePostPage(){
         setPhotos(photos.filter((_,i) => ( i !== iToRemove )));
     }
 
-
+ 
     const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
         
         e.preventDefault();
-
+        
+        if(messageRef.current){
+            messageRef.current.textContent="Creating post...";
+        }
+        
         if(!session?.user?.username){
             return;
         }
@@ -188,6 +192,9 @@ export default function CreatePostPage(){
                             style={{aspectRatio:"1 / 1"}}
                             className="w-full h-32 object-cover rounded-lg border border-gray-400
                             border-solid"
+                            onClick={()=>{
+                                globalThis.open(url)
+                            }}
                             />
 
                             <div
