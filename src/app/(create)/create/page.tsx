@@ -5,6 +5,7 @@ import { X } from 'lucide-react'
 import { useSession } from "next-auth/react";
 import { useEffect, useRef ,useState } from "react";
 import { useRouter } from "next/navigation";
+import imageCompression from 'browser-image-compression'
 
 import Loading from "@/components/loading";
 
@@ -33,14 +34,33 @@ export default function CreatePostPage(){
         };
     }, [previewURLs]);
 
-
-    const onFileChenge = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const onFileChenge = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
         if(e.target.files){
-            const selectedPhotos = Array.from(e.target.files).slice(0,6);
-            setPhotos(selectedPhotos);
 
-            const urls = selectedPhotos.map((photo) => (URL.createObjectURL(photo)));
+            const selectedPhotos = Array.from(e.target.files).slice(0, 6);
+            
+            const compressedPhotos = []
+            const urls = []
+
+            for (const photo of selectedPhotos) {
+                const options = {
+                    maxSizeMB: 1,
+                    maxWidthOrHeight: 1920,
+                    useWebWorker: true,
+                }
+                
+                try {
+                    const compressedFile = await imageCompression(photo, options);
+                    compressedPhotos.push(compressedFile)
+                    urls.push(URL.createObjectURL(compressedFile));
+                } 
+                catch (error) {
+                    console.error('Compression error:', error);
+                }
+            }
+
+            setPhotos(compressedPhotos);
             setPreviewURLs(urls);
         }
 
