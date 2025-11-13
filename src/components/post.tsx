@@ -2,6 +2,9 @@
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import FollowButton from "./followButton"
+import { Settings } from "lucide-react"
+import { useState } from "react"
+import { Edit2, Trash2 } from 'lucide-react';
 
 export default function Post({
     username,
@@ -24,9 +27,12 @@ export default function Post({
     followersNumber:number,
     photos:Array<string>
 }) {
+
     const router = useRouter()
     
     const validPhotos = photos?.filter((photo) => (photo && photo.trim() !== '')) || []
+
+    const [isEditOpen,setIsEditOpen] = useState<boolean>(false);
 
     return (
         <div 
@@ -72,7 +78,7 @@ export default function Post({
                 </div>
 
                 {
-                    sessionUsername && sessionUsername !== username && (
+                    sessionUsername && sessionUsername !== username ?
                         <div className="shrink-0">
                             <FollowButton 
                                 following={following}
@@ -80,8 +86,67 @@ export default function Post({
                                 postUsername={username} 
                             />
                         </div>
-                    )
+                        : 
+                        <div 
+                        className="relative"
+                        >
+                            <div
+                            onClick={()=>{
+                                setIsEditOpen((p) => (!p));
+                            }}
+                                className={`px-3 sm:px-4 py-1.5 rounded-lg font-semibold text-sm sm:text-base 
+                                    border border-indigo-300 hover:border-pink-400 
+                                    transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap
+                                    flex items-center gap-2`}
+                            >
+
+                                <Settings className="text-indigo-500" />
+
+                            </div>
+
+                            <div
+                            className={`absolute bg-white w-40 top-12 right-0 z-50 
+                            rounded-lg shadow-lg border border-gray-200 overflow-hidden
+                            ${isEditOpen ? 'flex' : 'hidden'} flex-col`} 
+                            >
+                                <button 
+                                className="flex items-center gap-3 px-4 py-3 w-full text-left
+                                hover:bg-indigo-50 transition-colors duration-200
+                                border-b border-gray-100 group"
+                                >
+                                    <Edit2 
+                                    className="w-4 h-4 text-indigo-600 group-hover:text-indigo-700" 
+                                    />
+
+                                    <span 
+                                    className="text-sm font-medium text-gray-700"
+                                    >
+                                        Edit
+                                    </span>
+
+                                </button>
+
+                                <button
+                                className="flex items-center gap-3 px-4 py-3 w-full text-left
+                                hover:bg-red-50 transition-colors duration-200 group"    
+                                >
+                                    <Trash2 
+                                    className="w-4 h-4 text-red-600 group-hover:text-red-700" 
+                                    />
+
+                                    <span 
+                                    className="text-sm font-medium text-gray-700"
+                                    >
+                                        Delete
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+                        </div>
                 }
+                  
             </div>
 
             <div 
