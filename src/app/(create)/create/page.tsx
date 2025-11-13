@@ -44,14 +44,31 @@ export default function CreatePostPage(){
             const urls = []
 
             for (const photo of selectedPhotos) {
+
                 const options = {
-                    maxSizeMB: 1,
+                    maxSizeMB: 2,
                     maxWidthOrHeight: 1920,
                     useWebWorker: true,
+                    initialQuality: 0.95
                 }
                 
                 try {
                     const compressedFile = await imageCompression(photo, options);
+
+                    if(compressedFile.size > 8 * 1024 * 1024){
+                        if(messageRef.current){
+                            messageRef.current.textContent='Some images were too large (max 30MB each).';
+                        }
+
+                        globalThis.setTimeout(()=> {
+                            if(messageRef.current){
+                                messageRef.current.textContent='Tell me something new!';
+                            }
+                        },2000);
+
+                        continue;
+                    }
+
                     compressedPhotos.push(compressedFile)
                     urls.push(URL.createObjectURL(compressedFile));
                 } 
