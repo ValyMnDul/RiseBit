@@ -32,6 +32,7 @@ export default function Post({
     
     const validPhotos = photos?.filter((photo) => (photo && photo.trim() !== '')) || []
 
+    const component = useRef<HTMLDivElement>(null);
     const editDropdown = useRef<HTMLDivElement>(null);
     const [isEditOpen,setIsEditOpen] = useState<boolean>(false);
 
@@ -53,10 +54,37 @@ export default function Post({
 
     },[isEditOpen])
 
+    const deletePostButton = useRef<HTMLButtonElement>(null);
+
+    const deleteHandler = async () => {
+
+        if(deletePostButton.current){
+            deletePostButton.current.disabled = true;
+        }
+        
+        setIsEditOpen(false);
+
+        await fetch('/api/deletePost',{
+            method:"DELETE",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                username:username,
+                updatedAt:updatedAt
+            })
+        });
+
+        if(component.current){
+            component.current.classList.add("hidden");
+        }
+    }
+
     return (
         <div 
         className="border p-3 sm:p-4 md:p-5 rounded-2xl shadow-md h-auto w-full 
         sm:w-[90%] md:w-[80%] lg:w-[70%] xl:w-[40%] mt-4 sm:mt-6 bg-white"
+        ref={component}
         >
             <div 
             className="flex justify-between items-center gap-2"
@@ -148,7 +176,9 @@ export default function Post({
 
                                 <button
                                 className="flex items-center gap-3 px-4 py-3 w-full text-left
-                                hover:bg-red-50 transition-colors duration-200 group"    
+                                hover:bg-red-50 transition-colors duration-200 group" 
+                                ref={deletePostButton} 
+                                onClick={deleteHandler}  
                                 >
                                     <Trash2 
                                     className="w-4 h-4 text-red-600 group-hover:text-red-700" 
