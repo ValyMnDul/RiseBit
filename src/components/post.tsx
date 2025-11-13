@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import FollowButton from "./followButton"
 import { Settings } from "lucide-react"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Edit2, Trash2 } from 'lucide-react';
 
 export default function Post({
@@ -32,7 +32,26 @@ export default function Post({
     
     const validPhotos = photos?.filter((photo) => (photo && photo.trim() !== '')) || []
 
+    const editDropdown = useRef<HTMLDivElement>(null);
     const [isEditOpen,setIsEditOpen] = useState<boolean>(false);
+
+    useEffect(()=> {
+
+        const pressOutsideHandler = (e:MouseEvent) => {
+            if(editDropdown.current && !editDropdown.current.contains(e.target as Node)){
+                setIsEditOpen(false);
+            }
+        }
+
+        if(isEditOpen){
+            document.addEventListener('mousedown',pressOutsideHandler);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', pressOutsideHandler);
+        }
+
+    },[isEditOpen])
 
     return (
         <div 
@@ -79,7 +98,7 @@ export default function Post({
 
                 {
                     sessionUsername && sessionUsername !== username ?
-                        <div className="shrink-0">
+                        <div className="shrink-0 select-none">
                             <FollowButton 
                                 following={following}
                                 sessionUsername={sessionUsername}
@@ -88,7 +107,7 @@ export default function Post({
                         </div>
                         : 
                         <div 
-                        className="relative"
+                        className="relative select-none"
                         >
                             <div
                             onClick={()=>{
@@ -108,6 +127,7 @@ export default function Post({
                             className={`absolute bg-white w-40 top-12 right-0 z-50 
                             rounded-lg shadow-lg border border-gray-200 overflow-hidden
                             ${isEditOpen ? 'flex' : 'hidden'} flex-col`} 
+                            ref={editDropdown}
                             >
                                 <button 
                                 className="flex items-center gap-3 px-4 py-3 w-full text-left
@@ -167,7 +187,7 @@ export default function Post({
 
                 {validPhotos.length > 0 && (
                     <div 
-                    className="mt-3 sm:mt-4"
+                    className="mt-3 sm:mt-4 select-none"
                     >
                         {validPhotos.length === 1 && (
                             <div 
