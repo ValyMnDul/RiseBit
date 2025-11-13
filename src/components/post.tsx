@@ -1,4 +1,5 @@
 'use client'
+
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import FollowButton from "./followButton"
@@ -161,6 +162,9 @@ export default function Post({
                                 className="flex items-center gap-3 px-4 py-3 w-full text-left
                                 hover:bg-indigo-50 transition-colors duration-200
                                 border-b border-gray-100 group"
+                                onClick={()=>{
+                                    router.push(`/update?username=${username}&updatedAt=${btoa(updatedAt)}`)
+                                }}
                                 >
                                     <Edit2 
                                     className="w-4 h-4 text-indigo-600 group-hover:text-indigo-700" 
