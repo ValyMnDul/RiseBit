@@ -6,6 +6,7 @@ import FollowButton from "./followButton"
 import { Settings } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import { Edit2, Trash2 } from 'lucide-react';
+import { useSession } from "next-auth/react"
 
 export default function Post({
     username,
@@ -29,6 +30,7 @@ export default function Post({
     photos:Array<string>
 }) {
 
+    const { data:session } = useSession();
     const router = useRouter()
     
     const validPhotos = photos?.filter((photo) => (photo && photo.trim() !== '')) || []
@@ -135,6 +137,8 @@ export default function Post({
                             />
                         </div>
                         : 
+                            session === null ? null 
+                        :
                         <div 
                         className="relative select-none"
                         >
