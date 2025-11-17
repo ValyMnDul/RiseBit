@@ -137,7 +137,7 @@ export default function Post({
                             />
                         </div>
                         : 
-                            session === null ? null 
+                            session === null ? null
                         :
                         <div 
                         className="relative select-none"
@@ -167,7 +167,7 @@ export default function Post({
                                 hover:bg-indigo-50 transition-colors duration-200
                                 border-b border-gray-100 group"
                                 onClick={()=>{
-                                    router.push(`/update?username=${username}&updatedAt=${btoa(updatedAt)}`)
+                                    router.push(`/update?username=${username}&updatedAt=${updatedAt}`)
                                 }}
                                 >
                                     <Edit2 
