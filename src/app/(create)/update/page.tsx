@@ -4,6 +4,7 @@ import {ImageIcon} from 'lucide-react'
 import React, { useEffect } from 'react'
 import { useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { X } from 'lucide-react'
 
 export default function UpdatePost(){
 
@@ -23,6 +24,8 @@ export default function UpdatePost(){
         username:string
     }>();
 
+    const [photos,setPhotos] = useState<Array<string>>([]);
+
     useEffect(()=>{
         const fetchPost = async () => {
             const res = await fetch('/api/getPostToEdit',{
@@ -38,16 +41,24 @@ export default function UpdatePost(){
 
             const {postToEdit} = await res.json();
             setPost(postToEdit);
+            setPhotos(postToEdit.photos)
         }
         
         if(usernameFromSearchParams && updatedAtFromSearchParams){
             fetchPost();
         }
         
-    },[usernameFromSearchParams,updatedAtFromSearchParams])
+    },[usernameFromSearchParams,updatedAtFromSearchParams]);
 
     const onFileChenge = (e:React.ChangeEvent<HTMLInputElement>) => {
         
+    }
+
+    const removePhoto = (iToRemove:number) => {
+
+        URL.revokeObjectURL(photos[iToRemove]);
+
+        setPhotos(photos.filter((_,i)=>( i !== iToRemove )));
     }
 
     const updatePost = () => {
@@ -120,6 +131,43 @@ export default function UpdatePost(){
 
                 </div>
 
+            </div>
+
+            <div
+            className="grid grid-cols-3 gap-4 mt-10 mb-5 select-none"
+            >
+                {
+                    photos.map(((url,i) => (
+                        <div
+                        key={url}
+                        className='relative'
+                        >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img 
+                            width={200}
+                            height={200}
+                            src={url}
+                            alt={`Preview ${i + 1}`}
+                            style={{aspectRatio:"1 / 1"}}
+                            className="w-full h-32 object-cover rounded-lg border border-gray-400
+                            border-solid"
+                            onClick={()=>{
+                                globalThis.open(url)
+                            }}
+                            />
+
+                            <div
+                            onClick={() => { removePhoto(i); }}
+                            className="absolute top-1 right-1 bg-red-400 text-white 
+                            rounded-full w-5 h-5 flex items-center justify-center 
+                            hover:bg-red-500 cursor-pointer"
+                            >
+                                <X width={14} height={14}/>
+                            </div>
+
+                        </div>
+                    )))
+                }
             </div>
 
             <button
