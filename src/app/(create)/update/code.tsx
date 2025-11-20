@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { X } from 'lucide-react'
+import imageCompression from 'browser-image-compression'
 
 export default function UpdatePost(){
 
@@ -25,6 +26,14 @@ export default function UpdatePost(){
     }>();
 
     const [photos,setPhotos] = useState<Array<string>>([]);
+    const [newPhotos,setNewPhotos] = useState<Array<File>>([]);
+    const [newPreviewURLs,setNewPreviewURLs] = useState<Array<string>>([]);
+
+    useEffect(()=>{
+        return () => {
+            newPreviewURLs.forEach((url)=>(URL.revokeObjectURL(url)));
+        }
+    },[newPreviewURLs]);
 
     useEffect(()=>{
         const fetchPost = async () => {
@@ -50,15 +59,81 @@ export default function UpdatePost(){
         
     },[usernameFromSearchParams,updatedAtFromSearchParams]);
 
-    const onFileChenge = (e:React.ChangeEvent<HTMLInputElement>) => {
-        
+    const onFileChenge = async (e:React.ChangeEvent<HTMLInputElement>) => {
+        if(e.target.files){
+
+            const totalPhotos = photos.length + newPhotos.length;
+            const availableSlots = 6 - totalPhotos;
+
+            if (availableSlots <= 0) {
+                if(messageRef.current){
+                    messageRef.current.textContent = "Maximum 6 photos allowed!";
+                }
+                globalThis.setTimeout(() => {
+                    if(messageRef.current){
+                        messageRef.current.textContent = "Tell me something new!";
+                    }
+                }, 2000);
+                return;
+            }
+
+            const selectedPhotos = Array.from(e.target.files).slice(0, availableSlots);
+
+            const compressedPhotos = [];
+            const urls = [];
+
+            for(const photo of selectedPhotos){
+
+                const options = {
+                    maxSizeMB:2,
+                    maxWidthOrHeight:1920,
+                    useWebWorker:true,
+                    initialQuality:0.95
+                }
+
+                try {
+                    const compressedFile = await imageCompression(photo,options);
+
+                    if(compressedFile.size > 8 * 1024 * 1024){
+
+                        if(messageRef.current){
+                            messageRef.current.textContent = "Some images were too large (max 30MB each).";
+                        }
+
+                        globalThis.setTimeout(()=>{
+                            if(messageRef.current){
+                                messageRef.current.textContent="Tell me something new!";
+                            }
+                        },2000);
+
+                        continue;
+                    }
+
+                    compressedPhotos.push(compressedFile);
+                    urls.push(URL.createObjectURL(compressedFile));
+                }
+                catch(e){
+                    console.error("V:"+ e);
+                }
+            }
+
+            setNewPhotos([...newPhotos, ...compressedPhotos]);
+            setNewPreviewURLs([...newPreviewURLs, ...urls]);
+        }
+
+        e.target.value = '';
     }
 
-    const removePhoto = (iToRemove:number) => {
+    const removePhoto = (iToRemove:number, isNewPhoto:boolean) => {
 
-        URL.revokeObjectURL(photos[iToRemove]);
-
-        setPhotos(photos.filter((_,i)=>( i !== iToRemove )));
+        if(isNewPhoto){
+            URL.revokeObjectURL(newPreviewURLs[iToRemove]);
+            setNewPreviewURLs(newPreviewURLs.filter((_,i) => (i !== iToRemove)));
+            setNewPhotos(newPhotos.filter((_,i) => (i !== iToRemove)));
+        }
+        else {
+            setPhotos(photos.filter((_,i)=>( i !== iToRemove )));
+        }
     }
 
     const updatePost = () => {
@@ -139,7 +214,7 @@ export default function UpdatePost(){
                 {
                     photos.map(((url,i) => (
                         <div
-                        key={url}
+                        key={'old'+url}
                         className='relative'
                         >
                             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -157,7 +232,9 @@ export default function UpdatePost(){
                             />
 
                             <div
-                            onClick={() => { removePhoto(i); }}
+                            onClick={() => { 
+                                removePhoto(i,false); 
+                            }}
                             className="absolute top-1 right-1 bg-red-400 text-white 
                             rounded-full w-5 h-5 flex items-center justify-center 
                             hover:bg-red-500 cursor-pointer"
@@ -168,6 +245,29 @@ export default function UpdatePost(){
                         </div>
                     )))
                 }
+                {
+                    newPreviewURLs.map((url, i) => (
+                    <div key={`new-${url}`} className='relative'>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img 
+                            width={200}
+                            height={200}
+                            src={url}
+                            alt={`New ${i + 1}`}
+                            style={{aspectRatio:"1 / 1"}}
+                            className="w-full h-32 object-cover rounded-lg border border-gray-400 border-solid"
+                            onClick={() => { globalThis.open(url) }}
+                        />
+                        <div
+                            onClick={() => { removePhoto(i, true); }}
+                            className="absolute top-1 right-1 bg-red-400 text-white 
+                            rounded-full w-5 h-5 flex items-center justify-center 
+                            hover:bg-red-500 cursor-pointer"
+                        >
+                            <X width={14} height={14}/>
+                        </div>
+                    </div>
+                ))}
             </div>
 
             <button
@@ -178,7 +278,7 @@ export default function UpdatePost(){
             hover:shadow-pink-500/40 transition-all duration-300 hover:scale-105 
             active:scale-95"
             >
-                Create
+                Update
             </button>
             
             <p
