@@ -6,9 +6,11 @@ import { useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { X } from 'lucide-react'
 import imageCompression from 'browser-image-compression'
+import { useRouter } from 'next/navigation'
 
 export default function UpdatePost(){
 
+    const router = useRouter();
     const searchParams = useSearchParams();
 
     const usernameFromSearchParams = searchParams.get("username");
@@ -136,8 +138,51 @@ export default function UpdatePost(){
         }
     }
 
-    const updatePost = () => {
+    const updatePost = async (e:React.FormEvent<HTMLFormElement>) => {
 
+        e.preventDefault();
+
+        if(messageRef.current){
+            messageRef.current.textContent = "Updating post..."
+        }
+
+        if(!post?.id){
+            return;
+        }
+
+        const form = e.currentTarget;
+        const formData = new FormData(form);
+
+        formData.set('postId',post.id.toString());
+        formData.set('oldPhotos',JSON.stringify(photos));
+
+        newPhotos.forEach((photo) => {
+            formData.append('newPhotos',photo);
+        });
+
+        const res = await fetch('/api/updatePost',{
+            method:"POST",
+            body:formData
+        });
+
+        const {message} = await res.json();
+
+        if(res.status === 200){
+            if(messageRef.current){
+                messageRef.current.textContent = message;
+            }
+
+            form.reset();
+
+            globalThis.setTimeout(()=>{
+                router.push('/feed');
+            },1500);
+        }
+        else { 
+            if(messageRef.current){
+                messageRef.current.textContent = message;
+            }
+        } 
     }
 
     return (
