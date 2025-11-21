@@ -1,7 +1,7 @@
 'use client'
 
 import { Image as ImageIcon} from 'lucide-react'
-import { X } from 'lucide-react'
+import { X, Link2 } from 'lucide-react'
 import { useSession } from "next-auth/react";
 import { useEffect, useRef ,useState } from "react";
 import { useRouter } from "next/navigation";
@@ -12,9 +12,13 @@ import Loading from "@/components/loading";
 export default function CreatePostPage(){
 
     const messageRef = useRef<HTMLParagraphElement>(null);
+    const linkInput = useRef<HTMLInputElement>(null);
+    const contentArea = useRef<HTMLTextAreaElement>(null);
 
     const {data:session} = useSession();
     const router = useRouter();
+
+    const [linkAdder,setLinkAdder] = useState<boolean>(false);
 
     useEffect(()=>{
         if(session === null){
@@ -33,6 +37,12 @@ export default function CreatePostPage(){
             previewURLs.forEach(url => URL.revokeObjectURL(url));
         };
     }, [previewURLs]);
+
+    useEffect(() => {
+        if (linkAdder && linkInput.current) {
+            linkInput.current.focus();
+        }
+    }, [linkAdder]);
 
     const onFileChenge = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -169,6 +179,7 @@ export default function CreatePostPage(){
             ></input>
 
             <textarea
+            ref={contentArea}
             name="content"
             placeholder="Content"
             className="mt-4 text-base sm:text-lg md:text-xl px-4 py-2 border 
@@ -180,11 +191,12 @@ export default function CreatePostPage(){
             <div
             className="mt-6 text-base sm:text-lg md:text-xl px-4 py-2 border 
             border-gray-400 rounded w-full sm:w-[80%] md:w-[70%] lg:w-[60%] 
-            xl:w-[50%] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            xl:w-[50%] focus:outline-none focus:ring-2 focus:ring-blue-500
+            flex items-center"
             >
 
                 <div
-                className='hover:bg-gray-300 h-full w-8 flex flex-1 justify-center
+                className='hover:bg-gray-300 h-full max-w-8 flex flex-1 justify-center
                 items-center rounded-full'
                 >
 
@@ -192,7 +204,11 @@ export default function CreatePostPage(){
                     className='cursor-pointer '
                     htmlFor="photos"
                     >
-                        <ImageIcon width={25} height={25}/>
+                        <ImageIcon 
+                        width={25} 
+                        height={25}
+                        />
+                        
                     </label>
 
                     <input
@@ -208,6 +224,55 @@ export default function CreatePostPage(){
                     ></input>
 
                 </div>
+
+                <div
+                className='hover:bg-gray-300 h-full max-w-8 flex flex-1 justify-center
+                items-center rounded-full cursor-pointer'
+                onClick={()=>{
+                    setLinkAdder((p)=>(!p));
+                }}
+                >
+                    <Link2 
+                    width={25}
+                    height={25}
+                    />
+
+                </div>
+
+                {
+                    linkAdder ? 
+                    <div 
+                    className="absolute top-12 left-0 right-0 mx-auto w-full sm:w-[80%] 
+                    md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white border border-gray-400 
+                    rounded p-4 shadow-lg z-10"
+                    >
+                        <input
+                            ref={linkInput}
+                            type="url"
+                            name="link"
+                            placeholder="Insert link here and Enter..."
+                            className="w-full px-3 py-2 border border-gray-400 rounded 
+                            focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            onKeyDown={(e)=>{
+                                if(e.key === 'Enter'){
+                                    e.preventDefault();
+
+                                    if(contentArea.current && linkInput.current){
+                                        const url = linkInput.current.value;
+                                        contentArea.current.innerHTML = `${contentArea.current.innerHTML} 
+                                        <a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+                                        
+                                        linkInput.current.value = '';
+                                        setLinkAdder(false);
+                                    }
+                                }
+                            }}
+                        />
+
+                    </div>
+
+                    : null
+                }
 
             </div>
 
