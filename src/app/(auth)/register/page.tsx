@@ -12,7 +12,6 @@ export default function Register(){
 
     const submitButton = useRef<HTMLButtonElement>(null);
 
-
     const router = useRouter();
     const { data: session } = useSession();
 
@@ -68,14 +67,14 @@ export default function Register(){
         
 
         const data = {
-            firstName: formData.get("firstName"),
-            lastName: formData.get("lastName"),
-            email: formData.get("email"),
-            password: formData.get("password"),
-            cPassword:formData.get("cPassword"),
+            firstName: formData.get("firstName") as string,
+            lastName: formData.get("lastName") as string,
+            email: (formData.get("email") as string).toLowerCase(),
+            password: formData.get("password") as string,
+            cPassword:formData.get("cPassword") as string,
             birth: formData.get("birth"),
             profilePhoto: url,
-            userName: formData.get("userName"),
+            userName: (formData.get("userName") as string).toLowerCase(),
         };
 
         const res = await fetch("/api/register", {

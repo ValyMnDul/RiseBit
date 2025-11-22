@@ -4,6 +4,12 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
+
+  const isValidUsername = (username:string) :boolean => {
+    const regex = /^[a-zA-Z0-9._-]+$/;
+    return regex.test(username);
+  }
+
   const data = await req.json();
 
   if(await prisma.user.findUnique({where: { email: data.email }})){
@@ -16,6 +22,10 @@ export async function POST(req: Request) {
 
   if(await prisma.user.findUnique({where: { username: data.userName }})){
     return NextResponse.json({message:"An account with this username already exists."},{ status: 400 });
+  }
+
+  if(!isValidUsername(data.userName)){
+    return NextResponse.json({message:"Username contains invalid characters."},{ status: 400 });
   }
 
   if(data.email.length>100 || data.firstName.length>50 || data.lastName.length>50 || data.password.length>200){
