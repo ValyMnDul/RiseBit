@@ -1,6 +1,7 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 interface MyUser {
   id: string;
@@ -39,7 +40,12 @@ export const authOptions: AuthOptions = {
           where: { email: credentials.email },
         });
 
-        if (!user || user.password !== credentials.password) return null;
+        if (!user) return null;
+
+        const isPasswordValid = await bcrypt.compare(credentials.password,user.password);
+        if(!isPasswordValid){
+          return null;
+        }
 
         return {
           id: user.id.toString(),

@@ -2,6 +2,7 @@
 
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import bcrypt from 'bcrypt';
 
 export async function POST(req: Request) {
 
@@ -59,13 +60,14 @@ export async function POST(req: Request) {
     return NextResponse.json({message:"One or more required fields are empty."},{ status: 400 });
   }
 
+  const hashedPassword = await bcrypt.hash(data.password,10);
 
   await prisma.user.create({
     data: {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
-      password: data.password,
+      password: hashedPassword,
       birthDate: new Date(data.birth),
       profilePic: data.profilePhoto || null,
       username: data.userName
