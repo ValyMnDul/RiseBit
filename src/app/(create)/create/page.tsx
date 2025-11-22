@@ -13,12 +13,18 @@ export default function CreatePostPage(){
 
     const messageRef = useRef<HTMLParagraphElement>(null);
     const linkInput = useRef<HTMLInputElement>(null);
-    const contentArea = useRef<HTMLTextAreaElement>(null);
+    const contentArea = useRef<HTMLDivElement>(null);
 
     const {data:session} = useSession();
     const router = useRouter();
 
     const [linkAdder,setLinkAdder] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (linkAdder && linkInput.current) {
+            linkInput.current.focus();
+        }
+    }, [linkAdder]);
 
     useEffect(()=>{
         if(session === null){
@@ -103,53 +109,57 @@ export default function CreatePostPage(){
     }
 
  
-    const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
-        
-        e.preventDefault();
-        
+const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    if(messageRef.current){
+        messageRef.current.textContent="Creating post...";
+    }
+    
+    if(!session?.user?.username){
+        return;
+    }
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    formData.set('username',session?.user?.username);
+    
+    if(contentArea.current){
+        formData.set('content', contentArea.current.innerHTML || contentArea.current.textContent || '');
+    }
+
+    photos.forEach(( photo )=> {
+        formData.append('photo', photo )
+    })
+
+    const res = await fetch('/api/createPost',{
+        method:"POST",
+        body:formData
+    });
+
+    const {message} = await res.json();
+
+    if(res.status === 201){
         if(messageRef.current){
-            messageRef.current.textContent="Creating post...";
-        }
-        
-        if(!session?.user?.username){
-            return;
+            messageRef.current.textContent = message;
         }
 
-        const form = e.currentTarget;
-        const formData = new FormData(form);
-
-        formData.set('username',session?.user?.username);
-
-        photos.forEach(( photo )=> {
-            formData.append('photo', photo )
-        })
-
-        const res = await fetch('/api/createPost',{
-            method:"POST",
-            body:formData
-        });
-
-        const {message} = await res.json();
-
-        if(res.status === 201){
-
-            if(messageRef.current){
-                messageRef.current.textContent = message;
-            }
-
-            form.reset();
-
-            globalThis.setTimeout(()=>{
-                globalThis.location.href = '/feed';
-            },1500)
+        form.reset();
+        if(contentArea.current){
+            contentArea.current.innerHTML = '';
         }
-        else {
 
-            if(messageRef.current){
-                messageRef.current.textContent = message;
-            }
+        globalThis.setTimeout(()=>{
+            globalThis.location.href = '/feed';
+        },1500)
+    }
+    else {
+        if(messageRef.current){
+            messageRef.current.textContent = message;
         }
     }
+}
 
     if(session === undefined){
         return <Loading/>;
@@ -178,15 +188,14 @@ export default function CreatePostPage(){
             xl:w-[50%] focus:outline-none focus:ring-2 focus:ring-blue-500"
             ></input>
 
-            <textarea
-            ref={contentArea}
-            name="content"
-            placeholder="Content"
-            className="mt-4 text-base sm:text-lg md:text-xl px-4 py-2 border 
-            border-gray-400 rounded w-full sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] 
-            h-[200px] sm:h-[250px] focus:outline-none focus:ring-2 focus:ring-blue-500 
-            resize-none"
-            ></textarea>
+            <div
+                ref={contentArea}
+                contentEditable
+                className="mt-4 text-base sm:text-lg md:text-xl px-4 py-2 border 
+                border-gray-400 rounded w-full sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] 
+                h-[200px] sm:h-[250px] focus:outline-none focus:ring-2 focus:ring-blue-500 
+                overflow-auto empty:before:content-['Content'] empty:before:text-gray-400"
+            />
 
             <div
             className="mt-6 text-base sm:text-lg md:text-xl px-4 py-2 border 
@@ -259,8 +268,7 @@ export default function CreatePostPage(){
 
                                     if(contentArea.current && linkInput.current){
                                         const url = linkInput.current.value;
-                                        contentArea.current.innerHTML = `${contentArea.current.innerHTML} 
-                                        <a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+                                        contentArea.current.textContent += ' ' + url;
                                         
                                         linkInput.current.value = '';
                                         setLinkAdder(false);

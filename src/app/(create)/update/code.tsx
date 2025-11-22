@@ -1,6 +1,6 @@
 'use client'
 
-import {ImageIcon} from 'lucide-react'
+import {ImageIcon ,Link2} from 'lucide-react'
 import React, { useEffect } from 'react'
 import { useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
@@ -16,7 +16,16 @@ export default function UpdatePost(){
     const usernameFromSearchParams = searchParams.get("username");
     const updatedAtFromSearchParams = searchParams.get("updatedAt");
 
+    if(!usernameFromSearchParams || !updatedAtFromSearchParams){
+        router.push('/feed');
+    }
+
     const messageRef = useRef<HTMLParagraphElement>(null);
+    const linkInput = useRef<HTMLInputElement>(null);
+    const contentArea = useRef<HTMLTextAreaElement>(null);
+
+    const [linkAdder, setLinkAdder] = useState<boolean>(false);
+
     const [post,setPost] = useState<{
         id:number,
         content:string,
@@ -210,6 +219,7 @@ export default function UpdatePost(){
             ></input>
 
             <textarea
+            ref={contentArea}
             name="content"
             placeholder="Content"
             className="mt-4 text-base sm:text-lg md:text-xl px-4 py-2 border 
@@ -222,11 +232,12 @@ export default function UpdatePost(){
             <div
             className="mt-6 text-base sm:text-lg md:text-xl px-4 py-2 border 
             border-gray-400 rounded w-full sm:w-[80%] md:w-[70%] lg:w-[60%] 
-            xl:w-[50%] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            xl:w-[50%] focus:outline-none focus:ring-2 focus:ring-blue-500
+            flex items-center"
             >
 
                 <div
-                className='hover:bg-gray-300 h-full w-8 flex flex-1 justify-center
+                className='hover:bg-gray-300 h-full max-w-8 flex flex-1 justify-center
                 items-center rounded-full'
                 >
 
@@ -250,6 +261,54 @@ export default function UpdatePost(){
                     ></input>
 
                 </div>
+
+                <div
+                className='hover:bg-gray-300 h-full max-w-8 flex flex-1 justify-center
+                items-center rounded-full cursor-pointer'
+                onClick={()=>{
+                    setLinkAdder((p)=>(!p));
+                }}
+                >
+                    <Link2
+                    width={25}
+                    height={25}
+                    />
+
+                </div>
+
+                {
+                    linkAdder ?
+
+                    <div
+                    className='absolute top-12 left-0 right-0 mx-auto w-full sm:w-[80%] 
+                    md:w-[70%] lg:w-[60%] xl:w-[50%] bg-white border border-gray-400 
+                    rounded p-4 shadow-lg z-10'
+                    >
+                        <input
+                        className='w-full px-3 py-2 border border-gray-400 rounded 
+                        focus:outline-none focus:ring-2 focus:ring-blue-500'
+                        ref={linkInput}
+                        type="url"
+                        name="link"
+                        placeholder="Insert link here and Enter..."
+                        onKeyDown={((e) => {
+                            if(e.key === 'Enter'){
+                                e.preventDefault();
+
+                                if(linkInput.current && contentArea.current){
+                                    const url = linkInput.current.value
+                                    contentArea.current.value += ' ' + url;
+
+                                    linkInput.current.value = '';
+                                    setLinkAdder(false);
+                                }   
+                            }
+                        })}
+                        ></input>
+                    </div>
+
+                    : null
+                }
 
             </div>
 
