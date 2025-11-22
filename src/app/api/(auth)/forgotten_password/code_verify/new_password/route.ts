@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 
 export const POST = async (req:Request)=>{
 
@@ -17,12 +18,14 @@ export const POST = async (req:Request)=>{
         return NextResponse.json({message: 'Passwords do not match.'}, {status: 400});
     }
 
+    const hashedPassword = await bcrypt.hash(password,10);
+
     const res = await prisma.user.update({
         where:{
             email:email
         },
         data:{
-            password:password
+            password:hashedPassword,
         }
     });
 

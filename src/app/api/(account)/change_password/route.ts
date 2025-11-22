@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 
 export const POST = async (req:Request) => {
     const {email,newPassword,confirmNewPassword,currentPassword} = await req.json();
@@ -14,7 +15,8 @@ export const POST = async (req:Request) => {
         return NextResponse.json({message:"User not found"}, {status:404});
     }
 
-    if(user.password !== currentPassword){
+    const isPasswordCorrect = await bcrypt.compare(currentPassword,user.password)
+    if(!isPasswordCorrect){
         return NextResponse.json({message:"Incorrect password"}, {status:400});
     }
 
@@ -30,12 +32,14 @@ export const POST = async (req:Request) => {
         return NextResponse.json({message:"Password too long"}, {status:400});
     }
 
+    const hashedNewPassword = await bcrypt.hash(newPassword,10);
+
     await prisma.user.update({
         where:{
             email: email
         },
         data:{
-            password: newPassword
+            password: hashedNewPassword,
         }
     })
 

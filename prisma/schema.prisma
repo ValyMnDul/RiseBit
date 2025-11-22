@@ -15,33 +15,34 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  firstName      String
-  lastName       String
-  email     String   @unique
-  password  String
-  birthDate DateTime
-  profilePic  String?
-  username String    @unique
-  bio      String?  
-  followersList String[]  @default([])
-  followingList String[]  @default([])
-  createdAt DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  username      String   @unique
+  email         String   @unique
+  password      String
+  firstName     String
+  lastName      String
+  birthDate     DateTime
+  profilePic    String?
+  bio           String?
+  followersList String[] @default([])
+  followingList String[] @default([])
+  createdAt     DateTime @default(now())
 }
 
 model PasswordReset {
-  id        Int   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   email     String
   code      String
   succes    Boolean  @default(false)
+  token     String?
   createdAt DateTime @default(now())
 }
 
 model Post {
   id        Int      @id @default(autoincrement())
-  subtitle  String 
+  username  String
+  subtitle  String
   content   String
-  username  String  
   photos    String[] @default([])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
