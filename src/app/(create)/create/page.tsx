@@ -13,7 +13,7 @@ export default function CreatePostPage(){
 
     const messageRef = useRef<HTMLParagraphElement>(null);
     const linkInput = useRef<HTMLInputElement>(null);
-    const contentArea = useRef<HTMLDivElement>(null);
+    const contentArea = useRef<HTMLTextAreaElement>(null);
 
     const {data:session} = useSession();
     const router = useRouter();
@@ -124,10 +124,6 @@ const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
     const formData = new FormData(form);
 
     formData.set('username',session?.user?.username);
-    
-    if(contentArea.current){
-        formData.set('content', contentArea.current.innerHTML || contentArea.current.textContent || '');
-    }
 
     photos.forEach(( photo )=> {
         formData.append('photo', photo )
@@ -146,9 +142,6 @@ const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
         }
 
         form.reset();
-        if(contentArea.current){
-            contentArea.current.innerHTML = '';
-        }
 
         globalThis.setTimeout(()=>{
             globalThis.location.href = '/feed';
@@ -188,20 +181,21 @@ const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
             xl:w-[50%] focus:outline-none focus:ring-2 focus:ring-blue-500"
             ></input>
 
-            <div
-                ref={contentArea}
-                contentEditable
-                className="mt-4 text-base sm:text-lg md:text-xl px-4 py-2 border 
-                border-gray-400 rounded w-full sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] 
-                h-[200px] sm:h-[250px] focus:outline-none focus:ring-2 focus:ring-blue-500 
-                overflow-auto empty:before:content-['Content'] empty:before:text-gray-400"
+            <textarea
+            ref={contentArea}
+            name="content"
+            placeholder="Content"
+            className="mt-4 text-base sm:text-lg md:text-xl px-4 py-2 border 
+            border-gray-400 rounded w-full sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] 
+            h-[200px] sm:h-[250px] focus:outline-none focus:ring-2 focus:ring-blue-500 
+            resize-none"
             />
 
             <div
             className="mt-6 text-base sm:text-lg md:text-xl px-4 py-2 border 
             border-gray-400 rounded w-full sm:w-[80%] md:w-[70%] lg:w-[60%] 
             xl:w-[50%] focus:outline-none focus:ring-2 focus:ring-blue-500
-            flex items-center"
+            flex items-center relative"
             >
 
                 <div
@@ -268,7 +262,7 @@ const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
 
                                     if(contentArea.current && linkInput.current){
                                         const url = linkInput.current.value;
-                                        contentArea.current.textContent += ' ' + url;
+                                        contentArea.current.value += ' ' + url;
                                         
                                         linkInput.current.value = '';
                                         setLinkAdder(false);
