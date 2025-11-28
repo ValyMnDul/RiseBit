@@ -8,11 +8,26 @@
 </div>
 
 
-## RiseBit - Social Media Platform
+### RiseBit - Social Media Platform
 
 Demo Link: [https://risebit.valymnd.me/](https://risebit.valymnd.me/)
 
-### Run Locally
+## About
+
+RiseBit is a modern social media platform that transforms how people share, interact, and build communities online.
+
+Built with cutting-edge web technologies, RiseBit combines sleek design with powerful features to create a social experience that's both intuitive and engaging. Share your moments, discover new content, and connect with others—all in one seamless platform.
+
+## Why RiseBit?
+
+- **Beautiful Design** - A clean, modern interface that feels natural
+- **Lightning Fast** - Built for performance and reliability
+- **Engaging Interactions** - Real-time updates and seamless social features
+- **Responsive** - Perfect experience on any device
+
+*Developed for Hack Club's Moonshot Program*
+
+## Run Locally
 
 Clone the project
 
@@ -36,7 +51,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 And you are good to go!
 
-### Features
+## Features
 
 - User Authentication (Sign Up, Log In, Log Out)
 - Create posts
@@ -45,7 +60,7 @@ And you are good to go!
 - Real-time Updates
 - And more
 
-### Tech Stack
+## Tech Stack
 
 - Next.js
 - Tailwind CSS
@@ -53,9 +68,12 @@ And you are good to go!
 - TypeScript
 - Prisma
 - Cludinary
+- Vercel
+- VS Code
+- PostgreSQL
 - etc.
 
-### Contributing
+## Contributing
 
 Contributions are always welcome! Please feel free to submit a Pull Request.
 
