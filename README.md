@@ -1,14 +1,19 @@
 
 
-### RiseBit - Social Media Platform
+# RiseBit - Social Media Platform
 
-Demo Link: [https://risebit.valymnd.me/](https://risebit.valymnd.me/)
 
 ## About
 
 RiseBit is a modern social media platform that transforms how people share, interact, and build communities online.
 
 Built with cutting-edge web technologies, RiseBit combines sleek design with powerful features to create a social experience that's both intuitive and engaging. Share your moments, discover new content, and connect with others—all in one seamless platform.
+
+### Feed
+![Feed](./feed.gif)
+
+### Profile Page
+![Profile](./profile.png)
 
 ## Why RiseBit?
 
@@ -19,29 +24,6 @@ Built with cutting-edge web technologies, RiseBit combines sleek design with pow
 
 *Developed for Hack Club's Moonshot Program*
 
-## Run Locally
-
-Clone the project
-
-```bash
-git clone https://github.com/valymndul/risebit.git
-```
-
-Run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-And you are good to go!
 
 ## Features
 
