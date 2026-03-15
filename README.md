@@ -12,9 +12,6 @@ Built with cutting-edge web technologies, RiseBit combines sleek design with pow
 ### Feed
 ![Feed](./feed.gif)
 
-### Profile Page
-![Profile](./profile.png)
-
 ## Why RiseBit?
 
 - **Beautiful Design** - A clean, modern interface that feels natural
@@ -46,6 +43,10 @@ Built with cutting-edge web technologies, RiseBit combines sleek design with pow
 - VS Code
 - PostgreSQL
 - etc.
+
+### Profile Page
+![Profile](./profile.png)
+
 
 ## Contributing
 
