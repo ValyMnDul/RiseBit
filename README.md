@@ -44,6 +44,9 @@ Built with cutting-edge web technologies, RiseBit combines sleek design with pow
 - PostgreSQL
 - etc.
 
+### Create Post
+![Post](./post.png)
+
 ### Profile Page
 ![Profile](./profile.png)
 
@@ -52,7 +55,7 @@ Built with cutting-edge web technologies, RiseBit combines sleek design with pow
 
 Contributions are always welcome! Please feel free to submit a Pull Request.
 
-
+### Made for Moonshot event, hosted by HackClub
 
 
 
