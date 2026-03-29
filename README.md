@@ -21,7 +21,6 @@ Built with cutting-edge web technologies, RiseBit combines sleek design with pow
 - Follow and Unfollow Users
 - User Profiles
 - Real-time Updates
-- And more
 
 ### Create Post
 ![Post](./post.png)
