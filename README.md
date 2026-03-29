@@ -1,9 +1,4 @@
-
-
 # RiseBit - Social Media Platform
-
-
-## About
 
 RiseBit is a modern social media platform that transforms how people share, interact, and build communities online.
 
@@ -19,9 +14,6 @@ Built with cutting-edge web technologies, RiseBit combines sleek design with pow
 - **Engaging Interactions** - Real-time updates and seamless social features
 - **Responsive** - Perfect experience on any device
 
-*Developed for Hack Club's Moonshot Program*
-
-
 ## Features
 
 - User Authentication (Sign Up, Log In, Log Out)
@@ -30,19 +22,6 @@ Built with cutting-edge web technologies, RiseBit combines sleek design with pow
 - User Profiles
 - Real-time Updates
 - And more
-
-## Tech Stack
-
-- Next.js
-- Tailwind CSS
-- Supabase
-- TypeScript
-- Prisma
-- Cludinary
-- Vercel
-- VS Code
-- PostgreSQL
-- etc.
 
 ### Create Post
 ![Post](./post.png)
@@ -54,6 +33,10 @@ Built with cutting-edge web technologies, RiseBit combines sleek design with pow
 ## Contributing
 
 Contributions are always welcome! Please feel free to submit a Pull Request.
+
+## Open Source
+
+RiseBit is licensed under the [MIT License](LICENSE.md)
 
 ### Made for Moonshot event, hosted by HackClub
 
